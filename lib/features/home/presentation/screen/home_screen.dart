@@ -114,7 +114,7 @@ class HomeScreen extends StatelessWidget {
             Get.toNamed(AppRoutes.chat);
             break;
           case "Catalogue":
-            // Navigate to catalogue screen
+            Get.toNamed(AppRoutes.brands);
             break;
           case "Wishlist":
             // Navigate to wishlist screen

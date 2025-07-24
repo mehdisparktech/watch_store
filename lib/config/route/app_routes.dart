@@ -1,4 +1,6 @@
 import 'package:get/get.dart';
+import 'package:watch_store/features/brands/presentation/screen/brands_screen.dart';
+import 'package:watch_store/features/brands/presentation/screen/watch_detail_screen.dart';
 import 'package:watch_store/features/home/presentation/screen/home_screen.dart';
 import '../../features/auth/change_password/presentation/screen/change_password_screen.dart';
 import '../../features/auth/forgot password/presentation/screen/create_password.dart';
@@ -38,6 +40,8 @@ class AppRoutes {
   static const String termsOfServices = "/terms_of_services_screen.dart";
   static const String setting = "/setting_screen.dart";
   static const String home = "/home_screen.dart";
+  static const String brands = "/brands_screen.dart";
+  static const String watchDetail = "/watch_detail_screen.dart";
 
   static List<GetPage> routes = [
     GetPage(name: splash, page: () => const SplashScreen()),
@@ -58,5 +62,10 @@ class AppRoutes {
     GetPage(name: termsOfServices, page: () => const TermsOfServicesScreen()),
     GetPage(name: setting, page: () => const SettingScreen()),
     GetPage(name: home, page: () => HomeScreen()),
+    GetPage(name: brands, page: () => BrandsScreen()),
+    GetPage(
+      name: watchDetail,
+      page: () => WatchDetailScreen(watch: Get.arguments),
+    ),
   ];
 }
