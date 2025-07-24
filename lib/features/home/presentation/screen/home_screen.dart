@@ -121,10 +121,10 @@ class HomeScreen extends StatelessWidget {
             // Navigate to wishlist screen
             break;
           case "News":
-            // Navigate to news screen
+            Get.toNamed(AppRoutes.news);
             break;
           case "FAQ":
-            // Navigate to FAQ screen
+            Get.toNamed(AppRoutes.faq);
             break;
         }
       },

@@ -17,13 +17,13 @@ class SignUpAllField extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         /// User Name here
-        const CommonText(text: AppString.fullName, bottom: 8, top: 12),
-        CommonTextField(
-          prefixIcon: const Icon(Icons.person),
-          hintText: AppString.fullName,
-          controller: controller.nameController,
-          validator: OtherHelper.validator,
-        ),
+        // const CommonText(text: AppString.fullName, bottom: 8, top: 12),
+        // CommonTextField(
+        //   prefixIcon: const Icon(Icons.person),
+        //   hintText: AppString.fullName,
+        //   controller: controller.nameController,
+        //   validator: OtherHelper.validator,
+        // ),
 
         /// User Email here
         const CommonText(text: AppString.email, bottom: 8, top: 12),
@@ -51,10 +51,11 @@ class SignUpAllField extends StatelessWidget {
           prefixIcon: const Icon(Icons.lock, color: AppColors.black),
           isPassword: true,
           hintText: AppString.confirmPassword,
-          validator: (value) => OtherHelper.confirmPasswordValidator(
-            value,
-            controller.passwordController,
-          ),
+          validator:
+              (value) => OtherHelper.confirmPasswordValidator(
+                value,
+                controller.passwordController,
+              ),
         ),
       ],
     );

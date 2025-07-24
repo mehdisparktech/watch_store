@@ -1,7 +1,9 @@
 import 'package:get/get.dart';
+import 'package:watch_store/features/FAQ/presentation/screens/faq_screen.dart';
 import 'package:watch_store/features/brands/presentation/screen/brands_screen.dart';
 import 'package:watch_store/features/brands/presentation/screen/watch_detail_screen.dart';
 import 'package:watch_store/features/home/presentation/screen/home_screen.dart';
+import 'package:watch_store/features/news/presenation/screens/news_screen.dart';
 import '../../features/auth/change_password/presentation/screen/change_password_screen.dart';
 import '../../features/auth/forgot password/presentation/screen/create_password.dart';
 import '../../features/auth/forgot password/presentation/screen/forgot_password.dart';
@@ -42,6 +44,8 @@ class AppRoutes {
   static const String home = "/home_screen.dart";
   static const String brands = "/brands_screen.dart";
   static const String watchDetail = "/watch_detail_screen.dart";
+  static const String news = "/news_screen.dart";
+  static const String faq = "/faq_screen.dart";
 
   static List<GetPage> routes = [
     GetPage(name: splash, page: () => const SplashScreen()),
@@ -67,5 +71,7 @@ class AppRoutes {
       name: watchDetail,
       page: () => WatchDetailScreen(watch: Get.arguments),
     ),
+    GetPage(name: news, page: () => NewsScreen()),
+    GetPage(name: faq, page: () => FAQScreen()),
   ];
 }

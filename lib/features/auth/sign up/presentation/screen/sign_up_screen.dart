@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:watch_store/component/image/common_image.dart';
+import 'package:watch_store/utils/constants/app_images.dart';
 import '../../../../../../utils/extensions/extension.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import '../../../../../component/button/common_button.dart';
-import '../../../../../component/text/common_text.dart';
 import '../controller/sign_up_controller.dart';
 import '../../../../../../utils/constants/app_string.dart';
 import '../widget/already_accunt_rich_text.dart';
@@ -28,11 +29,12 @@ class SignUpScreen extends StatelessWidget {
               child: Column(
                 children: [
                   /// Sign UP Instructions here
-                  const CommonText(
-                    text: AppString.createYourAccount,
-                    fontSize: 32,
-                    bottom: 20,
+                  CommonImage(
+                    imageSrc: AppImages.logo,
+                    height: 50.h,
+                    width: 250.w,
                   ),
+                  30.height,
 
                   /// All Text Filed here
                   SignUpAllField(controller: controller),
