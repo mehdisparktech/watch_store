@@ -9,4 +9,10 @@ class AppImages {
   static const String logo = "$baseurl/watch_store_logo.png";
   static const String availableWatch = "$baseurl/available_watch.png";
   static const String profileImage = "$baseurl/profile_img.jpg";
+  static const String capiter = "$baseurl/capiter.png";
+  static const String omega = "$baseurl/omega.png";
+  static const String iwc = "$baseurl/iwc.png";
+  static const String tissot = "$baseurl/tissot.png";
+  static const String tissotGpw = "$baseurl/tissot_gpw.png";
+  static const String submariner = "$baseurl/submariner.png";
 }

@@ -17,6 +17,7 @@ class CommonAppBar extends StatelessWidget implements PreferredSizeWidget {
     this.showMenu = true,
     this.elevation = 0,
     this.titleFontSize = 20,
+    this.subTitle = false,
     this.titleFontWeight = FontWeight.w700,
   });
 
@@ -32,6 +33,7 @@ class CommonAppBar extends StatelessWidget implements PreferredSizeWidget {
   final double elevation;
   final double titleFontSize;
   final FontWeight titleFontWeight;
+  final bool subTitle;
 
   @override
   Size get preferredSize => const Size.fromHeight(kToolbarHeight + 20);
@@ -43,12 +45,24 @@ class CommonAppBar extends StatelessWidget implements PreferredSizeWidget {
       backgroundColor: backgroundColor ?? AppColors.black,
       automaticallyImplyLeading: false,
       toolbarHeight: kToolbarHeight + 20,
-      title: CommonText(
-        text: title,
-        fontSize: titleFontSize,
-        fontWeight: titleFontWeight,
-        color: titleColor ?? AppColors.white,
-      ),
+      title:
+          subTitle
+              ? CommonText(
+                text: title,
+                fontSize: titleFontSize,
+                fontWeight: titleFontWeight,
+                color: titleColor ?? AppColors.white,
+                textAlign: TextAlign.center,
+                maxLines: 2,
+              )
+              : CommonText(
+                text: title,
+                fontSize: titleFontSize,
+                fontWeight: titleFontWeight,
+                color: titleColor ?? AppColors.white,
+                textAlign: TextAlign.center,
+                maxLines: 1,
+              ),
       centerTitle: true,
       leading:
           showProfile

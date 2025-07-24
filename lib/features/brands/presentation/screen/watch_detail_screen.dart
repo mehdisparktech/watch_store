@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:watch_store/component/app_bar/common_app_bar.dart';
+import 'package:watch_store/component/button/common_button.dart';
 import 'package:watch_store/features/brands/data/watch_model.dart';
+import 'package:watch_store/utils/constants/app_images.dart';
 
 class WatchDetailScreen extends StatelessWidget {
   final WatchModel watch;
@@ -9,10 +12,9 @@ class WatchDetailScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Watch Detail'),
-        centerTitle: true,
-        actions: [IconButton(icon: Icon(Icons.menu), onPressed: () {})],
+      appBar: CommonAppBar(
+        title: 'Watch Detail',
+        profileImageUrl: AppImages.profileImage,
       ),
       body: SingleChildScrollView(
         child: Column(
@@ -26,11 +28,11 @@ class WatchDetailScreen extends StatelessWidget {
                     style: TextStyle(fontSize: 32, fontWeight: FontWeight.bold),
                   ),
                   SizedBox(height: 16),
-                  Image.network(
+                  Image.asset(
                     watch.imageUrl,
                     height: 300,
                     width: double.infinity,
-                    fit: BoxFit.cover,
+                    fit: BoxFit.contain,
                   ),
                   SizedBox(height: 16),
                   Text(
@@ -51,15 +53,7 @@ class WatchDetailScreen extends StatelessWidget {
                     ],
                   ),
                   SizedBox(height: 16),
-                  ElevatedButton(
-                    onPressed: () {},
-                    child: Text('Start Chat With Retailer'),
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.black,
-                      foregroundColor: Colors.white,
-                      minimumSize: Size(double.infinity, 50),
-                    ),
-                  ),
+                  CommonButton(titleText: 'Start Chat With Retailer'),
                   SizedBox(height: 16),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,

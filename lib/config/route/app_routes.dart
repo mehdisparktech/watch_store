@@ -62,7 +62,7 @@ class AppRoutes {
     GetPage(name: termsOfServices, page: () => const TermsOfServicesScreen()),
     GetPage(name: setting, page: () => const SettingScreen()),
     GetPage(name: home, page: () => HomeScreen()),
-    GetPage(name: brands, page: () => BrandsScreen()),
+    GetPage(name: brands, page: () => BrandsScreen(title: Get.arguments)),
     GetPage(
       name: watchDetail,
       page: () => WatchDetailScreen(watch: Get.arguments),

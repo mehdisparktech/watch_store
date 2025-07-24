@@ -20,6 +20,7 @@ class HomeScreen extends StatelessWidget {
       key: _scaffoldKey,
       appBar: CommonAppBar(
         title: AppString.availableBrands,
+        profileImageUrl: AppImages.profileImage,
         onMenuPressed: () => _scaffoldKey.currentState?.openEndDrawer(),
       ),
       endDrawer: _buildSidebarMenu(),
@@ -114,7 +115,7 @@ class HomeScreen extends StatelessWidget {
             Get.toNamed(AppRoutes.chat);
             break;
           case "Catalogue":
-            Get.toNamed(AppRoutes.brands);
+            Get.toNamed(AppRoutes.brands, arguments: " All Brands");
             break;
           case "Wishlist":
             // Navigate to wishlist screen
@@ -131,48 +132,53 @@ class HomeScreen extends StatelessWidget {
   }
 
   Widget _buildBrabdsCard(String brandName, String watchCount, String image) {
-    return Container(
-      width: Get.width * 0.9,
-      height: 185.h,
-      decoration: BoxDecoration(
-        color: AppColors.primaryColor,
-        image: DecorationImage(image: AssetImage(image), fit: BoxFit.cover),
-      ),
-      child: Stack(
-        children: [
-          Container(
-            width: Get.width,
-            decoration: BoxDecoration(
-              gradient: LinearGradient(
-                begin: Alignment.bottomCenter,
-                end: Alignment.topCenter,
-                colors: [Colors.black, Colors.black.withValues(alpha: 0.0)],
+    return GestureDetector(
+      onTap: () {
+        Get.toNamed(AppRoutes.brands, arguments: brandName);
+      },
+      child: Container(
+        width: Get.width * 0.9,
+        height: 185.h,
+        decoration: BoxDecoration(
+          color: AppColors.primaryColor,
+          image: DecorationImage(image: AssetImage(image), fit: BoxFit.cover),
+        ),
+        child: Stack(
+          children: [
+            Container(
+              width: Get.width,
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  begin: Alignment.bottomCenter,
+                  end: Alignment.topCenter,
+                  colors: [Colors.black, Colors.black.withValues(alpha: 0.0)],
+                ),
               ),
             ),
-          ),
-          Positioned(
-            bottom: 20.h,
-            left: 20.w,
-            right: 20.w,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                CommonText(
-                  text: brandName,
-                  fontSize: 16,
-                  fontWeight: FontWeight.w700,
-                  color: AppColors.white,
-                ),
-                CommonText(
-                  text: "$watchCount+ watches",
-                  fontSize: 16,
-                  fontWeight: FontWeight.w700,
-                  color: AppColors.white,
-                ),
-              ],
+            Positioned(
+              bottom: 20.h,
+              left: 20.w,
+              right: 20.w,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  CommonText(
+                    text: brandName,
+                    fontSize: 16,
+                    fontWeight: FontWeight.w700,
+                    color: AppColors.white,
+                  ),
+                  CommonText(
+                    text: "$watchCount+ watches",
+                    fontSize: 16,
+                    fontWeight: FontWeight.w700,
+                    color: AppColors.white,
+                  ),
+                ],
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
