@@ -11,6 +11,7 @@ Widget modernChatListItem({required ChatModel item}) {
     padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
     decoration: const BoxDecoration(color: Colors.white),
     child: Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         /// Profile Image with Online Status
         Stack(
@@ -24,13 +25,13 @@ Widget modernChatListItem({required ChatModel item}) {
             ),
             // Online status indicator (green dot)
             Positioned(
-              bottom: 2,
+              top: 2,
               right: 2,
               child: Container(
-                width: 12.w,
-                height: 12.h,
+                width: 14.w,
+                height: 14.h,
                 decoration: BoxDecoration(
-                  color: Colors.green,
+                  color: Color(0xFF34E97C),
                   shape: BoxShape.circle,
                   border: Border.all(color: Colors.white, width: 2),
                 ),
@@ -56,6 +57,7 @@ Widget modernChatListItem({required ChatModel item}) {
                       fontWeight: FontWeight.w700,
                       fontSize: 18,
                       color: Colors.black,
+                      textAlign: TextAlign.start,
                     ),
                   ),
 
@@ -85,6 +87,7 @@ Widget modernChatListItem({required ChatModel item}) {
                             color: AppColors.secondary,
                             maxLines: 1,
                             overflow: TextOverflow.ellipsis,
+                            textAlign: TextAlign.start,
                           ),
                         ),
 

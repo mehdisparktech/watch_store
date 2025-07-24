@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:watch_store/component/app_bar/common_app_bar.dart';
+import 'package:watch_store/utils/constants/app_images.dart';
 import '../../../../../config/route/app_routes.dart';
 import '../../../../component/other_widgets/common_loader.dart';
 import '../../../../component/screen/error_screen.dart';
@@ -17,7 +18,10 @@ class ChatListScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       /// Modern App Bar Section
-      appBar: CommonAppBar(title: 'Message'),
+      appBar: CommonAppBar(
+        title: 'Message',
+        profileImageUrl: AppImages.profileImage,
+      ),
 
       /// Body Section
       body: GetBuilder<ChatController>(
