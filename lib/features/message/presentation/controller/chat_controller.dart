@@ -32,7 +32,10 @@ class ChatController extends GetxController {
         id: 'msg1',
         message: 'Hey! Are you interested in the Rolex watch?',
         createdAt: DateTime.now().subtract(Duration(minutes: 5)),
+        isFromMe: true,
+        isRead: true,
       ),
+      unreadCount: 0,
     ),
     ChatModel(
       id: '2',
@@ -45,7 +48,10 @@ class ChatController extends GetxController {
         id: 'msg2',
         message: 'Thanks for the quick delivery!',
         createdAt: DateTime.now().subtract(Duration(hours: 2)),
+        isFromMe: false,
+        isRead: true,
       ),
+      unreadCount: 0,
     ),
     ChatModel(
       id: '3',
@@ -58,7 +64,10 @@ class ChatController extends GetxController {
         id: 'msg3',
         message: 'Do you have this model in silver?',
         createdAt: DateTime.now().subtract(Duration(days: 1)),
+        isFromMe: false,
+        isRead: true,
       ),
+      unreadCount: 0,
     ),
   ];
 

@@ -1,81 +1,343 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 import '../../../../utils/constants/app_colors.dart';
-import '../../../../utils/constants/app_images.dart';
 import '../../../../component/image/common_image.dart';
 import '../../../../component/text/common_text.dart';
+import '../../data/model/chat_message_model.dart';
+import '../../../../utils/extensions/extension.dart';
 
-class ChatBubbleMessage extends StatelessWidget {
-  final DateTime time;
-  final String text;
-  final String image;
+class ModernChatBubble extends StatelessWidget {
+  final ChatMessageModel message;
   final bool isMe;
-  final int index;
-  final int messageIndex;
+  final bool showAvatar;
 
-  final VoidCallback onTap;
-
-  const ChatBubbleMessage({
+  const ModernChatBubble({
     super.key,
-    required this.time,
-    required this.text,
-    required this.image,
+    required this.message,
     required this.isMe,
-    required this.onTap,
-    this.index = 0,
-    this.messageIndex = 1,
+    this.showAvatar = true,
   });
 
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.all(8.0),
-      child: Column(
-        crossAxisAlignment: isMe
-            ? CrossAxisAlignment.end
-            : CrossAxisAlignment.start,
+      padding: EdgeInsets.symmetric(vertical: 2.h),
+      child: Row(
+        mainAxisAlignment:
+            isMe ? MainAxisAlignment.end : MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.end,
         children: [
-          Row(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Container(
-                margin: EdgeInsets.only(left: 10.w),
-                padding: EdgeInsets.only(left: 10.w),
-                width: 220,
-                height: 120,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(8.r),
-                  color: AppColors.white,
+          /// Other person's avatar (left side)
+          if (!isMe && showAvatar) ...[
+            CircleAvatar(
+              radius: 16.r,
+              backgroundColor: Colors.grey[300],
+              child: ClipOval(
+                child: CommonImage(imageSrc: message.image, size: 32),
+              ),
+            ),
+            8.width,
+          ] else if (!isMe && !showAvatar) ...[
+            SizedBox(width: 40.w), // Spacing for grouped messages
+          ],
+
+          /// Message Bubble
+          Flexible(
+            child: Container(
+              constraints: BoxConstraints(
+                maxWidth: Get.width * 0.75,
+                minWidth: 60.w,
+              ),
+              padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 10.h),
+              decoration: BoxDecoration(
+                color: isMe ? Colors.orange : Colors.white,
+                borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(18.r),
+                  topRight: Radius.circular(18.r),
+                  bottomLeft: Radius.circular(isMe ? 18.r : 4.r),
+                  bottomRight: Radius.circular(isMe ? 4.r : 18.r),
                 ),
-                child: Column(
-                  children: [
-                    /// participant Image here
-                    if (!isMe)
-                      const CommonImage(
-                        imageSrc: AppImages.noImage,
-                        fill: BoxFit.contain,
-                        size: 60,
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black.withOpacity(0.05),
+                    spreadRadius: 1,
+                    blurRadius: 3,
+                    offset: const Offset(0, 1),
+                  ),
+                ],
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  /// Message Text
+                  CommonText(
+                    text: message.text,
+                    fontSize: 15,
+                    color: isMe ? Colors.white : Colors.black87,
+                    fontWeight: FontWeight.w400,
+                  ),
+
+                  4.height,
+
+                  /// Time and Status Row
+                  Row(
+                    mainAxisSize: MainAxisSize.min,
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      CommonText(
+                        text: _formatMessageTime(message.time),
+                        fontSize: 11,
+                        color:
+                            isMe
+                                ? Colors.white.withOpacity(0.8)
+                                : AppColors.secondary,
                       ),
 
-                    ///Message here
-                    Container(
-                      color: AppColors.primaryColor,
-                      width: 220,
-                      child: CommonText(
-                        maxLines: 5,
-                        text: text,
-                        fontSize: 18,
-                        color: AppColors.white,
-                      ),
-                    ),
-                  ],
-                ),
+                      /// Message Status (only for sent messages)
+                      if (isMe) ...[
+                        4.width,
+                        Icon(
+                          message.isRead == true ? Icons.done_all : Icons.done,
+                          // ignore: deprecated_member_use
+                          size: 14.sp,
+                          color:
+                              message.isRead == true
+                                  ? Colors.white
+                                  : Colors.white.withOpacity(0.8),
+                        ),
+                      ],
+                    ],
+                  ),
+                ],
               ),
-            ],
+            ),
           ),
+
+          /// My avatar (right side) - Optional
+          if (isMe && showAvatar) ...[
+            8.width,
+            CircleAvatar(
+              radius: 16.r,
+              backgroundColor: Colors.grey[300],
+              child: ClipOval(
+                child: CommonImage(imageSrc: message.image, size: 32),
+              ),
+            ),
+          ] else if (isMe && !showAvatar) ...[
+            SizedBox(width: 40.w), // Spacing for grouped messages
+          ],
         ],
       ),
     );
+  }
+
+  String _formatMessageTime(DateTime dateTime) {
+    final now = DateTime.now();
+    final messageDate = dateTime.toLocal();
+
+    // If message is from today
+    if (now.day == messageDate.day &&
+        now.month == messageDate.month &&
+        now.year == messageDate.year) {
+      final hour = messageDate.hour;
+      final minute = messageDate.minute.toString().padLeft(2, '0');
+      final period = hour >= 12 ? 'PM' : 'AM';
+      final displayHour = hour > 12 ? hour - 12 : (hour == 0 ? 12 : hour);
+
+      return '$displayHour:$minute $period';
+    }
+
+    // If message is from yesterday
+    final yesterday = now.subtract(const Duration(days: 1));
+    if (yesterday.day == messageDate.day &&
+        yesterday.month == messageDate.month &&
+        yesterday.year == messageDate.year) {
+      return 'Yesterday';
+    }
+
+    // For older messages
+    return '${messageDate.day}/${messageDate.month}/${messageDate.year}';
+  }
+}
+
+/// Enhanced Chat Bubble for Complex Messages (with images, files, etc.)
+class AdvancedChatBubble extends StatelessWidget {
+  final ChatMessageModel message;
+  final bool isMe;
+  final bool showAvatar;
+  final VoidCallback? onTap;
+  final VoidCallback? onLongPress;
+
+  const AdvancedChatBubble({
+    super.key,
+    required this.message,
+    required this.isMe,
+    this.showAvatar = true,
+    this.onTap,
+    this.onLongPress,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: onTap,
+      onLongPress: onLongPress,
+      child: Padding(
+        padding: EdgeInsets.symmetric(vertical: 2.h),
+        child: Row(
+          mainAxisAlignment:
+              isMe ? MainAxisAlignment.end : MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.end,
+          children: [
+            /// Other person's avatar
+            if (!isMe && showAvatar) ...[
+              CircleAvatar(
+                radius: 16.r,
+                backgroundColor: Colors.grey[300],
+                child: ClipOval(
+                  child: CommonImage(imageSrc: message.image, size: 32),
+                ),
+              ),
+              8.width,
+            ] else if (!isMe && !showAvatar) ...[
+              SizedBox(width: 40.w),
+            ],
+
+            /// Message Content
+            Flexible(
+              child: Container(
+                constraints: BoxConstraints(maxWidth: Get.width * 0.75),
+                decoration: BoxDecoration(
+                  color: isMe ? Colors.orange : Colors.white,
+                  borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(18.r),
+                    topRight: Radius.circular(18.r),
+                    bottomLeft: Radius.circular(isMe ? 18.r : 4.r),
+                    bottomRight: Radius.circular(isMe ? 4.r : 18.r),
+                  ),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black.withOpacity(0.05),
+                      spreadRadius: 1,
+                      blurRadius: 3,
+                      offset: const Offset(0, 1),
+                    ),
+                  ],
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    /// Image/Media Content (if any)
+                    if (message.image.isNotEmpty)
+                      ClipRRect(
+                        borderRadius: BorderRadius.only(
+                          topLeft: Radius.circular(18.r),
+                          topRight: Radius.circular(18.r),
+                        ),
+                        child: CommonImage(
+                          imageSrc: message.image,
+                          fill: BoxFit.cover,
+                          width: double.infinity,
+                          height: 200.h,
+                        ),
+                      ),
+
+                    /// Text Content
+                    if (message.text.isNotEmpty)
+                      Padding(
+                        padding: EdgeInsets.all(16.w),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            CommonText(
+                              text: message.text,
+                              fontSize: 15,
+                              color: isMe ? Colors.white : Colors.black87,
+                              fontWeight: FontWeight.w400,
+                            ),
+
+                            8.height,
+
+                            /// Time and Status
+                            Row(
+                              mainAxisSize: MainAxisSize.min,
+                              mainAxisAlignment: MainAxisAlignment.end,
+                              children: [
+                                CommonText(
+                                  text: _formatMessageTime(message.time),
+                                  fontSize: 11,
+                                  color:
+                                      isMe
+                                          // ignore: deprecated_member_use
+                                          ? AppColors.socialIcon
+                                          : AppColors.secondary,
+                                ),
+
+                                if (isMe) ...[
+                                  4.width,
+                                  Icon(
+                                    message.isRead == true
+                                        ? Icons.done_all
+                                        : Icons.done,
+                                    size: 14.sp,
+                                    color:
+                                        message.isRead == true
+                                            ? Colors.white
+                                            : Colors.white.withOpacity(0.8),
+                                  ),
+                                ],
+                              ],
+                            ),
+                          ],
+                        ),
+                      ),
+                  ],
+                ),
+              ),
+            ),
+
+            /// My avatar (optional)
+            if (isMe && showAvatar) ...[
+              8.width,
+              CircleAvatar(
+                radius: 16.r,
+                backgroundColor: Colors.grey[300],
+                child: ClipOval(
+                  child: CommonImage(imageSrc: message.image, size: 32),
+                ),
+              ),
+            ] else if (isMe && !showAvatar) ...[
+              SizedBox(width: 40.w),
+            ],
+          ],
+        ),
+      ),
+    );
+  }
+
+  String _formatMessageTime(DateTime dateTime) {
+    final now = DateTime.now();
+    final messageDate = dateTime.toLocal();
+
+    if (now.day == messageDate.day &&
+        now.month == messageDate.month &&
+        now.year == messageDate.year) {
+      final hour = messageDate.hour;
+      final minute = messageDate.minute.toString().padLeft(2, '0');
+      final period = hour >= 12 ? 'PM' : 'AM';
+      final displayHour = hour > 12 ? hour - 12 : (hour == 0 ? 12 : hour);
+
+      return '$displayHour:$minute $period';
+    }
+
+    final yesterday = now.subtract(const Duration(days: 1));
+    if (yesterday.day == messageDate.day &&
+        yesterday.month == messageDate.month &&
+        yesterday.year == messageDate.year) {
+      return 'Yesterday';
+    }
+
+    return '${messageDate.day}/${messageDate.month}/${messageDate.year}';
   }
 }

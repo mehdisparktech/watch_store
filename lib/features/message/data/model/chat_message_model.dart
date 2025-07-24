@@ -5,6 +5,7 @@ class ChatMessageModel {
   final bool isMe;
   final bool isCall;
   final bool isNotice;
+  final bool isRead;
 
   ChatMessageModel({
     required this.time,
@@ -13,5 +14,6 @@ class ChatMessageModel {
     required this.isMe,
     this.isCall = false,
     this.isNotice = false,
+    this.isRead = false,
   });
 }
