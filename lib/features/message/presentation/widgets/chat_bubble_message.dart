@@ -44,32 +44,39 @@ class ModernChatBubble extends StatelessWidget {
 
           /// Message Bubble
           Flexible(
-            child: Container(
-              constraints: BoxConstraints(
-                maxWidth: Get.width * 0.75,
-                minWidth: 60.w,
-              ),
-              padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 10.h),
-              decoration: BoxDecoration(
-                color: isMe ? Colors.orange : Colors.white,
-                borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(18.r),
-                  topRight: Radius.circular(18.r),
-                  bottomLeft: Radius.circular(isMe ? 18.r : 4.r),
-                  bottomRight: Radius.circular(isMe ? 4.r : 18.r),
-                ),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.black.withOpacity(0.05),
-                    spreadRadius: 1,
-                    blurRadius: 3,
-                    offset: const Offset(0, 1),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Container(
+                  constraints: BoxConstraints(
+                    maxWidth: Get.width * 0.75,
+                    minWidth: 60.w,
                   ),
-                ],
-              ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
+                  padding: EdgeInsets.symmetric(
+                    horizontal: 16.w,
+                    vertical: 10.h,
+                  ),
+                  decoration: BoxDecoration(
+                    color:
+                        isMe
+                            ? AppColors.socialIconBackground
+                            : AppColors.filledColor,
+                    borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(12.r),
+                      topRight: Radius.circular(12.r),
+                      bottomLeft: Radius.circular(isMe ? 12.r : 0.r),
+                      bottomRight: Radius.circular(isMe ? 0.r : 12.r),
+                    ),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black.withOpacity(0.05),
+                        spreadRadius: 1,
+                        blurRadius: 3,
+                        offset: const Offset(0, 1),
+                      ),
+                    ],
+                  ),
+                  child:
                   /// Message Text
                   CommonText(
                     text: message.text,
@@ -77,56 +84,38 @@ class ModernChatBubble extends StatelessWidget {
                     color: isMe ? Colors.white : Colors.black87,
                     fontWeight: FontWeight.w400,
                   ),
+                ),
+                4.height,
 
-                  4.height,
-
-                  /// Time and Status Row
-                  Row(
-                    mainAxisSize: MainAxisSize.min,
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: [
-                      CommonText(
-                        text: _formatMessageTime(message.time),
-                        fontSize: 11,
+                /// Time and Status Row
+                Row(
+                  mainAxisSize: MainAxisSize.min,
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    /// Message Status (only for sent messages)
+                    if (isMe) ...[
+                      4.width,
+                      Icon(
+                        message.isRead == true ? Icons.done_all : Icons.done,
+                        // ignore: deprecated_member_use
+                        size: 14.sp,
                         color:
-                            isMe
-                                ? Colors.white.withOpacity(0.8)
-                                : AppColors.secondary,
+                            message.isRead == true ? Colors.grey : Colors.grey,
                       ),
-
-                      /// Message Status (only for sent messages)
-                      if (isMe) ...[
-                        4.width,
-                        Icon(
-                          message.isRead == true ? Icons.done_all : Icons.done,
-                          // ignore: deprecated_member_use
-                          size: 14.sp,
-                          color:
-                              message.isRead == true
-                                  ? Colors.white
-                                  : Colors.white.withOpacity(0.8),
-                        ),
-                      ],
                     ],
-                  ),
-                ],
-              ),
+                    4.width,
+                    CommonText(
+                      text: _formatMessageTime(message.time),
+                      fontSize: 11,
+                      color: isMe ? Colors.grey : AppColors.secondary,
+                    ),
+                  ],
+                ),
+              ],
             ),
           ),
 
           /// My avatar (right side) - Optional
-          if (isMe && showAvatar) ...[
-            8.width,
-            CircleAvatar(
-              radius: 16.r,
-              backgroundColor: Colors.grey[300],
-              child: ClipOval(
-                child: CommonImage(imageSrc: message.image, size: 32),
-              ),
-            ),
-          ] else if (isMe && !showAvatar) ...[
-            SizedBox(width: 40.w), // Spacing for grouped messages
-          ],
         ],
       ),
     );

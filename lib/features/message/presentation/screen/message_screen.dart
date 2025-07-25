@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:watch_store/utils/constants/app_colors.dart';
+import 'package:watch_store/utils/constants/app_icons.dart';
 import '../../../../component/image/common_image.dart';
 import '../../../../component/text/common_text.dart';
 import '../../data/model/chat_message_model.dart';
@@ -10,7 +11,8 @@ import '../controller/message_controller.dart';
 import '../widgets/chat_bubble_message.dart';
 
 class MessageScreen extends StatefulWidget {
-  const MessageScreen({super.key});
+  final bool isItemChat;
+  const MessageScreen({super.key, this.isItemChat = false});
 
   @override
   State<MessageScreen> createState() => _MessageScreenState();
@@ -137,7 +139,7 @@ class _MessageScreenState extends State<MessageScreen> {
                                 message: message,
                                 isMe: message.isMe,
                                 showAvatar: _shouldShowAvatar(
-                                  controller.messages as List<ChatMessageModel>,
+                                  controller.messages,
                                   index,
                                 ),
                               );
@@ -164,7 +166,7 @@ class _MessageScreenState extends State<MessageScreen> {
                   /// Input Container
                   Expanded(
                     child: Container(
-                      padding: EdgeInsets.symmetric(vertical: 6.h),
+                      padding: EdgeInsets.symmetric(vertical: 2.h),
                       decoration: BoxDecoration(
                         color: const Color(0xffF5F6FA),
                         borderRadius: BorderRadius.circular(100),
@@ -175,7 +177,7 @@ class _MessageScreenState extends State<MessageScreen> {
                           IconButton(
                             icon: Icon(
                               Icons.emoji_emotions_outlined,
-                              color: Colors.grey[600],
+                              color: AppColors.socialIconBackground,
                               size: 24.sp,
                             ),
                             onPressed: () {},
@@ -205,10 +207,10 @@ class _MessageScreenState extends State<MessageScreen> {
 
                           /// Camera Button
                           IconButton(
-                            icon: Icon(
-                              Icons.camera_alt_outlined,
-                              color: Colors.grey[600],
-                              size: 24.sp,
+                            icon: CommonImage(
+                              imageSrc: AppIcons.image,
+                              size: 24,
+                              imageColor: Colors.grey[600],
                             ),
                             onPressed: () {},
                           ),
@@ -224,11 +226,15 @@ class _MessageScreenState extends State<MessageScreen> {
                     width: 48.w,
                     height: 48.h,
                     decoration: const BoxDecoration(
-                      color: Colors.orange,
+                      color: AppColors.socialIconBackground,
                       shape: BoxShape.circle,
                     ),
                     child: IconButton(
-                      icon: Icon(Icons.send, color: Colors.white, size: 20.sp),
+                      icon: CommonImage(
+                        imageSrc: AppIcons.send,
+                        size: 24,
+                        imageColor: Colors.white,
+                      ),
                       onPressed: controller.addNewMessage,
                     ),
                   ),
@@ -241,11 +247,11 @@ class _MessageScreenState extends State<MessageScreen> {
     );
   }
 
-  bool _shouldShowAvatar(List<ChatMessageModel> messages, int index) {
+  bool _shouldShowAvatar(List<dynamic> messages, int index) {
     if (index == messages.length - 1) return true;
 
-    final currentMessage = messages[index];
-    final nextMessage = messages[index + 1];
+    final currentMessage = messages[index] as ChatMessageModel;
+    final nextMessage = messages[index + 1] as ChatMessageModel;
 
     return currentMessage.isMe != nextMessage.isMe;
   }
