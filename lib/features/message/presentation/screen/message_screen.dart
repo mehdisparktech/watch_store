@@ -252,20 +252,6 @@ class _MessageScreenState extends State<MessageScreen> {
           ),
         ],
       ),
-      actions: [
-        IconButton(
-          icon: Icon(Icons.phone, color: Colors.white, size: 24.sp),
-          onPressed: () {},
-        ),
-        IconButton(
-          icon: Icon(Icons.video_call, color: Colors.white, size: 24.sp),
-          onPressed: () {},
-        ),
-        IconButton(
-          icon: Icon(Icons.more_vert, color: Colors.white, size: 24.sp),
-          onPressed: () {},
-        ),
-      ],
     );
   }
 

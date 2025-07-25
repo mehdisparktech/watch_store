@@ -73,12 +73,8 @@ class CommonDrawer extends StatelessWidget {
             child: Column(
               children: [
                 _buildMenuItem("Chat", AppRoutes.chat),
-                _buildMenuItem(
-                  "Catalogue",
-                  AppRoutes.brands,
-                  arguments: " All Brands",
-                ),
-                _buildMenuItem("Wishlist", ""),
+                _buildMenuItem("Catalogue", AppRoutes.home),
+                _buildMenuItem("Wishlist", AppRoutes.wishlist),
                 _buildMenuItem("News", AppRoutes.news),
                 _buildMenuItem("FAQ", AppRoutes.faq),
               ],
@@ -91,7 +87,11 @@ class CommonDrawer extends StatelessWidget {
             child: CommonButton(
               titleText: AppString.logOut,
               buttonColor: AppColors.socialIconBackground,
-              onTap: onLogout,
+              onTap:
+                  onLogout ??
+                  () {
+                    Get.offAllNamed(AppRoutes.signIn);
+                  },
             ),
           ),
           SizedBox(height: 30.h),

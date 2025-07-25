@@ -4,6 +4,8 @@ import 'package:watch_store/features/brands/presentation/screen/brands_screen.da
 import 'package:watch_store/features/brands/presentation/screen/watch_detail_screen.dart';
 import 'package:watch_store/features/home/presentation/screen/home_screen.dart';
 import 'package:watch_store/features/news/presenation/screens/news_screen.dart';
+import 'package:watch_store/features/wishlist/screen/wishlist_detail_screen.dart';
+import 'package:watch_store/features/wishlist/screen/wishlist_screen.dart';
 import '../../features/auth/change_password/presentation/screen/change_password_screen.dart';
 import '../../features/auth/forgot password/presentation/screen/create_password.dart';
 import '../../features/auth/forgot password/presentation/screen/forgot_password.dart';
@@ -46,6 +48,8 @@ class AppRoutes {
   static const String watchDetail = "/watch_detail_screen.dart";
   static const String news = "/news_screen.dart";
   static const String faq = "/faq_screen.dart";
+  static const String wishlist = "/wishlist_screen.dart";
+  static const String wishlistDetail = "/wishlist_detail_screen.dart";
 
   static List<GetPage> routes = [
     GetPage(name: splash, page: () => const SplashScreen()),
@@ -76,5 +80,10 @@ class AppRoutes {
     ),
     GetPage(name: news, page: () => NewsScreen()),
     GetPage(name: faq, page: () => FAQScreen()),
+    GetPage(name: wishlist, page: () => WishlistScreen()),
+    GetPage(
+      name: wishlistDetail,
+      page: () => WishlistDetailScreen(watch: Get.arguments),
+    ),
   ];
 }

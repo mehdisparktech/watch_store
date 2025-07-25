@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:watch_store/component/app_bar/common_app_bar.dart';
+import 'package:watch_store/component/drawer/common_drawer.dart';
 import 'package:watch_store/component/image/common_image.dart';
 import 'package:watch_store/component/text/common_text.dart';
 import 'package:watch_store/utils/constants/app_colors.dart';
+import 'package:watch_store/utils/constants/app_images.dart';
 
 class NewsScreen extends StatelessWidget {
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   NewsScreen({super.key});
 
   final List<NewsItem> newsItems = [
@@ -44,7 +47,13 @@ class NewsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: CommonAppBar(title: 'News'),
+      key: _scaffoldKey,
+      appBar: CommonAppBar(
+        title: 'News',
+        profileImageUrl: AppImages.profileImage,
+        onMenuPressed: () => _scaffoldKey.currentState?.openEndDrawer(),
+      ),
+      endDrawer: CommonDrawer(profileImage: AppImages.availableWatch),
       body: ListView.builder(
         itemCount: newsItems.length,
         itemBuilder: (context, index) {
