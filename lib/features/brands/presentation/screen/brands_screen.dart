@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:watch_store/component/app_bar/common_app_bar.dart';
 import 'package:watch_store/component/text_field/common_text_field.dart';
 import 'package:watch_store/features/brands/data/watch_model.dart';
 import 'package:watch_store/features/brands/presentation/widgets/watch_card.dart';
+import 'package:watch_store/utils/constants/app_icons.dart';
 import 'package:watch_store/utils/constants/app_images.dart';
 import 'package:watch_store/utils/constants/app_string.dart';
+import 'package:watch_store/component/image/common_image.dart';
 
 class BrandsScreen extends StatelessWidget {
   final String title;
@@ -26,7 +29,10 @@ class BrandsScreen extends StatelessWidget {
               padding: const EdgeInsets.only(bottom: 16.0),
               child: CommonTextField(
                 hintText: 'Search...',
-                prefixIcon: Icon(Icons.search),
+                prefixIcon: Padding(
+                  padding: EdgeInsets.only(left: 16.w, right: 16.w),
+                  child: CommonImage(imageSrc: AppIcons.search, size: 24),
+                ),
                 paddingVertical: 16,
               ),
             ),

@@ -58,7 +58,7 @@ class AppString {
   static const String saveAndChanges = "Save and Changes";
   static const String editProfile = "Edit Profile";
   static const String settings = "Settings";
-  static const String logOut = "Log Out";
+  static const String logOut = "LogOut";
   static const String privacyPolicy = "Privacy Policy";
   static const String deleteAccount = "Delete account";
   static const String termsOfServices = "Terms of Services";

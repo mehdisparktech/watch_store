@@ -54,6 +54,7 @@ class CommonAppBar extends StatelessWidget implements PreferredSizeWidget {
                 color: titleColor ?? AppColors.white,
                 textAlign: TextAlign.center,
                 maxLines: 2,
+                fontFamily: 'PlayfairDisplay',
               )
               : CommonText(
                 text: title,
@@ -62,6 +63,7 @@ class CommonAppBar extends StatelessWidget implements PreferredSizeWidget {
                 color: titleColor ?? AppColors.white,
                 textAlign: TextAlign.center,
                 maxLines: 1,
+                fontFamily: 'PlayfairDisplay',
               ),
       centerTitle: true,
       leading:

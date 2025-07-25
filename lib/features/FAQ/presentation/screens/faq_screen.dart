@@ -3,6 +3,7 @@ import 'package:watch_store/component/app_bar/common_app_bar.dart';
 import 'package:watch_store/component/text/common_text.dart';
 import 'package:watch_store/component/text_field/common_text_field.dart';
 import 'package:watch_store/utils/constants/app_colors.dart';
+import 'package:watch_store/utils/constants/app_images.dart';
 
 class FAQScreen extends StatefulWidget {
   const FAQScreen({super.key});
@@ -54,7 +55,10 @@ class _FAQScreenState extends State<FAQScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: CommonAppBar(title: 'FAQ'),
+      appBar: CommonAppBar(
+        title: 'FAQ',
+        profileImageUrl: AppImages.profileImage,
+      ),
       body: Column(
         children: [
           Container(
@@ -68,6 +72,7 @@ class _FAQScreenState extends State<FAQScreen> {
                   fontSize: 24,
                   fontWeight: FontWeight.bold,
                   color: AppColors.socialIconBackground,
+                  fontFamily: 'PlayfairDisplay',
                 ),
                 SizedBox(height: 8),
                 CommonText(
@@ -165,7 +170,7 @@ class FAQItemWidget extends StatelessWidget {
                         child: CommonText(
                           text: item.answer,
                           fontSize: 16,
-                          maxLines: 2,
+                          maxLines: 3,
                           overflow: TextOverflow.ellipsis,
                         ),
                       ),

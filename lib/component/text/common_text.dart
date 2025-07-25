@@ -1,7 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:google_fonts/google_fonts.dart';
 
 import '../../utils/constants/app_colors.dart';
 
@@ -20,6 +19,7 @@ class CommonText extends StatelessWidget {
     required this.text,
     this.style,
     this.overflow = TextOverflow.ellipsis,
+    this.fontFamily = 'Roboto',
   });
 
   final double left;
@@ -34,7 +34,7 @@ class CommonText extends StatelessWidget {
   final int maxLines;
   final TextOverflow overflow;
   final TextStyle? style;
-
+  final String fontFamily;
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -51,7 +51,8 @@ class CommonText extends StatelessWidget {
         overflow: overflow,
         style:
             style ??
-            GoogleFonts.roboto(
+            TextStyle(
+              fontFamily: fontFamily,
               fontSize: fontSize.sp,
               fontWeight: fontWeight,
               color: color,

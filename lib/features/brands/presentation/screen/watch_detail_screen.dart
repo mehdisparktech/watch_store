@@ -49,6 +49,7 @@ class _WatchDetailScreenState extends State<WatchDetailScreen>
                     text: 'Rolex ${widget.watch.name}',
                     fontSize: 32,
                     fontWeight: FontWeight.bold,
+                    fontFamily: 'PlayfairDisplay',
                   ),
                   SizedBox(height: 16),
                   Image.asset(
@@ -113,10 +114,12 @@ class _WatchDetailScreenState extends State<WatchDetailScreen>
                 labelStyle: TextStyle(
                   fontSize: 16,
                   fontWeight: FontWeight.bold,
+                  fontFamily: 'PlayfairDisplay',
                 ),
                 unselectedLabelStyle: TextStyle(
                   fontSize: 16,
                   fontWeight: FontWeight.normal,
+                  fontFamily: 'PlayfairDisplay',
                 ),
                 tabs: [
                   Tab(text: 'Product'),
@@ -153,6 +156,7 @@ class _WatchDetailScreenState extends State<WatchDetailScreen>
             text: 'Rolex ${widget.watch.name}',
             fontSize: 18,
             fontWeight: FontWeight.bold,
+            fontFamily: 'PlayfairDisplay',
           ),
           SizedBox(height: 12),
           CommonText(
@@ -160,12 +164,14 @@ class _WatchDetailScreenState extends State<WatchDetailScreen>
                 'This is a premium luxury watch from Rolex featuring exceptional craftsmanship and timeless design. Perfect for both formal and casual occasions.',
             fontSize: 14,
             color: AppColors.tertiaryText,
+            fontFamily: 'PlayfairDisplay',
           ),
           SizedBox(height: 16),
           CommonText(
             text: 'Features:',
             fontSize: 16,
             fontWeight: FontWeight.bold,
+            fontFamily: 'PlayfairDisplay',
           ),
           SizedBox(height: 8),
           _buildFeatureItem('• Water resistant up to 100m'),

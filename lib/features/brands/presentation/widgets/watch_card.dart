@@ -35,6 +35,7 @@ class WatchCard extends StatelessWidget {
                       text: watch.name,
                       fontSize: 18,
                       fontWeight: FontWeight.bold,
+                      fontFamily: 'PlayfairDisplay',
                     ),
                     CommonText(
                       text: watch.price,
@@ -76,7 +77,7 @@ class WatchCard extends StatelessWidget {
               child: IconButton(
                 icon: Icon(
                   Icons.favorite,
-                  color: watch.isFavorite ? Colors.red : Colors.grey.shade600,
+                  color: watch.isFavorite ? Colors.red : Colors.red.shade100,
                   size: 20,
                 ),
                 padding: EdgeInsets.zero,

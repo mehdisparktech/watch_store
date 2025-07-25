@@ -5,7 +5,7 @@ class AppTextStyle {
   static const TextStyle title = TextStyle(
     color: AppColors.tertiaryText,
     fontSize: 32,
-    fontFamily: 'Playfair Display',
+    fontFamily: 'PlayfairDisplay',
     fontWeight: FontWeight.w700,
     height: 1.12,
   );

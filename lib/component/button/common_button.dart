@@ -17,6 +17,7 @@ class CommonButton extends StatefulWidget {
   final double buttonHeight;
   final double buttonWidth;
   final bool isLoading;
+  final String fontFamily;
 
   const CommonButton({
     this.onTap,
@@ -31,6 +32,7 @@ class CommonButton extends StatefulWidget {
     this.isLoading = false,
     this.buttonWidth = 320,
     this.borderColor = AppColors.primaryColor,
+    this.fontFamily = 'PlayfairDisplay',
     super.key,
   });
 
@@ -112,6 +114,7 @@ class _CommonButtonState extends State<CommonButton>
       fontSize: widget.titleSize,
       color: widget.titleColor,
       fontWeight: widget.titleWeight,
+      fontFamily: widget.fontFamily,
     );
   }
 
