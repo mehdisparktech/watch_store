@@ -58,7 +58,7 @@ class AppRoutes {
     GetPage(name: createPassword, page: () => CreatePassword()),
     GetPage(name: changePassword, page: () => ChangePasswordScreen()),
     GetPage(name: notifications, page: () => const NotificationScreen()),
-    GetPage(name: chat, page: () => const ChatListScreen()),
+    GetPage(name: chat, page: () => ChatListScreen()),
     GetPage(
       name: message,
       page: () => MessageScreen(isItemChat: Get.arguments),

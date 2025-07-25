@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:watch_store/component/app_bar/common_app_bar.dart';
+import 'package:watch_store/component/drawer/common_drawer.dart';
 import 'package:watch_store/component/text_field/common_text_field.dart';
 import 'package:watch_store/features/brands/data/watch_model.dart';
 import 'package:watch_store/features/brands/presentation/widgets/watch_card.dart';
@@ -11,16 +12,20 @@ import 'package:watch_store/component/image/common_image.dart';
 
 class BrandsScreen extends StatelessWidget {
   final String title;
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   BrandsScreen({super.key, this.title = 'Brands'});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: _scaffoldKey,
       appBar: CommonAppBar(
         title: '$title \n 150 ${AppString.watchBrand}',
         subTitle: true,
         profileImageUrl: AppImages.profileImage,
+        onMenuPressed: () => _scaffoldKey.currentState?.openEndDrawer(),
       ),
+      endDrawer: CommonDrawer(profileImage: AppImages.availableWatch),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(

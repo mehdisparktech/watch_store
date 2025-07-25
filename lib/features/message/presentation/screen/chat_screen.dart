@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:watch_store/component/app_bar/common_app_bar.dart';
+import 'package:watch_store/component/drawer/common_drawer.dart';
 import 'package:watch_store/utils/constants/app_images.dart';
 import '../../../../../config/route/app_routes.dart';
 import '../../../../component/other_widgets/common_loader.dart';
@@ -12,16 +13,22 @@ import '../../../../../utils/enum/enum.dart';
 import '../widgets/chat_list_item.dart';
 
 class ChatListScreen extends StatelessWidget {
-  const ChatListScreen({super.key});
+  ChatListScreen({super.key});
+
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: _scaffoldKey,
+
       /// Modern App Bar Section
       appBar: CommonAppBar(
         title: 'Message',
         profileImageUrl: AppImages.profileImage,
+        onMenuPressed: () => _scaffoldKey.currentState?.openEndDrawer(),
       ),
+      endDrawer: CommonDrawer(profileImage: AppImages.availableWatch),
 
       /// Body Section
       body: GetBuilder<ChatController>(

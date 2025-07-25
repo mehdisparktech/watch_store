@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:watch_store/component/app_bar/common_app_bar.dart';
+import 'package:watch_store/component/drawer/common_drawer.dart';
 import 'package:watch_store/component/text/common_text.dart';
 import 'package:watch_store/component/text_field/common_text_field.dart';
 import 'package:watch_store/utils/constants/app_colors.dart';
@@ -13,6 +14,8 @@ class FAQScreen extends StatefulWidget {
 }
 
 class _FAQScreenState extends State<FAQScreen> {
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+
   List<FAQItem> faqItems = [
     FAQItem(
       question: 'Worem ipsum dolor sit amet?',
@@ -55,10 +58,13 @@ class _FAQScreenState extends State<FAQScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: _scaffoldKey,
       appBar: CommonAppBar(
         title: 'FAQ',
         profileImageUrl: AppImages.profileImage,
+        onMenuPressed: () => _scaffoldKey.currentState?.openEndDrawer(),
       ),
+      endDrawer: CommonDrawer(profileImage: AppImages.availableWatch),
       body: Column(
         children: [
           Container(

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:watch_store/component/app_bar/common_app_bar.dart';
 import 'package:watch_store/component/button/common_button.dart';
+import 'package:watch_store/component/drawer/common_drawer.dart';
 import 'package:watch_store/component/text/common_text.dart';
 import 'package:watch_store/config/route/app_routes.dart';
 import 'package:watch_store/features/brands/data/watch_model.dart';
@@ -20,7 +21,7 @@ class WatchDetailScreen extends StatefulWidget {
 class _WatchDetailScreenState extends State<WatchDetailScreen>
     with SingleTickerProviderStateMixin {
   late TabController _tabController;
-
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   @override
   void initState() {
     super.initState();
@@ -36,10 +37,13 @@ class _WatchDetailScreenState extends State<WatchDetailScreen>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: _scaffoldKey,
       appBar: CommonAppBar(
         title: 'Watch Detail',
         profileImageUrl: AppImages.profileImage,
+        onMenuPressed: () => _scaffoldKey.currentState?.openEndDrawer(),
       ),
+      endDrawer: CommonDrawer(profileImage: AppImages.availableWatch),
       body: SingleChildScrollView(
         child: Column(
           children: [
