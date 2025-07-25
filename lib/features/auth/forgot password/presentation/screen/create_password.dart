@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:watch_store/config/route/app_routes.dart';
 import '../../../../../../utils/extensions/extension.dart';
 import '../../../../../component/button/common_button.dart';
 import '../../../../../component/image/common_image.dart';
@@ -36,52 +37,48 @@ class CreatePassword extends StatelessWidget {
             child: Form(
               key: formKey,
               child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   64.height,
 
                   /// Reset password image here
-                  const Center(
-                    child: CommonImage(
-                      imageSrc: AppImages.noImage,
-                      height: 297,
-                      width: 297,
-                    ),
+                  Center(
+                    child: CommonImage(imageSrc: AppImages.logo, width: 300.w),
                   ),
 
                   /// Instruction of Creating New Password
-                  const CommonText(
-                    text: AppString.createYourNewPassword,
-                    fontSize: 18,
-                    textAlign: TextAlign.start,
-                    top: 64,
-                    bottom: 24,
+                  Center(
+                    child: CommonText(
+                      text: AppString.createYourNewPassword,
+                      fontSize: 18,
+                      textAlign: TextAlign.start,
+                      top: 64,
+                      bottom: 24,
+                    ),
                   ),
 
                   /// New Password here
-                  const CommonText(text: AppString.password, bottom: 8),
+                  20.height,
+                  SizedBox(height: 20.h),
                   CommonTextField(
                     controller: controller.passwordController,
-                    prefixIcon: const Icon(Icons.lock),
+                    //prefixIcon: const Icon(Icons.lock),
                     hintText: AppString.password,
                     isPassword: true,
                     validator: OtherHelper.passwordValidator,
                   ),
 
                   /// Confirm Password here
-                  const CommonText(
-                    text: AppString.password,
-                    bottom: 8,
-                    top: 12,
-                  ),
+                  20.height,
                   CommonTextField(
                     controller: controller.confirmPasswordController,
-                    prefixIcon: const Icon(Icons.lock),
+                    //prefixIcon: const Icon(Icons.lock),
                     hintText: AppString.confirmPassword,
-                    validator: (value) => OtherHelper.confirmPasswordValidator(
-                      value,
-                      controller.passwordController,
-                    ),
+                    validator:
+                        (value) => OtherHelper.confirmPasswordValidator(
+                          value,
+                          controller.passwordController,
+                        ),
                     isPassword: true,
                   ),
                   64.height,
@@ -91,9 +88,10 @@ class CreatePassword extends StatelessWidget {
                     titleText: AppString.continues,
                     isLoading: controller.isLoadingReset,
                     onTap: () {
-                      if (formKey.currentState!.validate()) {
-                        controller.resetPasswordRepo();
-                      }
+                      // if (formKey.currentState!.validate()) {
+                      //   controller.resetPasswordRepo();
+                      // }
+                      Get.toNamed(AppRoutes.signIn);
                     },
                   ),
                 ],

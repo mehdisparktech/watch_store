@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:watch_store/component/image/common_image.dart';
+import 'package:watch_store/config/route/app_routes.dart';
+import 'package:watch_store/utils/constants/app_images.dart';
 import '../../../../../component/button/common_button.dart';
 import '../../../../../component/text/common_text.dart';
 import '../controller/sign_up_controller.dart';
@@ -16,7 +19,7 @@ class VerifyUser extends StatefulWidget {
 }
 
 class _VerifyUserState extends State<VerifyUser> {
-  final formKey = GlobalKey<FormState>();
+  final formKey = GlobalKey<FormState>(debugLabel: 'verifyUserForm');
 
   @override
   void initState() {
@@ -45,13 +48,17 @@ class _VerifyUserState extends State<VerifyUser> {
               key: formKey,
               child: Column(
                 children: [
+                  SizedBox(height: 100.h),
+                  CommonImage(imageSrc: AppImages.logo, width: 300.w),
+                  SizedBox(height: 20.h),
+
                   /// instruction how to get OTP
                   Center(
                     child: CommonText(
                       text:
                           "${AppString.codeHasBeenSendTo} ${controller.emailController.text}",
                       fontSize: 18,
-                      top: 100,
+                      top: 20.h,
                       bottom: 60,
                       maxLines: 3,
                     ),
@@ -79,7 +86,7 @@ class _VerifyUserState extends State<VerifyUser> {
                         activeColor: AppColors.primaryColor,
                         inactiveColor: AppColors.black,
                       ),
-                      length: 6,
+                      length: 4,
                       keyboardType: TextInputType.number,
                       autovalidateMode: AutovalidateMode.disabled,
                       enableActiveFill: true,
@@ -95,16 +102,18 @@ class _VerifyUserState extends State<VerifyUser> {
 
                   /// Resent OTP or show Timer
                   GestureDetector(
-                    onTap: controller.time == '00:00'
-                        ? () {
-                            controller.startTimer();
-                            controller.signUpUser();
-                          }
-                        : () {},
+                    onTap:
+                        controller.time == '00:00'
+                            ? () {
+                              controller.startTimer();
+                              controller.signUpUser();
+                            }
+                            : () {},
                     child: CommonText(
-                      text: controller.time == '00:00'
-                          ? AppString.resendCode
-                          : "${AppString.resendCodeIn} ${controller.time} ${AppString.minute}",
+                      text:
+                          controller.time == '00:00'
+                              ? AppString.resendCode
+                              : "${AppString.resendCodeIn} ${controller.time} ${AppString.minute}",
                       top: 60,
                       bottom: 100,
                       fontSize: 18,
@@ -116,9 +125,10 @@ class _VerifyUserState extends State<VerifyUser> {
                     titleText: AppString.verify,
                     isLoading: controller.isLoadingVerify,
                     onTap: () {
-                      if (formKey.currentState!.validate()) {
-                        controller.verifyOtpRepo();
-                      }
+                      // if (formKey.currentState!.validate()) {
+                      //   controller.verifyOtpRepo();
+                      // }
+                      Get.offNamed(AppRoutes.signIn);
                     },
                   ),
                 ],

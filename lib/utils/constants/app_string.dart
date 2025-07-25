@@ -116,4 +116,8 @@ class AppString {
   static const String message = "Message";
   static const String send = "Send";
   static const String chatWithRetailer = "Chat With Retailer";
+  static const String forgotPasswords = "Forgot your password?";
+  static const String enterYourEmail = "Enter your email";
+  static const String otpVerifyInstruction =
+      "Enter the 4-digit code sent to your email";
 }
