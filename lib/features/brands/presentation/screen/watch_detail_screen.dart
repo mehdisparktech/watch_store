@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:watch_store/component/app_bar/common_app_bar.dart';
 import 'package:watch_store/component/button/common_button.dart';
 import 'package:watch_store/component/text/common_text.dart';
+import 'package:watch_store/config/route/app_routes.dart';
 import 'package:watch_store/features/brands/data/watch_model.dart';
 import 'package:watch_store/utils/constants/app_colors.dart';
 import 'package:watch_store/utils/constants/app_images.dart';
@@ -97,7 +99,23 @@ class _WatchDetailScreenState extends State<WatchDetailScreen>
                     ],
                   ),
                   SizedBox(height: 16),
-                  CommonButton(titleText: 'Start Chat With Retailer'),
+                  CommonButton(
+                    titleText: 'Start Chat With Retailer',
+                    onTap: () {
+                      Get.toNamed(
+                        AppRoutes.message,
+                        arguments: true,
+                        parameters: {
+                          "chatId": "123",
+                          "name": widget.watch.name,
+                          "image": AppImages.profileImage,
+                          "itemImage": widget.watch.imageUrl,
+                          "itemPrice": widget.watch.price,
+                          "itemName": widget.watch.name,
+                        },
+                      );
+                    },
+                  ),
                   SizedBox(height: 24),
                 ],
               ),

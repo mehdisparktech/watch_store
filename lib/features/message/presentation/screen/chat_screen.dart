@@ -52,6 +52,7 @@ class ChatListScreen extends StatelessWidget {
                               "name": item.participant.fullName,
                               "image": item.participant.image,
                             },
+                            arguments: false,
                           ),
                       child: modernChatListItem(item: item),
                     );
