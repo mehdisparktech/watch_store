@@ -91,7 +91,7 @@ class CreatePassword extends StatelessWidget {
                       // if (formKey.currentState!.validate()) {
                       //   controller.resetPasswordRepo();
                       // }
-                      Get.toNamed(AppRoutes.signIn);
+                      Get.offNamed(AppRoutes.signIn);
                     },
                   ),
                 ],
