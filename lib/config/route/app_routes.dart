@@ -4,6 +4,7 @@ import 'package:watch_store/features/brands/presentation/screen/brands_screen.da
 import 'package:watch_store/features/brands/presentation/screen/watch_detail_screen.dart';
 import 'package:watch_store/features/home/presentation/screen/home_screen.dart';
 import 'package:watch_store/features/news/presenation/screens/news_screen.dart';
+import 'package:watch_store/features/onboarding_screen/onboarding_spanish_screen.dart';
 import 'package:watch_store/features/wishlist/screen/wishlist_detail_screen.dart';
 import 'package:watch_store/features/wishlist/screen/wishlist_screen.dart';
 import '../../features/auth/change_password/presentation/screen/change_password_screen.dart';
@@ -28,6 +29,7 @@ class AppRoutes {
   static const String test = "/test_screen.dart";
   static const String splash = "/splash_screen.dart";
   static const String onboarding = "/onboarding_screen.dart";
+  static const String onboardingSpanish = "/onboarding_spanish_screen.dart";
   static const String signUp = "/sign_up_screen.dart";
   static const String verifyUser = "/verify_user.dart";
   static const String signIn = "/sign_in_screen.dart";
@@ -54,6 +56,10 @@ class AppRoutes {
   static List<GetPage> routes = [
     GetPage(name: splash, page: () => const SplashScreen()),
     GetPage(name: onboarding, page: () => const OnboardingScreen()),
+    GetPage(
+      name: onboardingSpanish,
+      page: () => const OnboardingSpanishScreen(),
+    ),
     GetPage(name: signUp, page: () => SignUpScreen()),
     GetPage(name: verifyUser, page: () => const VerifyUser()),
     GetPage(name: signIn, page: () => SignInScreen()),

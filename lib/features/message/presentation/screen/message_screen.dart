@@ -71,7 +71,7 @@ class _MessageScreenState extends State<MessageScreen> {
           SliverAppBar(
             expandedHeight: 400.h,
             pinned: true,
-            backgroundColor: Colors.black,
+            backgroundColor: AppColors.primaryColor,
             leading: IconButton(
               icon: Icon(Icons.arrow_back, color: Colors.white, size: 24.sp),
               onPressed: () => Get.back(),
@@ -196,7 +196,7 @@ class _MessageScreenState extends State<MessageScreen> {
 
   AppBar _buildNormalAppBar() {
     return AppBar(
-      backgroundColor: Colors.black,
+      backgroundColor: AppColors.primaryColor,
       elevation: 0,
       leading: IconButton(
         icon: Icon(Icons.arrow_back, color: Colors.white, size: 24.sp),

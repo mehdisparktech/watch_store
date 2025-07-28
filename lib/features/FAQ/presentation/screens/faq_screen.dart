@@ -68,7 +68,7 @@ class _FAQScreenState extends State<FAQScreen> {
       body: Column(
         children: [
           Container(
-            color: AppColors.black,
+            color: AppColors.primaryColor,
             padding: EdgeInsets.symmetric(horizontal: 16, vertical: 16),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
@@ -96,7 +96,7 @@ class _FAQScreenState extends State<FAQScreen> {
                   borderColor: AppColors.hintText,
                   borderRadius: 8,
                   paddingVertical: 20,
-                  fillColor: AppColors.black,
+                  fillColor: AppColors.primaryColor,
                 ),
                 SizedBox(height: 16),
               ],

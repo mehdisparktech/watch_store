@@ -26,7 +26,7 @@ class CommonDrawer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Drawer(
-      backgroundColor: Colors.black,
+      backgroundColor: AppColors.primaryColor,
       child: Column(
         children: [
           // Profile Section

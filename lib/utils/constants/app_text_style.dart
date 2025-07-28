@@ -10,7 +10,7 @@ class AppTextStyle {
     height: 1.12,
   );
   static const TextStyle body = TextStyle(
-    color: AppColors.secondaryText,
+    color: AppColors.hintText,
     fontSize: 14,
     fontFamily: 'Roboto',
     fontWeight: FontWeight.w400,

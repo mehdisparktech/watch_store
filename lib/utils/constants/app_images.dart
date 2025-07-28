@@ -7,6 +7,7 @@ class AppImages {
   static const String splash = "$baseurl/splash.png";
   static const String watchStoreLogo = "$baseurl/watch_store_logo.png";
   static const String logo = "$baseurl/watch_store_logo.png";
+  static const String logoSpanish = "$baseurl/watch_store_logo_spanish.png";
   static const String availableWatch = "$baseurl/available_watch.png";
   static const String profileImage = "$baseurl/profile_img.jpg";
   static const String capiter = "$baseurl/capiter.png";

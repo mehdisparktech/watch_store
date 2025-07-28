@@ -42,7 +42,7 @@ class CommonAppBar extends StatelessWidget implements PreferredSizeWidget {
   Widget build(BuildContext context) {
     return AppBar(
       elevation: elevation,
-      backgroundColor: backgroundColor ?? AppColors.black,
+      backgroundColor: backgroundColor ?? AppColors.primaryColor,
       automaticallyImplyLeading: false,
       toolbarHeight: kToolbarHeight + 20,
       title:

@@ -23,7 +23,7 @@ class _SplashScreenState extends State<SplashScreen> {
       //     Get.offAllNamed(AppRoutes.patientsHome);
       //   }
       // } else {
-      Get.offAllNamed(AppRoutes.onboarding);
+      Get.offAllNamed(AppRoutes.onboardingSpanish);
     });
     super.initState();
   }
