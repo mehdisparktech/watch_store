@@ -8,6 +8,8 @@ import '../../../../utils/app_utils.dart';
 class SettingController extends GetxController {
   /// Password controller here , use for delete account
   TextEditingController passwordController = TextEditingController();
+  TextEditingController nameController = TextEditingController();
+  TextEditingController emailController = TextEditingController();
 
   /// loading check , use delete account
   bool isLoading = false;

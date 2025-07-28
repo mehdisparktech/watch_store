@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:watch_store/utils/constants/app_colors.dart';
 import '../../../../../utils/extensions/extension.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
@@ -8,7 +9,6 @@ import '../../../../component/image/common_image.dart';
 import '../../../../component/text/common_text.dart';
 import '../controller/profile_controller.dart';
 import '../../../../../utils/constants/app_images.dart';
-import '../../../../../utils/constants/app_string.dart';
 import '../widgets/edit_profile_all_filed.dart';
 
 class EditProfile extends StatelessWidget {
@@ -19,13 +19,16 @@ class EditProfile extends StatelessWidget {
     return GetBuilder<ProfileController>(
       builder: (controller) {
         return Scaffold(
+          backgroundColor: AppColors.primaryColor,
+
           /// App Bar Sections Starts here
           appBar: AppBar(
-            centerTitle: true,
-            title: const CommonText(
-              text: AppString.profile,
-              fontSize: 20,
-              fontWeight: FontWeight.w600,
+            backgroundColor: AppColors.primaryColor,
+            leading: IconButton(
+              onPressed: () {
+                Get.back();
+              },
+              icon: const Icon(Icons.close, color: AppColors.white),
             ),
           ),
 
@@ -35,27 +38,29 @@ class EditProfile extends StatelessWidget {
             child: Form(
               key: controller.formKey,
               child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   /// User Profile image here
                   Stack(
                     children: [
                       Center(
                         child: CircleAvatar(
-                          radius: 85.sp,
+                          radius: 40.sp,
                           backgroundColor: Colors.transparent,
                           child: ClipOval(
-                            child: controller.image != null
-                                ? Image.file(
-                                    File(controller.image!),
-                                    width: 170,
-                                    height: 170,
-                                    fit: BoxFit.fill,
-                                  )
-                                : const CommonImage(
-                                    imageSrc: AppImages.profile,
-                                    height: 170,
-                                    width: 170,
-                                  ),
+                            child:
+                                controller.image != null
+                                    ? Image.file(
+                                      File(controller.image!),
+                                      width: 80,
+                                      height: 80,
+                                      fit: BoxFit.fill,
+                                    )
+                                    : const CommonImage(
+                                      imageSrc: AppImages.profileImage,
+                                      height: 80,
+                                      width: 80,
+                                    ),
                           ),
                         ),
                       ),
@@ -63,29 +68,54 @@ class EditProfile extends StatelessWidget {
                       /// image change icon here
                       Positioned(
                         bottom: 0,
-                        left: Get.width * 0.53,
-                        child: IconButton(
-                          style: ButtonStyle(
-                            backgroundColor: WidgetStateColor.resolveWith(
-                              (states) => Colors.black,
+                        left: Get.width * 0.50,
+                        child: GestureDetector(
+                          onTap: controller.getProfileImage,
+                          child: Container(
+                            padding: EdgeInsets.all(4.sp),
+                            decoration: BoxDecoration(
+                              color: AppColors.black,
+                              shape: BoxShape.circle,
+                            ),
+                            child: const Icon(
+                              Icons.camera_alt_outlined,
+                              color: AppColors.white,
+                              size: 16,
                             ),
                           ),
-                          onPressed: controller.getProfileImage,
-                          icon: const Icon(Icons.edit, color: Colors.white),
                         ),
                       ),
                     ],
                   ),
+                  10.height,
+                  CommonText(
+                    text: "Ramón G.",
+                    fontSize: 20,
+                    fontWeight: FontWeight.w500,
+                    color: AppColors.white,
+                    fontFamily: 'PlayfairDisplay',
+                  ),
+                  10.height,
+                  CommonText(
+                    text: "Raconli Group",
+                    fontSize: 16,
+                    fontWeight: FontWeight.w500,
+                    color: AppColors.white,
+                  ),
+                  60.height,
 
                   /// user all information filed here
                   EditProfileAllFiled(controller: controller),
-                  30.height,
+                  60.height,
 
                   /// Submit Button here
                   CommonButton(
-                    titleText: AppString.saveAndChanges,
+                    titleText: "Guardar",
                     isLoading: controller.isLoading,
                     onTap: controller.editProfileRepo,
+                    buttonColor: AppColors.socialIconBackground,
+                    titleColor: AppColors.buttonText,
+                    buttonWidth: 160.w,
                   ),
                 ],
               ),

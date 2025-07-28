@@ -27,6 +27,7 @@ class ProfileController extends GetxController {
   /// all controller here
   TextEditingController nameController = TextEditingController();
   TextEditingController numberController = TextEditingController();
+  TextEditingController emailController = TextEditingController();
 
   /// select image function here
   getProfileImage() async {
@@ -52,6 +53,7 @@ class ProfileController extends GetxController {
     Map<String, String> body = {
       "fullName": nameController.text,
       "phone": numberController.text,
+      "email": emailController.text,
     };
 
     var response = await ApiService.multipart(

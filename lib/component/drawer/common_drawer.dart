@@ -38,12 +38,22 @@ class CommonDrawer extends StatelessWidget {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
-                    CommonImage(imageSrc: AppIcons.settings, size: 24),
+                    GestureDetector(
+                      onTap: () {
+                        Get.toNamed(AppRoutes.setting);
+                      },
+                      child: CommonImage(imageSrc: AppIcons.settings, size: 24),
+                    ),
                     CircleAvatar(
                       radius: 40.r,
                       backgroundImage: AssetImage(profileImage),
                     ),
-                    CommonImage(imageSrc: AppIcons.edit, size: 24),
+                    GestureDetector(
+                      onTap: () {
+                        Get.toNamed(AppRoutes.editProfile);
+                      },
+                      child: CommonImage(imageSrc: AppIcons.edit, size: 24),
+                    ),
                   ],
                 ),
                 SizedBox(height: 15.h),
