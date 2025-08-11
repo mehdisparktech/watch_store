@@ -34,7 +34,7 @@ class SignUpController extends GetxController {
 
   String signUpToken = '';
 
-  static SignUpController get instance => Get.put(SignUpController());
+  static SignUpController get instance => Get.find<SignUpController>();
 
   TextEditingController nameController = TextEditingController(
     text: kDebugMode ? "Namimul Hassan" : "",
@@ -122,7 +122,7 @@ class SignUpController extends GetxController {
   }
 
   Future<void> verifyOtpRepo() async {
-    Get.toNamed(AppRoutes.signIn);
+    Get.offAllNamed(AppRoutes.signIn);
     return;
 
     // isLoadingVerify = true;

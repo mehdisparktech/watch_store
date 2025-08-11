@@ -10,21 +10,35 @@ class SocketServices {
 
   ///<<<============ Connect with socket ====================>>>
   static void connectToSocket() {
-    _socket = io.io(
-      ApiEndPoint.socketUrl,
-      io.OptionBuilder()
-          .setTransports(['websocket'])
-          .enableAutoConnect()
-          .build(),
-    );
+    try {
+      _socket = io.io(
+        ApiEndPoint.socketUrl,
+        io.OptionBuilder()
+            .setTransports(['websocket'])
+            .enableAutoConnect()
+            .setTimeout(30000) // 30 second timeout
+            .build(),
+      );
 
-    _socket.onConnect((data) => appLog("=============> Connection $data"));
-    _socket.onConnectError((data) => appLog("========>Connection Error $data"));
-    _socket.connect();
-    _socket.on("user-notification::${LocalStorage.userId}", (data) {
-      appLog("================> get Data on socket: $data");
-      NotificationService.showNotification(data);
-    });
+      _socket.onConnect((data) => appLog("=============> Connection $data"));
+      _socket.onConnectError((data) {
+        appLog("========>Connection Error $data");
+        // Don't crash the app on socket connection errors
+      });
+      _socket.onDisconnect(
+        (data) => appLog("========>Socket Disconnected $data"),
+      );
+      _socket.onError((data) => appLog("========>Socket Error $data"));
+
+      _socket.connect();
+      _socket.on("user-notification::${LocalStorage.userId}", (data) {
+        appLog("================> get Data on socket: $data");
+        NotificationService.showNotification(data);
+      });
+    } catch (e) {
+      appLog("========>Socket Connection Failed: $e");
+      // Don't crash the app if socket connection fails
+    }
   }
 
   static on(String event, Function(dynamic data) handler) {

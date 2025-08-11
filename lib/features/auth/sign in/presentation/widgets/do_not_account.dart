@@ -32,7 +32,7 @@ class DoNotHaveAccount extends StatelessWidget {
             recognizer:
                 TapGestureRecognizer()
                   ..onTap = () {
-                    Get.toNamed(AppRoutes.signUp);
+                    Get.offAllNamed(AppRoutes.signUp);
                   },
             style: GoogleFonts.plusJakartaSans(
               color: AppColors.primaryColor,

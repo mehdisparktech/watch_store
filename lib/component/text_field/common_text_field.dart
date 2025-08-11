@@ -1,13 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../../utils/constants/app_colors.dart';
 import '../text/common_text.dart';
 
-class CommonTextField extends StatelessWidget {
-  CommonTextField({
+class CommonTextField extends StatefulWidget {
+  const CommonTextField({
     super.key,
     this.hintText,
     this.labelText,
@@ -48,7 +47,6 @@ class CommonTextField extends StatelessWidget {
   final double borderRadius;
   final int? mexLength;
   final bool isPassword;
-  final RxBool obscureText = false.obs;
   final Function(String)? onSubmitted;
   final VoidCallback? onTap;
   final TextEditingController? controller;
@@ -58,49 +56,72 @@ class CommonTextField extends StatelessWidget {
   final List<TextInputFormatter>? inputFormatters;
 
   @override
+  State<CommonTextField> createState() => _CommonTextFieldState();
+}
+
+class _CommonTextFieldState extends State<CommonTextField> {
+  late bool obscureText;
+
+  @override
+  void initState() {
+    super.initState();
+    obscureText = widget.isPassword;
+  }
+
+  @override
   Widget build(BuildContext context) {
     return TextFormField(
       autovalidateMode: AutovalidateMode.onUnfocus,
-      keyboardType: keyboardType,
-      controller: controller,
-      obscureText: obscureText.value,
-      textInputAction: textInputAction,
-      maxLength: mexLength,
+      keyboardType: widget.keyboardType,
+      controller: widget.controller,
+      obscureText: obscureText,
+      textInputAction: widget.textInputAction,
+      maxLength: widget.mexLength,
       cursorColor: AppColors.white,
-      inputFormatters: inputFormatters,
-      style: TextStyle(fontSize: 14, color: textColor),
-      onFieldSubmitted: onSubmitted,
-      onTap: onTap,
-      validator: validator,
+      inputFormatters: widget.inputFormatters,
+      style: TextStyle(fontSize: 14, color: widget.textColor),
+      onFieldSubmitted: widget.onSubmitted,
+      onTap: widget.onTap,
+      validator: widget.validator,
       decoration: InputDecoration(
         errorMaxLines: 2,
         filled: true,
-        prefixIcon: prefixIcon,
-        fillColor: fillColor,
+        prefixIcon: widget.prefixIcon,
+        fillColor: widget.fillColor,
         counterText: "",
         contentPadding: EdgeInsets.symmetric(
-          horizontal: paddingHorizontal.w,
-          vertical: paddingVertical.h,
+          horizontal: widget.paddingHorizontal.w,
+          vertical: widget.paddingVertical.h,
         ),
         border: _buildBorder(),
         enabledBorder: _buildBorder(),
         focusedBorder: _buildBorder(),
         disabledBorder: _buildBorder(),
         errorBorder: _buildBorder(),
-        hintText: hintText,
-        labelText: labelText,
-        hintStyle: GoogleFonts.roboto(fontSize: 14, color: hintTextColor),
-        labelStyle: GoogleFonts.roboto(fontSize: 14, color: labelTextColor),
-        prefix: CommonText(text: prefixText ?? "", fontWeight: FontWeight.w400),
-        suffixIcon: isPassword ? _buildPasswordSuffixIcon() : suffixIcon,
+        hintText: widget.hintText,
+        labelText: widget.labelText,
+        hintStyle: GoogleFonts.roboto(
+          fontSize: 14,
+          color: widget.hintTextColor,
+        ),
+        labelStyle: GoogleFonts.roboto(
+          fontSize: 14,
+          color: widget.labelTextColor,
+        ),
+        prefix: CommonText(
+          text: widget.prefixText ?? "",
+          fontWeight: FontWeight.w400,
+        ),
+        suffixIcon:
+            widget.isPassword ? _buildPasswordSuffixIcon() : widget.suffixIcon,
       ),
     );
   }
 
   OutlineInputBorder _buildBorder() {
     return OutlineInputBorder(
-      borderRadius: BorderRadius.circular(borderRadius.r),
-      borderSide: BorderSide(color: borderColor),
+      borderRadius: BorderRadius.circular(widget.borderRadius.r),
+      borderSide: BorderSide(color: widget.borderColor),
     );
   }
 
@@ -109,20 +130,20 @@ class CommonTextField extends StatelessWidget {
       onTap: toggle,
       child: Padding(
         padding: EdgeInsetsDirectional.only(end: 10.w),
-        child: Obx(
-          () => Icon(
-            obscureText.value
-                ? Icons.visibility_off_outlined
-                : Icons.visibility_outlined,
-            size: 20.sp,
-            color: textColor,
-          ),
+        child: Icon(
+          obscureText
+              ? Icons.visibility_off_outlined
+              : Icons.visibility_outlined,
+          size: 20.sp,
+          color: widget.textColor,
         ),
       ),
     );
   }
 
   void toggle() {
-    obscureText.value = !obscureText.value;
+    setState(() {
+      obscureText = !obscureText;
+    });
   }
 }

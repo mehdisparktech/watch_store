@@ -29,10 +29,11 @@ class AlreadyAccountRichText extends StatelessWidget {
           /// Sign In Button Here
           TextSpan(
             text: AppString.signIn,
-            recognizer: TapGestureRecognizer()
-              ..onTap = () {
-                Get.toNamed(AppRoutes.signIn);
-              },
+            recognizer:
+                TapGestureRecognizer()
+                  ..onTap = () {
+                    Get.offAllNamed(AppRoutes.signIn);
+                  },
             style: GoogleFonts.plusJakartaSans(
               color: AppColors.primaryColor,
               fontSize: 16,

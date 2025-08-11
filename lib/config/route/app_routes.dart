@@ -7,6 +7,7 @@ import 'package:watch_store/features/news/presenation/screens/news_screen.dart';
 import 'package:watch_store/features/onboarding_screen/onboarding_spanish_screen.dart';
 import 'package:watch_store/features/wishlist/screen/wishlist_detail_screen.dart';
 import 'package:watch_store/features/wishlist/screen/wishlist_screen.dart';
+import '../../features/auth/sign up/presentation/controller/sign_up_controller.dart';
 import '../../features/auth/change_password/presentation/screen/change_password_screen.dart';
 import '../../features/auth/forgot password/presentation/screen/create_password.dart';
 import '../../features/auth/forgot password/presentation/screen/forgot_password.dart';
@@ -60,7 +61,13 @@ class AppRoutes {
       name: onboardingSpanish,
       page: () => const OnboardingSpanishScreen(),
     ),
-    GetPage(name: signUp, page: () => SignUpScreen()),
+    GetPage(
+      name: signUp,
+      page: () => const SignUpScreen(),
+      binding: BindingsBuilder(() {
+        Get.lazyPut(() => SignUpController());
+      }),
+    ),
     GetPage(name: verifyUser, page: () => const VerifyUser()),
     GetPage(name: signIn, page: () => SignInScreen()),
     GetPage(name: forgotPassword, page: () => ForgotPasswordScreen()),
