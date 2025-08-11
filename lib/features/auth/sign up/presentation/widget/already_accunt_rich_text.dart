@@ -6,7 +6,6 @@ import 'package:google_fonts/google_fonts.dart';
 
 import '../../../../../config/route/app_routes.dart';
 import '../../../../../utils/constants/app_colors.dart';
-import '../../../../../utils/constants/app_string.dart';
 
 class AlreadyAccountRichText extends StatelessWidget {
   const AlreadyAccountRichText({super.key});
@@ -18,7 +17,7 @@ class AlreadyAccountRichText extends StatelessWidget {
         children: [
           /// Already Have Account
           TextSpan(
-            text: AppString.alreadyHaveAccount,
+            text: "Already have an account".tr,
             style: GoogleFonts.plusJakartaSans(
               color: AppColors.black,
               fontSize: 16,
@@ -28,7 +27,7 @@ class AlreadyAccountRichText extends StatelessWidget {
 
           /// Sign In Button Here
           TextSpan(
-            text: AppString.signIn,
+            text: " ${"Sign in".tr}",
             recognizer:
                 TapGestureRecognizer()
                   ..onTap = () {

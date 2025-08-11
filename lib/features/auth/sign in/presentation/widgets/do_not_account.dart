@@ -6,7 +6,6 @@ import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import '../../../../../utils/constants/app_colors.dart';
-import '../../../../../utils/constants/app_string.dart';
 
 class DoNotHaveAccount extends StatelessWidget {
   const DoNotHaveAccount({super.key});
@@ -17,7 +16,7 @@ class DoNotHaveAccount extends StatelessWidget {
       TextSpan(
         children: [
           TextSpan(
-            text: AppString.doNotHaveAccount,
+            text: "Don't have an account".tr,
             style: GoogleFonts.plusJakartaSans(
               color: AppColors.secondary,
               fontSize: 14,
@@ -28,7 +27,7 @@ class DoNotHaveAccount extends StatelessWidget {
 
           /// Sign Up Button here
           TextSpan(
-            text: AppString.signUp,
+            text: "Sign up".tr,
             recognizer:
                 TapGestureRecognizer()
                   ..onTap = () {

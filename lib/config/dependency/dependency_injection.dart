@@ -1,4 +1,3 @@
-
 import 'package:get/get.dart';
 
 import '../../features/auth/change_password/presentation/controller/change_password_controller.dart';
@@ -12,14 +11,21 @@ import '../../features/profile/presentation/controller/profile_controller.dart';
 import '../../features/setting/presentation/controller/privacy_policy_controller.dart';
 import '../../features/setting/presentation/controller/setting_controller.dart';
 import '../../features/setting/presentation/controller/terms_of_services_controller.dart';
+import '../languages/language_controller.dart';
 
 class DependencyInjection extends Bindings {
   @override
   void dependencies() {
+    // Language Controller
+    Get.put(() => LanguageController(), permanent: true);
+
+    // Auth Controllers
     Get.lazyPut(() => SignUpController(), fenix: true);
     Get.lazyPut(() => SignInController(), fenix: true);
     Get.lazyPut(() => ForgetPasswordController(), fenix: true);
     Get.lazyPut(() => ChangePasswordController(), fenix: true);
+
+    // Feature Controllers
     Get.lazyPut(() => NotificationsController(), fenix: true);
     Get.lazyPut(() => ChatController(), fenix: true);
     Get.lazyPut(() => MessageController(), fenix: true);

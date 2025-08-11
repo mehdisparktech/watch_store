@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 
+import 'config/languages/language.dart';
 import 'config/route/app_routes.dart';
 import 'config/theme/light_theme.dart';
 
@@ -23,6 +24,14 @@ class MyApp extends StatelessWidget {
         transitionDuration: const Duration(milliseconds: 300),
         initialRoute: AppRoutes.splash,
         getPages: AppRoutes.routes,
+        // Language configuration
+        translations: LocalConstants(),
+        locale: const Locale('en', 'US'), // Default language: English
+        fallbackLocale: const Locale('en', 'US'), // Fallback language
+        supportedLocales: const [
+          Locale('en', 'US'), // English
+          Locale('es', 'ES'), // Spanish
+        ],
       ),
     );
   }
