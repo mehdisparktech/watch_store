@@ -98,6 +98,7 @@ class AppString {
   static const String news = "News";
   static const String faq = "FAQ";
   static const String aboutUs = "About Us";
+  static const String products = "Products";
   static const String contactUs = "Contact Us";
   static const String termsAndConditions = "Terms and Conditions";
 

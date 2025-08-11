@@ -16,4 +16,10 @@ class ApiEndPoint {
   static const termsOfServices = "terms-and-conditions";
   static const chats = "chats";
   static const messages = "messages";
+
+  // Product endpoints
+  static const products = "products";
+  static const categories = "categories";
+  static const brands = "brands";
+  static const wishlist = "wishlist";
 }

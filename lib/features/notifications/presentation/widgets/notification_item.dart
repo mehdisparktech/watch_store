@@ -40,7 +40,7 @@ class NotificationItem extends StatelessWidget {
                     /// Notification Title here
                     Flexible(
                       child: CommonText(
-                        text: item.type,
+                        text: "",
                         fontSize: 16,
                         fontWeight: FontWeight.w700,
                         textAlign: TextAlign.start,
@@ -50,7 +50,7 @@ class NotificationItem extends StatelessWidget {
 
                     /// Notification Time here
                     CommonText(
-                      text: item.createdAt.checkTime,
+                      text: "",
                       fontSize: 14,
                       fontWeight: FontWeight.w700,
                       textAlign: TextAlign.start,
@@ -62,7 +62,7 @@ class NotificationItem extends StatelessWidget {
 
                 /// Notification Message here
                 CommonText(
-                  text: item.message,
+                  text: "",
                   fontSize: 14,
                   fontWeight: FontWeight.w400,
                   maxLines: 2,

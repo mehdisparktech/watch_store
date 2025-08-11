@@ -53,6 +53,8 @@ class AppRoutes {
   static const String faq = "/faq_screen.dart";
   static const String wishlist = "/wishlist_screen.dart";
   static const String wishlistDetail = "/wishlist_detail_screen.dart";
+  static const String products = "/product_list_screen.dart";
+  static const String demoApi = "/demo_api_screen.dart";
 
   static List<GetPage> routes = [
     GetPage(name: splash, page: () => const SplashScreen()),
