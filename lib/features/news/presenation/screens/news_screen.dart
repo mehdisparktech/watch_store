@@ -1,48 +1,21 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:watch_store/component/app_bar/common_app_bar.dart';
 import 'package:watch_store/component/drawer/common_drawer.dart';
 import 'package:watch_store/component/image/common_image.dart';
 import 'package:watch_store/component/text/common_text.dart';
+import 'package:watch_store/config/api/api_end_point.dart';
 import 'package:watch_store/utils/constants/app_colors.dart';
 import 'package:watch_store/utils/constants/app_images.dart';
+import 'package:watch_store/utils/constants/app_string.dart';
+import 'package:watch_store/utils/enum/enum.dart';
+import '../controller/news_controller.dart';
+import '../../data/model/news_model.dart';
 
 class NewsScreen extends StatelessWidget {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
-  NewsScreen({super.key});
 
-  final List<NewsItem> newsItems = [
-    NewsItem(
-      title: 'Worem ipsum dolor sit amet, consectetur adipiscing elit.',
-      image:
-          'https://images.unsplash.com/photo-1586339949916-3e9457bef6d3?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTB8fG5ld3N8ZW58MHx8MHx8fDA%3D',
-      timeAgo: '2 hours ago',
-    ),
-    NewsItem(
-      title: 'Nunc vulputate libero et velit interdum, ac aliquet odio mattis.',
-      image:
-          'https://images.unsplash.com/photo-1586339949916-3e9457bef6d3?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTB8fG5ld3N8ZW58MHx8MHx8fDA%3D',
-      timeAgo: '2 hours ago',
-    ),
-    NewsItem(
-      title:
-          'Consectetur adipiscing elit. Rorem ipsum dolor sit amet, adipiscing elit.',
-      image:
-          'https://images.unsplash.com/photo-1586339949916-3e9457bef6d3?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTB8fG5ld3N8ZW58MHx8MHx8fDA%3D',
-      timeAgo: '2 hours ago',
-    ),
-    NewsItem(
-      title: 'Lpsum dolor sit amet, consectetur adipiscing elit. Rorem ipsum.',
-      image:
-          'https://images.unsplash.com/photo-1586339949916-3e9457bef6d3?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTB8fG5ld3N8ZW58MHx8MHx8fDA%3D',
-      timeAgo: '2 hours ago',
-    ),
-    NewsItem(
-      title: 'Samet, consectetur adipiscing elit. Rorem ipsum dolor sit.',
-      image:
-          'https://images.unsplash.com/photo-1586339949916-3e9457bef6d3?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTB8fG5ld3N8ZW58MHx8MHx8fDA%3D',
-      timeAgo: '2 hours ago',
-    ),
-  ];
+  NewsScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -54,35 +27,80 @@ class NewsScreen extends StatelessWidget {
         onMenuPressed: () => _scaffoldKey.currentState?.openEndDrawer(),
       ),
       endDrawer: CommonDrawer(profileImage: AppImages.availableWatch),
-      body: ListView.builder(
-        itemCount: newsItems.length,
-        itemBuilder: (context, index) {
-          final item = newsItems[index];
-          return NewsItemWidget(item: item, imageRight: index % 2 == 0);
+      body: GetBuilder<NewsController>(
+        builder: (controller) {
+          if (controller.status == Status.loading &&
+              controller.newsList.isEmpty) {
+            return const Center(child: CircularProgressIndicator());
+          } else if (controller.status == Status.error &&
+              controller.newsList.isEmpty) {
+            return Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  CommonText(text: AppString.someThingWrong),
+                  ElevatedButton(
+                    onPressed: () => controller.getNews(refresh: true),
+                    child: CommonText(text: AppString.tryAgain),
+                  ),
+                ],
+              ),
+            );
+          } else if (controller.newsList.isEmpty) {
+            return Center(child: CommonText(text: AppString.dataEmpty));
+          }
+
+          return NotificationListener<ScrollNotification>(
+            onNotification: (ScrollNotification scrollInfo) {
+              if (scrollInfo.metrics.pixels ==
+                  scrollInfo.metrics.maxScrollExtent) {
+                controller.loadMore();
+              }
+              return true;
+            },
+            child: RefreshIndicator(
+              onRefresh: () => controller.getNews(refresh: true),
+              child: ListView.builder(
+                itemCount:
+                    controller.newsList.length +
+                    (controller.hasMoreData ? 1 : 0),
+                itemBuilder: (context, index) {
+                  if (index == controller.newsList.length) {
+                    return controller.isLoading
+                        ? const Center(child: CircularProgressIndicator())
+                        : const SizedBox();
+                  }
+
+                  final item = controller.newsList[index];
+                  return NewsItemWidget(item: item, imageRight: index % 2 == 0);
+                },
+              ),
+            ),
+          );
         },
       ),
     );
   }
 }
 
-class NewsItem {
-  final String title;
-  final String image;
-  final String timeAgo;
-
-  NewsItem({required this.title, required this.image, required this.timeAgo});
-}
-
 class NewsItemWidget extends StatelessWidget {
-  final NewsItem item;
+  final NewsModel item;
   final bool imageRight;
 
   const NewsItemWidget({super.key, required this.item, this.imageRight = true});
 
   @override
   Widget build(BuildContext context) {
+    final String imageUrl =
+        item.image != null && item.image!.isNotEmpty
+            ? "${ApiEndPoint.imageUrl}${item.image}"
+            : "https://images.unsplash.com/photo-1586339949916-3e9457bef6d3?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTB8fG5ld3N8ZW58MHx8MHx8fDA%3D";
+
+    final String timeAgo =
+        item.createdAt != null ? _getTimeAgo(item.createdAt!) : '2 hours ago';
+
     return Container(
-      margin: EdgeInsets.symmetric(vertical: 8, horizontal: 16),
+      margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
       decoration: BoxDecoration(color: AppColors.textFieldBackground),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -98,13 +116,13 @@ class NewsItemWidget extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
                       CommonText(
-                        text: item.timeAgo,
+                        text: timeAgo,
                         fontSize: 14,
                         color: AppColors.hintText,
                       ),
-                      SizedBox(height: 8),
+                      const SizedBox(height: 8),
                       CommonText(
-                        text: item.title,
+                        text: item.title ?? '',
                         fontSize: 18,
                         fontWeight: FontWeight.bold,
                         maxLines: 3,
@@ -118,17 +136,17 @@ class NewsItemWidget extends StatelessWidget {
               : Expanded(
                 flex: 2,
                 child: CommonImage(
-                  imageSrc: item.image,
+                  imageSrc: imageUrl,
                   height: 150,
                   fill: BoxFit.cover,
                 ),
               ),
-          SizedBox(width: 16),
+          const SizedBox(width: 16),
           imageRight
               ? Expanded(
                 flex: 2,
                 child: CommonImage(
-                  imageSrc: item.image,
+                  imageSrc: imageUrl,
                   height: 150,
                   fill: BoxFit.cover,
                 ),
@@ -142,13 +160,13 @@ class NewsItemWidget extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
                       CommonText(
-                        text: item.timeAgo,
+                        text: timeAgo,
                         fontSize: 14,
                         color: AppColors.hintText,
                       ),
-                      SizedBox(height: 8),
+                      const SizedBox(height: 8),
                       CommonText(
-                        text: item.title,
+                        text: item.title ?? '',
                         fontSize: 18,
                         fontWeight: FontWeight.bold,
                         maxLines: 3,
@@ -162,5 +180,24 @@ class NewsItemWidget extends StatelessWidget {
         ],
       ),
     );
+  }
+
+  String _getTimeAgo(DateTime dateTime) {
+    final now = DateTime.now();
+    final difference = now.difference(dateTime);
+
+    if (difference.inDays > 365) {
+      return '${(difference.inDays / 365).floor()} years ago';
+    } else if (difference.inDays > 30) {
+      return '${(difference.inDays / 30).floor()} months ago';
+    } else if (difference.inDays > 0) {
+      return '${difference.inDays} days ago';
+    } else if (difference.inHours > 0) {
+      return '${difference.inHours} hours ago';
+    } else if (difference.inMinutes > 0) {
+      return '${difference.inMinutes} minutes ago';
+    } else {
+      return 'Just now';
+    }
   }
 }

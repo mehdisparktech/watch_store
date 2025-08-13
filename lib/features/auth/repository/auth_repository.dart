@@ -1,3 +1,4 @@
+import 'package:watch_store/config/api/api_end_point.dart';
 import 'package:watch_store/services/storage/storage_keys.dart';
 
 import '../data/model/auth_response_model.dart';
@@ -28,7 +29,7 @@ class AuthRepositoryImpl implements AuthRepository {
   Future<AuthResponseModel> login(LoginRequestModel request) async {
     try {
       final response = await ApiService.post(
-        "$baseUrl/auth/login",
+        baseUrl + ApiEndPoint.signIn,
         body: request.toJson(),
       );
 

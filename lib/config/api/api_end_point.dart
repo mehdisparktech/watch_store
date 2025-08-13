@@ -1,11 +1,11 @@
 class ApiEndPoint {
-  static const baseUrl = "http://192.168.10.207:5003/api/v1";
+  static const baseUrl = "http://192.168.10.207:5003/api/v1/";
   static const imageUrl = "http://192.168.10.207:5003";
   static const socketUrl = "http://192.168.10.207:5003";
 
   static const signUp = "users/sign-up";
   static const verifyEmail = "users/verify-email";
-  static const signIn = "users/sign-in";
+  static const signIn = "auth/login";
   static const forgotPassword = "users/forget-password";
   static const verifyOtp = "users/verify-otp";
   static const resetPassword = "users/reset-password";
@@ -22,4 +22,5 @@ class ApiEndPoint {
   static const categories = "categories";
   static const brands = "brands";
   static const wishlist = "wishlist";
+  static const news = "news";
 }

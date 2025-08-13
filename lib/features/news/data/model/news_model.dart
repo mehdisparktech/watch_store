@@ -1,105 +1,107 @@
 class NewsModel {
   final String? id;
   final String? title;
-  final String? content;
-  final String? excerpt;
+  final String? description;
   final String? image;
-  final String? author;
-  final String? category;
-  final List<String>? tags;
-  final bool? isPublished;
-  final DateTime? publishedAt;
   final DateTime? createdAt;
   final DateTime? updatedAt;
 
   NewsModel({
     this.id,
     this.title,
-    this.content,
-    this.excerpt,
+    this.description,
     this.image,
-    this.author,
-    this.category,
-    this.tags,
-    this.isPublished,
-    this.publishedAt,
     this.createdAt,
     this.updatedAt,
   });
 
   factory NewsModel.fromJson(Map<String, dynamic> json) {
     return NewsModel(
-      id: json['id']?.toString(),
+      id: json['_id']?.toString(),
       title: json['title']?.toString(),
-      content: json['content']?.toString(),
-      excerpt: json['excerpt']?.toString(),
+      description: json['description']?.toString(),
       image: json['image']?.toString(),
-      author: json['author']?.toString(),
-      category: json['category']?.toString(),
-      tags:
-          json['tags'] != null
-              ? List<String>.from(json['tags'].map((x) => x.toString()))
-              : null,
-      isPublished: json['is_published'],
-      publishedAt:
-          json['published_at'] != null
-              ? DateTime.tryParse(json['published_at'].toString())
-              : null,
       createdAt:
-          json['created_at'] != null
-              ? DateTime.tryParse(json['created_at'].toString())
+          json['createdAt'] != null
+              ? DateTime.tryParse(json['createdAt'].toString())
               : null,
       updatedAt:
-          json['updated_at'] != null
-              ? DateTime.tryParse(json['updated_at'].toString())
+          json['updatedAt'] != null
+              ? DateTime.tryParse(json['updatedAt'].toString())
               : null,
     );
   }
 
   Map<String, dynamic> toJson() {
     return {
-      'id': id,
+      '_id': id,
       'title': title,
-      'content': content,
-      'excerpt': excerpt,
+      'description': description,
       'image': image,
-      'author': author,
-      'category': category,
-      'tags': tags,
-      'is_published': isPublished,
-      'published_at': publishedAt?.toIso8601String(),
-      'created_at': createdAt?.toIso8601String(),
-      'updated_at': updatedAt?.toIso8601String(),
+      'createdAt': createdAt?.toIso8601String(),
+      'updatedAt': updatedAt?.toIso8601String(),
     };
   }
+}
 
-  NewsModel copyWith({
-    String? id,
-    String? title,
-    String? content,
-    String? excerpt,
-    String? image,
-    String? author,
-    String? category,
-    List<String>? tags,
-    bool? isPublished,
-    DateTime? publishedAt,
-    DateTime? createdAt,
-    DateTime? updatedAt,
-  }) {
-    return NewsModel(
-      id: id ?? this.id,
-      title: title ?? this.title,
-      content: content ?? this.content,
-      excerpt: excerpt ?? this.excerpt,
-      image: image ?? this.image,
-      author: author ?? this.author,
-      category: category ?? this.category,
-      tags: tags ?? this.tags,
-      isPublished: isPublished ?? this.isPublished,
-      publishedAt: publishedAt ?? this.publishedAt,
-      createdAt: createdAt ?? this.createdAt,
-      updatedAt: updatedAt ?? this.updatedAt,
+class NewsResponse {
+  final bool success;
+  final String message;
+  final int statusCode;
+  final NewsData data;
+
+  NewsResponse({
+    required this.success,
+    required this.message,
+    required this.statusCode,
+    required this.data,
+  });
+
+  factory NewsResponse.fromJson(Map<String, dynamic> json) {
+    return NewsResponse(
+      success: json['success'] ?? false,
+      message: json['message'] ?? '',
+      statusCode: json['statusCode'] ?? 0,
+      data: NewsData.fromJson(json['data'] ?? {}),
+    );
+  }
+}
+
+class NewsData {
+  final NewsMeta meta;
+  final List<NewsModel> data;
+
+  NewsData({required this.meta, required this.data});
+
+  factory NewsData.fromJson(Map<String, dynamic> json) {
+    return NewsData(
+      meta: NewsMeta.fromJson(json['meta'] ?? {}),
+      data:
+          (json['data'] as List?)?.map((e) => NewsModel.fromJson(e)).toList() ??
+          [],
+    );
+  }
+}
+
+class NewsMeta {
+  final int page;
+  final int limit;
+  final int total;
+  final int totalPage;
+
+  NewsMeta({
+    required this.page,
+    required this.limit,
+    required this.total,
+    required this.totalPage,
+  });
+
+  factory NewsMeta.fromJson(Map<String, dynamic> json) {
+    return NewsMeta(
+      page: json['page'] ?? 1,
+      limit: json['limit'] ?? 10,
+      total: json['total'] ?? 0,
+      totalPage: json['totalPage'] ?? 1,
     );
   }
 }

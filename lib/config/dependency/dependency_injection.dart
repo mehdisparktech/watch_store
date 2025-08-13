@@ -7,6 +7,8 @@ import '../../features/auth/sign up/presentation/controller/sign_up_controller.d
 import '../../features/auth/repository/auth_repository.dart';
 import '../../features/message/presentation/controller/chat_controller.dart';
 import '../../features/message/presentation/controller/message_controller.dart';
+import '../../features/news/presenation/controller/news_controller.dart';
+import '../../features/news/repository/news_repository.dart';
 import '../../features/notifications/presentation/controller/notifications_controller.dart';
 import '../../features/profile/presentation/controller/profile_controller.dart';
 import '../../features/setting/presentation/controller/privacy_policy_controller.dart';
@@ -27,6 +29,9 @@ class DependencyInjection extends Bindings {
       fenix: true,
     );
 
+    // News Repository
+    Get.lazyPut<NewsRepository>(() => NewsRepositoryImpl(), fenix: true);
+
     // Auth Controllers
     Get.lazyPut(() => SignUpController(), fenix: true);
     Get.lazyPut(() => SignInController(), fenix: true);
@@ -41,5 +46,8 @@ class DependencyInjection extends Bindings {
     Get.lazyPut(() => SettingController(), fenix: true);
     Get.lazyPut(() => PrivacyPolicyController(), fenix: true);
     Get.lazyPut(() => TermsOfServicesController(), fenix: true);
+
+    // News Controller
+    Get.lazyPut(() => NewsController(), fenix: true);
   }
 }

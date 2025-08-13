@@ -25,6 +25,7 @@ import '../../features/setting/presentation/screen/privacy_policy_screen.dart';
 import '../../features/setting/presentation/screen/setting_screen.dart';
 import '../../features/setting/presentation/screen/terms_of_services_screen.dart';
 import '../../features/splash/splash_screen.dart';
+import '../../features/news/binding/news_binding.dart';
 
 class AppRoutes {
   static const String test = "/test_screen.dart";
@@ -93,7 +94,8 @@ class AppRoutes {
       name: watchDetail,
       page: () => WatchDetailScreen(watch: Get.arguments),
     ),
-    GetPage(name: news, page: () => NewsScreen()),
+    // News route with binding
+    GetPage(name: news, page: () => NewsScreen(), binding: NewsBinding()),
     GetPage(name: faq, page: () => FAQScreen()),
     GetPage(name: wishlist, page: () => WishlistScreen()),
     GetPage(
