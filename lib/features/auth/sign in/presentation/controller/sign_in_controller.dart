@@ -2,10 +2,11 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:get/get.dart';
 import '../../../../../config/route/app_routes.dart';
-// import '../../../../../services/api/api_service.dart';
-// import '../../../../../config/api/api_end_point.dart';
-// import '../../../../../services/storage/storage_keys.dart';
-// import '../../../../../services/storage/storage_services.dart';
+import '../../../../../config/api/api_end_point.dart';
+import '../../../data/model/auth_response_model.dart';
+import '../../../repository/auth_repository.dart';
+import '../../../../../services/storage/storage_services.dart';
+import '../../../../../services/storage/storage_keys.dart';
 
 class SignInController extends GetxController {
   /// Sign in Button Loading variable
@@ -16,63 +17,73 @@ class SignInController extends GetxController {
 
   /// email and password Controller here
   TextEditingController emailController = TextEditingController(
-    text: kDebugMode ? 'developernaimul00@gmail.com' : '',
+    text: kDebugMode ? 'user@gmail.com' : '',
   );
   TextEditingController passwordController = TextEditingController(
-    text: kDebugMode ? 'hello123' : "",
+    text: kDebugMode ? 'user@123' : "",
   );
 
-  /// Sign in Api call here
+  /// Auth repository
+  late final AuthRepository _authRepository;
 
+  @override
+  void onInit() {
+    super.onInit();
+    _authRepository = AuthRepositoryImpl(baseUrl: ApiEndPoint.baseUrl);
+  }
+
+  /// Sign in Api call here
   Future<void> signInUser() async {
     if (!formKey.currentState!.validate()) return;
-    Get.toNamed(AppRoutes.home);
-    return;
 
-    // isLoading = true;
-    // update();
+    isLoading = true;
+    update();
 
-    // Map<String, String> body = {
-    //   "email": emailController.text,
-    //   "password": passwordController.text,
-    // };
+    try {
+      final request = LoginRequestModel(
+        email: emailController.text,
+        password: passwordController.text,
+      );
 
-    // var response = await ApiService.post(
-    //   ApiEndPoint.signIn,
-    //   body: body,
-    // ).timeout(const Duration(seconds: 30));
+      final response = await _authRepository.login(request);
 
-    // if (response.statusCode == 200) {
-    //   var data = response.data;
+      if (response.success) {
+        // Save user data
+        if (response.user != null) {
+          LocalStorage.userId = response.user!.id ?? "";
+          LocalStorage.myImage = response.user!.profileImage ?? "";
+          LocalStorage.myName = response.user!.name ?? "";
+          LocalStorage.myEmail = response.user!.email ?? "";
+          LocalStorage.isLogIn = true;
 
-    //   LocalStorage.token = data['data']["accessToken"];
-    //   LocalStorage.userId = data['data']["attributes"]["_id"];
-    //   LocalStorage.myImage = data['data']["attributes"]["image"];
-    //   LocalStorage.myName = data['data']["attributes"]["fullName"];
+          // Save to persistent storage
+          LocalStorage.setBool(LocalStorageKeys.isLogIn, true);
+          LocalStorage.setString(LocalStorageKeys.userId, LocalStorage.userId);
+          LocalStorage.setString(
+            LocalStorageKeys.myImage,
+            LocalStorage.myImage,
+          );
+          LocalStorage.setString(LocalStorageKeys.myName, LocalStorage.myName);
+          LocalStorage.setString(
+            LocalStorageKeys.myEmail,
+            LocalStorage.myEmail,
+          );
+        }
 
-    //   LocalStorage.myEmail = data['data']["attributes"]["email"];
-    //   LocalStorage.isLogIn = true;
+        // Navigate to home screen
+        Get.offAllNamed(AppRoutes.home);
 
-    //   LocalStorage.setBool(LocalStorageKeys.isLogIn, LocalStorage.isLogIn);
-    //   LocalStorage.setString(LocalStorageKeys.token, LocalStorage.token);
-    //   LocalStorage.setString(LocalStorageKeys.userId, LocalStorage.userId);
-    //   LocalStorage.setString(LocalStorageKeys.myImage, LocalStorage.myImage);
-    //   LocalStorage.setString(LocalStorageKeys.myName, LocalStorage.myName);
-    //   LocalStorage.setString(LocalStorageKeys.myEmail, LocalStorage.myEmail);
-
-    //   // if (LocalStorage.myRole == 'consultant') {
-    //   //   Get.offAllNamed(AppRoutes.doctorHome);
-    //   // } else {
-    //   //   Get.offAllNamed(AppRoutes.patientsHome);
-    //   // }
-
-    //   emailController.clear();
-    //   passwordController.clear();
-    // } else {
-    //   Get.snackbar(response.statusCode.toString(), response.message);
-    // }
-
-    // isLoading = false;
-    // update();
+        // Clear controllers
+        emailController.clear();
+        passwordController.clear();
+      } else {
+        Get.snackbar("Error", response.message ?? "Login failed");
+      }
+    } catch (e) {
+      Get.snackbar("Error", "$e");
+    } finally {
+      isLoading = false;
+      update();
+    }
   }
 }

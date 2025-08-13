@@ -1,5 +1,9 @@
+import 'package:watch_store/services/storage/storage_keys.dart';
+
 import '../data/model/auth_response_model.dart';
 import '../data/model/user_model.dart';
+import '../../../services/api/api_service.dart';
+import '../../../services/storage/storage_services.dart';
 
 abstract class AuthRepository {
   Future<AuthResponseModel> login(LoginRequestModel request);
@@ -16,19 +20,38 @@ abstract class AuthRepository {
 }
 
 class AuthRepositoryImpl implements AuthRepository {
-  // final ApiService _apiService;
-  // final StorageService _storageService;
+  final String baseUrl;
 
-  // AuthRepositoryImpl(this._apiService, this._storageService);
+  AuthRepositoryImpl({required this.baseUrl});
 
   @override
   Future<AuthResponseModel> login(LoginRequestModel request) async {
     try {
-      // final response = await _apiService.post('/auth/login', data: request.toJson());
-      // return AuthResponseModel.fromJson(response.data);
+      final response = await ApiService.post(
+        "$baseUrl/auth/login",
+        body: request.toJson(),
+      );
 
-      // Temporary mock response
-      throw UnimplementedError('API service not implemented yet');
+      if (response.statusCode == 200) {
+        final authResponse = AuthResponseModel(
+          success: response.data['success'] ?? false,
+          message: response.data['message'],
+          token: response.data['data']['token'],
+          user:
+              response.data['data']['user'] != null
+                  ? UserModel.fromJson(response.data['data']['user'])
+                  : null,
+        );
+
+        // Save token to storage
+        if (authResponse.token != null) {
+          await saveToken(authResponse.token!);
+        }
+
+        return authResponse;
+      } else {
+        throw Exception('Login failed: ${response.message}');
+      }
     } catch (e) {
       throw Exception('Login failed: $e');
     }
@@ -112,30 +135,24 @@ class AuthRepositoryImpl implements AuthRepository {
 
   @override
   Future<bool> isLoggedIn() async {
-    // final token = await getToken();
-    // return token != null && token.isNotEmpty;
-
-    throw UnimplementedError('Storage service not implemented yet');
+    final token = await getToken();
+    return token != null && token.isNotEmpty;
   }
 
   @override
   Future<String?> getToken() async {
-    // return await _storageService.getString('auth_token');
-
-    throw UnimplementedError('Storage service not implemented yet');
+    return LocalStorage.token;
   }
 
   @override
   Future<void> saveToken(String token) async {
-    // await _storageService.setString('auth_token', token);
-
-    throw UnimplementedError('Storage service not implemented yet');
+    LocalStorage.token = token;
+    await LocalStorage.setString(LocalStorageKeys.token, token);
   }
 
   @override
   Future<void> clearToken() async {
-    // await _storageService.remove('auth_token');
-
-    throw UnimplementedError('Storage service not implemented yet');
+    LocalStorage.token = "";
+    await LocalStorage.setString(LocalStorageKeys.token, "");
   }
 }

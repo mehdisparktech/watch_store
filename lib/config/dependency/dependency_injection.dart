@@ -4,6 +4,7 @@ import '../../features/auth/change_password/presentation/controller/change_passw
 import '../../features/auth/forgot password/presentation/controller/forget_password_controller.dart';
 import '../../features/auth/sign in/presentation/controller/sign_in_controller.dart';
 import '../../features/auth/sign up/presentation/controller/sign_up_controller.dart';
+import '../../features/auth/repository/auth_repository.dart';
 import '../../features/message/presentation/controller/chat_controller.dart';
 import '../../features/message/presentation/controller/message_controller.dart';
 import '../../features/notifications/presentation/controller/notifications_controller.dart';
@@ -12,12 +13,19 @@ import '../../features/setting/presentation/controller/privacy_policy_controller
 import '../../features/setting/presentation/controller/setting_controller.dart';
 import '../../features/setting/presentation/controller/terms_of_services_controller.dart';
 import '../languages/language_controller.dart';
+import '../api/api_end_point.dart';
 
 class DependencyInjection extends Bindings {
   @override
   void dependencies() {
     // Language Controller
     Get.put(() => LanguageController(), permanent: true);
+
+    // Repositories
+    Get.lazyPut<AuthRepository>(
+      () => AuthRepositoryImpl(baseUrl: ApiEndPoint.baseUrl),
+      fenix: true,
+    );
 
     // Auth Controllers
     Get.lazyPut(() => SignUpController(), fenix: true);
