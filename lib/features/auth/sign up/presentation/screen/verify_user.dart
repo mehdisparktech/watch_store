@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:watch_store/component/image/common_image.dart';
-import 'package:watch_store/config/route/app_routes.dart';
 import 'package:watch_store/utils/constants/app_images.dart';
 import '../../../../../component/button/common_button.dart';
 import '../../../../../component/text/common_text.dart';
@@ -91,7 +90,7 @@ class _VerifyUserState extends State<VerifyUser> {
                       autovalidateMode: AutovalidateMode.disabled,
                       enableActiveFill: true,
                       validator: (value) {
-                        if (value != null && value.length == 6) {
+                        if (value != null && value.length == 4) {
                           return null;
                         } else {
                           return AppString.otpIsInValid;
@@ -106,7 +105,7 @@ class _VerifyUserState extends State<VerifyUser> {
                         controller.time == '00:00'
                             ? () {
                               controller.startTimer();
-                              controller.signUpUser();
+                              controller.resendOtp(); // signUpUser() এর পরিবর্তে resendOtp() কল করা হয়েছে
                             }
                             : () {},
                     child: CommonText(
@@ -125,10 +124,9 @@ class _VerifyUserState extends State<VerifyUser> {
                     titleText: AppString.verify,
                     isLoading: controller.isLoadingVerify,
                     onTap: () {
-                      // if (formKey.currentState!.validate()) {
-                      //   controller.verifyOtpRepo();
-                      // }
-                      Get.offNamed(AppRoutes.signIn);
+                      if (formKey.currentState!.validate()) {
+                        controller.verifyOtpRepo();
+                      }
                     },
                   ),
                 ],

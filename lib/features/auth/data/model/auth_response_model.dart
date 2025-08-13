@@ -70,6 +70,17 @@ class RegisterRequestModel {
   }
 }
 
+class VerifyEmailRequestModel {
+  final String email;
+  final int oneTimeCode;
+
+  VerifyEmailRequestModel({required this.email, required this.oneTimeCode});
+
+  Map<String, dynamic> toJson() {
+    return {'email': email, 'oneTimeCode': oneTimeCode};
+  }
+}
+
 class ChangePasswordRequestModel {
   final String currentPassword;
   final String newPassword;

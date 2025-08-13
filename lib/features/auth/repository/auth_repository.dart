@@ -9,6 +9,8 @@ import '../../../services/storage/storage_services.dart';
 abstract class AuthRepository {
   Future<AuthResponseModel> login(LoginRequestModel request);
   Future<AuthResponseModel> register(RegisterRequestModel request);
+  Future<AuthResponseModel> verifyEmail(VerifyEmailRequestModel request);
+  Future<AuthResponseModel> resendOtp(String email); // নতুন মেথড যোগ করা হয়েছে
   Future<AuthResponseModel> forgotPassword(ForgotPasswordRequestModel request);
   Future<AuthResponseModel> changePassword(ChangePasswordRequestModel request);
   Future<AuthResponseModel> refreshToken(String refreshToken);
@@ -61,12 +63,77 @@ class AuthRepositoryImpl implements AuthRepository {
   @override
   Future<AuthResponseModel> register(RegisterRequestModel request) async {
     try {
-      // final response = await _apiService.post('/auth/register', data: request.toJson());
-      // return AuthResponseModel.fromJson(response.data);
+      final response = await ApiService.post(
+        baseUrl + ApiEndPoint.user,
+        body: request.toJson(),
+      );
 
-      throw UnimplementedError('API service not implemented yet');
+      if (response.statusCode == 200) {
+        final authResponse = AuthResponseModel(
+          success: response.data['success'] ?? false,
+          message: response.data['message'],
+          user:
+              response.data['data'] != null
+                  ? UserModel.fromJson(response.data['data'])
+                  : null,
+        );
+
+        return authResponse;
+      } else {
+        throw Exception('Registration failed: ${response.message}');
+      }
     } catch (e) {
       throw Exception('Registration failed: $e');
+    }
+  }
+
+  @override
+  Future<AuthResponseModel> verifyEmail(VerifyEmailRequestModel request) async {
+    try {
+      final response = await ApiService.post(
+        baseUrl + ApiEndPoint.verifyEmail,
+        body: request.toJson(),
+      );
+
+      if (response.statusCode == 200) {
+        final authResponse = AuthResponseModel(
+          success: response.data['success'] ?? false,
+          message: response.data['message'],
+          token: response.data['data']['accessToken'],
+        );
+
+        // Save token to storage
+        if (authResponse.token != null) {
+          await saveToken(authResponse.token!);
+        }
+
+        return authResponse;
+      } else {
+        throw Exception('Email verification failed: ${response.message}');
+      }
+    } catch (e) {
+      throw Exception('Email verification failed: $e');
+    }
+  }
+
+  @override
+  Future<AuthResponseModel> resendOtp(String email) async {
+    try {
+      final response = await ApiService.post(
+        baseUrl + ApiEndPoint.resendOtp,
+        body: {"email": email},
+      );
+
+      if (response.statusCode == 200) {
+        return AuthResponseModel(
+          success: response.data['success'] ?? false,
+          message: response.data['message'],
+        );
+      } else {
+        throw Exception('Resend OTP failed: ${response.message}');
+      }
+    } catch (e) {
+      throw Exception('Resend OTP failed: $e');
     }
   }
 

@@ -7,11 +7,12 @@ import 'package:intl_phone_field/countries.dart';
 import 'package:watch_store/utils/helpers/other_helper.dart';
 
 import '../../../../../config/route/app_routes.dart';
-// import '../../../../../services/api/api_service.dart';
-// import '../../../../../services/storage/storage_keys.dart';
-// import '../../../../../config/api/api_end_point.dart';
-// import '../../../../../services/storage/storage_services.dart';
-// import '../../../../../utils/app_utils.dart';
+import '../../../../../services/storage/storage_keys.dart';
+import '../../../../../config/api/api_end_point.dart';
+import '../../../../../services/storage/storage_services.dart';
+import '../../../../../utils/app_utils.dart';
+import '../../../data/model/auth_response_model.dart';
+import '../../../repository/auth_repository.dart';
 
 class SignUpController extends GetxController {
   /// Sign Up Form Key
@@ -32,7 +33,9 @@ class SignUpController extends GetxController {
   String countryCode = "+880";
   String? image;
 
-  String signUpToken = '';
+  String userEmail = '';
+
+  late final AuthRepository _authRepository;
 
   static SignUpController get instance => Get.find<SignUpController>();
 
@@ -56,6 +59,12 @@ class SignUpController extends GetxController {
   );
 
   @override
+  void onInit() {
+    super.onInit();
+    _authRepository = AuthRepositoryImpl(baseUrl: ApiEndPoint.baseUrl);
+  }
+
+  @override
   void dispose() {
     _timer?.cancel();
     super.dispose();
@@ -77,30 +86,36 @@ class SignUpController extends GetxController {
 
   signUpUser() async {
     if (!signUpFormKey.currentState!.validate()) return;
-    Get.toNamed(AppRoutes.verifyUser);
-    return;
-    // isLoading = true;
-    // update();
-    // Map<String, String> body = {
-    //   "fullName": nameController.text,
-    //   "email": emailController.text,
-    //   "phoneNumber": numberController.text,
-    //   "countryCode": countryCode,
-    //   "password": passwordController.text,
-    //   "role": selectRole.toLowerCase(),
-    // };
 
-    // var response = await ApiService.post(ApiEndPoint.signUp, body: body);
+    isLoading = true;
+    update();
 
-    // if (response.statusCode == 200) {
-    //   var data = response.data;
-    //   signUpToken = data['data']['signUpToken'];
-    //   Get.toNamed(AppRoutes.verifyUser);
-    // } else {
-    //   Utils.errorSnackBar(response.statusCode.toString(), response.message);
-    // }
-    // isLoading = false;
-    // update();
+    try {
+      final request = RegisterRequestModel(
+        name: nameController.text,
+        email: emailController.text,
+        password: passwordController.text,
+        phone: numberController.text.isNotEmpty ? numberController.text : null,
+      );
+
+      final response = await _authRepository.register(request);
+
+      if (response.success) {
+        userEmail = emailController.text;
+        Utils.successSnackBar(
+          'Success',
+          response.message ?? 'Registration successful',
+        );
+        Get.toNamed(AppRoutes.verifyUser);
+      } else {
+        Utils.errorSnackBar('Error', response.message ?? 'Registration failed');
+      }
+    } catch (e) {
+      Utils.errorSnackBar('Error', e.toString());
+    } finally {
+      isLoading = false;
+      update();
+    }
   }
 
   void startTimer() {
@@ -122,46 +137,67 @@ class SignUpController extends GetxController {
   }
 
   Future<void> verifyOtpRepo() async {
-    Get.offAllNamed(AppRoutes.signIn);
-    return;
+    if (otpController.text.isEmpty) {
+      Utils.errorSnackBar('Error', 'Please enter OTP');
+      return;
+    }
 
-    // isLoadingVerify = true;
-    // update();
-    // Map<String, String> body = {"otp": otpController.text};
-    // Map<String, String> header = {"SignUpToken": "signUpToken $signUpToken"};
-    // var response = await ApiService.post(
-    //   ApiEndPoint.verifyEmail,
-    //   body: body,
-    //   header: header,
-    // );
+    isLoadingVerify = true;
+    update();
 
-    // if (response.statusCode == 200) {
-    //   var data = response.data;
+    try {
+      final request = VerifyEmailRequestModel(
+        email: userEmail.isNotEmpty ? userEmail : emailController.text,
+        oneTimeCode: int.parse(otpController.text),
+      );
 
-    //   LocalStorage.token = data['data']["accessToken"];
-    //   LocalStorage.userId = data['data']["attributes"]["_id"];
-    //   LocalStorage.myImage = data['data']["attributes"]["image"];
-    //   LocalStorage.myName = data['data']["attributes"]["fullName"];
-    //   LocalStorage.myEmail = data['data']["attributes"]["email"];
-    //   LocalStorage.isLogIn = true;
+      final response = await _authRepository.verifyEmail(request);
 
-    //   LocalStorage.setBool(LocalStorageKeys.isLogIn, LocalStorage.isLogIn);
-    //   LocalStorage.setString(LocalStorageKeys.token, LocalStorage.token);
-    //   LocalStorage.setString(LocalStorageKeys.userId, LocalStorage.userId);
-    //   LocalStorage.setString(LocalStorageKeys.myImage, LocalStorage.myImage);
-    //   LocalStorage.setString(LocalStorageKeys.myName, LocalStorage.myName);
-    //   LocalStorage.setString(LocalStorageKeys.myEmail, LocalStorage.myEmail);
+      if (response.success) {
+        // Save user data to local storage
+        LocalStorage.isLogIn = true;
+        await LocalStorage.setBool(LocalStorageKeys.isLogIn, true);
 
-    //   // if (LocalStorage.myRole == 'consultant') {
-    //   //   Get.toNamed(AppRoutes.personalInformation);
-    //   // } else {
-    //   //   Get.offAllNamed(AppRoutes.patientsHome);
-    //   // }
-    // } else {
-    //   Get.snackbar(response.statusCode.toString(), response.message);
-    // }
+        Utils.successSnackBar(
+          'Success',
+          response.message ?? 'Email verified successfully',
+        );
+        Get.offAllNamed(AppRoutes.signIn);
+      } else {
+        Utils.errorSnackBar('Error', response.message ?? 'Verification failed');
+      }
+    } catch (e) {
+      Utils.errorSnackBar('Error', e.toString());
+    } finally {
+      isLoadingVerify = false;
+      update();
+    }
+  }
 
-    // isLoadingVerify = false;
-    // update();
+  Future<void> resendOtp() async {
+    isLoading = true;
+    update();
+
+    try {
+      final email = userEmail.isNotEmpty ? userEmail : emailController.text;
+      final response = await _authRepository.resendOtp(email);
+
+      if (response.success) {
+        Utils.successSnackBar(
+          'Success',
+          response.message ?? 'OTP sent successfully again',
+        );
+      } else {
+        Utils.errorSnackBar(
+          'Error',
+          response.message ?? 'Failed to resend OTP',
+        );
+      }
+    } catch (e) {
+      Utils.errorSnackBar('Error', e.toString());
+    } finally {
+      isLoading = false;
+      update();
+    }
   }
 }
