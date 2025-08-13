@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:watch_store/component/app_bar/common_app_bar.dart';
 import 'package:watch_store/component/drawer/common_drawer.dart';
 import 'package:watch_store/component/text/common_text.dart';
 import 'package:watch_store/component/text_field/common_text_field.dart';
 import 'package:watch_store/utils/constants/app_colors.dart';
 import 'package:watch_store/utils/constants/app_images.dart';
+import '../controller/faq_controller.dart';
+import '../../../../utils/enum/enum.dart';
 
 class FAQScreen extends StatefulWidget {
   const FAQScreen({super.key});
@@ -15,45 +18,6 @@ class FAQScreen extends StatefulWidget {
 
 class _FAQScreenState extends State<FAQScreen> {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
-
-  List<FAQItem> faqItems = [
-    FAQItem(
-      question: 'Worem ipsum dolor sit amet?',
-      answer:
-          'Worem ipsum dolor sit amet, consectetur adipiscing elit. Nunc vulputate libero et velit interdum, ac aliquet odio mattis. Class aptent taciti sociosqu ad...',
-      isExpanded: true,
-    ),
-    FAQItem(
-      question: 'Consectetur adipiscing elit. Nuncing?',
-      answer:
-          'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
-      isExpanded: false,
-    ),
-    FAQItem(
-      question: 'Nunc vulputate libero et velit in?',
-      answer:
-          'Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.',
-      isExpanded: false,
-    ),
-    FAQItem(
-      question: 'Vulputate libero et velit interdum?',
-      answer:
-          'Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.',
-      isExpanded: false,
-    ),
-    FAQItem(
-      question: 'Do you have an affiliate program?',
-      answer:
-          'Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
-      isExpanded: false,
-    ),
-    FAQItem(
-      question: 'Do I need to know to use this?',
-      answer:
-          'Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium.',
-      isExpanded: false,
-    ),
-  ];
 
   @override
   Widget build(BuildContext context) {
@@ -102,18 +66,26 @@ class _FAQScreenState extends State<FAQScreen> {
               ],
             ),
           ),
-
           Expanded(
-            child: ListView.builder(
-              itemCount: faqItems.length,
-              itemBuilder: (context, index) {
-                final item = faqItems[index];
-                return FAQItemWidget(
-                  item: item,
-                  onToggle: () {
-                    setState(() {
-                      item.isExpanded = !item.isExpanded;
-                    });
+            child: GetBuilder<FAQController>(
+              builder: (controller) {
+                if (controller.status == Status.loading) {
+                  return Center(child: CircularProgressIndicator());
+                } else if (controller.status == Status.error) {
+                  return Center(child: Text('Failed to load FAQs'));
+                } else if (controller.faqList.isEmpty) {
+                  return Center(child: Text('No FAQs available'));
+                }
+
+                return ListView.builder(
+                  itemCount: controller.faqList.length,
+                  itemBuilder: (context, index) {
+                    final item = controller.faqList[index];
+                    return FAQItemWidget(
+                      question: item.question ?? '',
+                      answer: item.answer ?? '',
+                      onToggle: () {},
+                    );
                   },
                 );
               },
@@ -125,28 +97,29 @@ class _FAQScreenState extends State<FAQScreen> {
   }
 }
 
-class FAQItem {
-  String question;
-  String answer;
-  bool isExpanded;
-
-  FAQItem({
-    required this.question,
-    required this.answer,
-    required this.isExpanded,
-  });
-}
-
-class FAQItemWidget extends StatelessWidget {
-  final FAQItem item;
+class FAQItemWidget extends StatefulWidget {
+  final String question;
+  final String answer;
   final VoidCallback onToggle;
 
-  const FAQItemWidget({super.key, required this.item, required this.onToggle});
+  const FAQItemWidget({
+    super.key,
+    required this.question,
+    required this.answer,
+    required this.onToggle,
+  });
+
+  @override
+  State<FAQItemWidget> createState() => _FAQItemWidgetState();
+}
+
+class _FAQItemWidgetState extends State<FAQItemWidget> {
+  bool isExpanded = false;
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.symmetric(horizontal: 10),
+      margin: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
       padding: EdgeInsets.all(16),
       decoration: BoxDecoration(
         color: AppColors.white,
@@ -166,17 +139,17 @@ class FAQItemWidget extends StatelessWidget {
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     CommonText(
-                      text: item.question,
+                      text: widget.question,
                       fontSize: 18,
                       fontWeight: FontWeight.bold,
                     ),
-                    if (item.isExpanded)
+                    if (isExpanded)
                       Padding(
                         padding: const EdgeInsets.only(top: 8.0, bottom: 16),
                         child: CommonText(
-                          text: item.answer,
+                          text: widget.answer,
                           fontSize: 16,
-                          maxLines: 3,
+                          maxLines: 10,
                           overflow: TextOverflow.ellipsis,
                         ),
                       ),
@@ -184,11 +157,13 @@ class FAQItemWidget extends StatelessWidget {
                 ),
               ),
               IconButton(
-                icon: Icon(
-                  item.isExpanded ? Icons.remove : Icons.add,
-                  size: 32,
-                ),
-                onPressed: onToggle,
+                icon: Icon(isExpanded ? Icons.remove : Icons.add, size: 32),
+                onPressed: () {
+                  setState(() {
+                    isExpanded = !isExpanded;
+                  });
+                  widget.onToggle();
+                },
               ),
             ],
           ),
