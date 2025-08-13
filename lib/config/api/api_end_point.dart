@@ -6,9 +6,9 @@ class ApiEndPoint {
   static const signUp = "users/sign-up";
   static const verifyEmail = "auth/verify-email";
   static const signIn = "auth/login";
-  static const forgotPassword = "users/forget-password";
+  static const forgotPassword = "auth/forget-password";
   static const verifyOtp = "users/verify-otp";
-  static const resetPassword = "users/reset-password";
+  static const resetPassword = "auth/reset-password";
   static const changePassword = "users/change-password";
   static const resendOtp = "auth/resend-otp"; // নতুন এন্ডপয়েন্ট যোগ করা হয়েছে
   static const user = "users";

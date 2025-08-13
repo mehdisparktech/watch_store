@@ -142,12 +142,70 @@ class AuthRepositoryImpl implements AuthRepository {
     ForgotPasswordRequestModel request,
   ) async {
     try {
-      // final response = await _apiService.post('/auth/forgot-password', data: request.toJson());
-      // return AuthResponseModel.fromJson(response.data);
+      final response = await ApiService.post(
+        baseUrl + ApiEndPoint.forgotPassword,
+        body: request.toJson(),
+      );
 
-      throw UnimplementedError('API service not implemented yet');
+      if (response.statusCode == 200) {
+        return AuthResponseModel(
+          success: response.data['success'] ?? false,
+          message: response.data['message'],
+        );
+      } else {
+        throw Exception('Forgot password failed: ${response.message}');
+      }
     } catch (e) {
       throw Exception('Forgot password failed: $e');
+    }
+  }
+
+  Future<AuthResponseModel> verifyEmails(
+    VerifyEmailRequestModel request,
+  ) async {
+    try {
+      final response = await ApiService.post(
+        baseUrl + ApiEndPoint.verifyEmail,
+        body: request.toJson(),
+      );
+
+      if (response.statusCode == 200) {
+        final authResponse = AuthResponseModel(
+          success: response.data['success'] ?? false,
+          message: response.data['message'],
+          token: response.data['data']['verifyToken'],
+        );
+
+        return authResponse;
+      } else {
+        throw Exception('Email verification failed: ${response.message}');
+      }
+    } catch (e) {
+      throw Exception('Email verification failed: $e');
+    }
+  }
+
+  Future<AuthResponseModel> resetPassword(
+    ResetPasswordRequestModel request,
+    String verifyToken,
+  ) async {
+    try {
+      final response = await ApiService.post(
+        baseUrl + ApiEndPoint.resetPassword,
+        body: request.toJson(),
+        header: {"Authorization": "Bearer $verifyToken"},
+      );
+
+      if (response.statusCode == 200) {
+        return AuthResponseModel(
+          success: response.data['success'] ?? false,
+          message: response.data['message'],
+        );
+      } else {
+        throw Exception('Reset password failed: ${response.message}');
+      }
+    } catch (e) {
+      throw Exception('Reset password failed: $e');
     }
   }
 

@@ -104,3 +104,17 @@ class ForgotPasswordRequestModel {
     return {'email': email};
   }
 }
+
+class ResetPasswordRequestModel {
+  final String newPassword;
+  final String confirmPassword;
+
+  ResetPasswordRequestModel({
+    required this.newPassword,
+    required this.confirmPassword,
+  });
+
+  Map<String, dynamic> toJson() {
+    return {'newPassword': newPassword, 'confirmPassword': confirmPassword};
+  }
+}
