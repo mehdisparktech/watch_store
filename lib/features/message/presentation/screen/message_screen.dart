@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:emoji_picker_flutter/emoji_picker_flutter.dart';
+import 'package:characters/characters.dart';
 import 'package:watch_store/utils/constants/app_colors.dart';
 import 'package:watch_store/utils/constants/app_icons.dart';
 import 'package:watch_store/utils/constants/app_images.dart';
@@ -27,6 +30,9 @@ class _MessageScreenState extends State<MessageScreen> {
   String? itemPrice = Get.parameters["itemPrice"];
   String? itemName = Get.parameters["itemName"];
 
+  bool _isEmojiVisible = false;
+  final FocusNode _inputFocusNode = FocusNode();
+
   @override
   void initState() {
     MessageController.instance.name = name;
@@ -36,6 +42,12 @@ class _MessageScreenState extends State<MessageScreen> {
     MessageController.instance.getMessageRepo();
     MessageController.instance.listenMessage(chatId);
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    _inputFocusNode.dispose();
+    super.dispose();
   }
 
   @override
@@ -300,86 +312,141 @@ class _MessageScreenState extends State<MessageScreen> {
 
   Widget _buildMessageInput(MessageController controller) {
     return SafeArea(
-      child: Padding(
-        padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 10.h),
-        child: Row(
-          children: [
-            /// Input Container
-            Expanded(
-              child: Container(
-                padding: EdgeInsets.symmetric(vertical: 2.h),
-                decoration: BoxDecoration(
-                  color: const Color(0xffF5F6FA),
-                  borderRadius: BorderRadius.circular(100),
-                ),
-                child: Row(
-                  children: [
-                    /// Emoji Button
-                    IconButton(
-                      icon: Icon(
-                        Icons.emoji_emotions_outlined,
-                        color: AppColors.socialIconBackground,
-                        size: 24.sp,
-                      ),
-                      onPressed: () {},
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Padding(
+            padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 10.h),
+            child: Row(
+              children: [
+                /// Input Container
+                Expanded(
+                  child: Container(
+                    padding: EdgeInsets.symmetric(vertical: 2.h),
+                    decoration: BoxDecoration(
+                      color: const Color(0xffF5F6FA),
+                      borderRadius: BorderRadius.circular(100),
                     ),
-
-                    /// Text Input Field
-                    Expanded(
-                      child: TextField(
-                        controller: controller.messageController,
-                        decoration: InputDecoration(
-                          hintText: 'Type a message...',
-                          hintStyle: TextStyle(
-                            color: Colors.grey[500],
-                            fontSize: 14.sp,
+                    child: Row(
+                      children: [
+                        /// Emoji Button
+                        IconButton(
+                          icon: Icon(
+                            Icons.emoji_emotions_outlined,
+                            color: AppColors.socialIconBackground,
+                            size: 24.sp,
                           ),
-                          border: InputBorder.none,
-                          contentPadding: EdgeInsets.symmetric(
-                            horizontal: 16.w,
-                            vertical: 12.h,
+                          onPressed: () {
+                            setState(() {
+                              _isEmojiVisible = !_isEmojiVisible;
+                            });
+                            if (_isEmojiVisible) {
+                              FocusScope.of(context).unfocus();
+                            } else {
+                              _inputFocusNode.requestFocus();
+                            }
+                          },
+                        ),
+
+                        /// Text Input Field
+                        Expanded(
+                          child: TextField(
+                            focusNode: _inputFocusNode,
+                            controller: controller.messageController,
+                            decoration: InputDecoration(
+                              hintText: 'Type a message...',
+                              hintStyle: TextStyle(
+                                color: Colors.grey[500],
+                                fontSize: 14.sp,
+                              ),
+                              border: InputBorder.none,
+                              contentPadding: EdgeInsets.symmetric(
+                                horizontal: 16.w,
+                                vertical: 12.h,
+                              ),
+                            ),
+                            onTap: () {
+                              if (_isEmojiVisible) {
+                                setState(() {
+                                  _isEmojiVisible = false;
+                                });
+                              }
+                            },
+                            onSubmitted: (value) => controller.addNewMessage(),
+                            maxLines: null,
                           ),
                         ),
-                        onSubmitted: (value) => controller.addNewMessage(),
-                        maxLines: null,
-                      ),
-                    ),
 
-                    /// Camera Button
-                    IconButton(
-                      icon: CommonImage(
-                        imageSrc: AppIcons.image,
-                        size: 24,
-                        imageColor: Colors.grey[600],
-                      ),
-                      onPressed: () {},
+                        /// Image Button
+                        IconButton(
+                          icon: CommonImage(
+                            imageSrc: AppIcons.image,
+                            size: 24,
+                            imageColor: Colors.grey[600],
+                          ),
+                          onPressed: _showImageSourceActionSheet,
+                        ),
+                      ],
                     ),
-                  ],
+                  ),
                 ),
+
+                16.width,
+
+                /// Send Button
+                Container(
+                  width: 48.w,
+                  height: 48.h,
+                  decoration: const BoxDecoration(
+                    color: AppColors.socialIconBackground,
+                    shape: BoxShape.circle,
+                  ),
+                  child: IconButton(
+                    icon: CommonImage(
+                      imageSrc: AppIcons.send,
+                      size: 24,
+                      imageColor: Colors.white,
+                    ),
+                    onPressed: controller.addNewMessage,
+                  ),
+                ),
+              ],
+            ),
+          ),
+
+          /// Emoji Picker
+          if (_isEmojiVisible)
+            SizedBox(
+              height: 280.h,
+              child: EmojiPicker(
+                onEmojiSelected: (category, emoji) {
+                  final text = controller.messageController.text;
+                  controller.messageController.text = text + emoji.emoji;
+                  controller
+                      .messageController
+                      .selection = TextSelection.fromPosition(
+                    TextPosition(
+                      offset: controller.messageController.text.length,
+                    ),
+                  );
+                },
+                onBackspacePressed: () {
+                  final text = controller.messageController.text;
+                  if (text.isNotEmpty) {
+                    controller.messageController.text =
+                        text.characters.skipLast(1).toString();
+                    controller
+                        .messageController
+                        .selection = TextSelection.fromPosition(
+                      TextPosition(
+                        offset: controller.messageController.text.length,
+                      ),
+                    );
+                  }
+                },
               ),
             ),
-
-            16.width,
-
-            /// Send Button
-            Container(
-              width: 48.w,
-              height: 48.h,
-              decoration: const BoxDecoration(
-                color: AppColors.socialIconBackground,
-                shape: BoxShape.circle,
-              ),
-              child: IconButton(
-                icon: CommonImage(
-                  imageSrc: AppIcons.send,
-                  size: 24,
-                  imageColor: Colors.white,
-                ),
-                onPressed: controller.addNewMessage,
-              ),
-            ),
-          ],
-        ),
+        ],
       ),
     );
   }
@@ -391,5 +458,52 @@ class _MessageScreenState extends State<MessageScreen> {
     final nextMessage = messages[index + 1] as ChatMessageModel;
 
     return currentMessage.isMe != nextMessage.isMe;
+  }
+
+  Future<void> _showImageSourceActionSheet() async {
+    showModalBottomSheet(
+      context: context,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
+      ),
+      builder: (_) {
+        return SafeArea(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              ListTile(
+                leading: const Icon(Icons.photo_camera),
+                title: const Text('Camera'),
+                onTap: () async {
+                  Navigator.of(context).pop();
+                  await _pickImage(ImageSource.camera);
+                },
+              ),
+              ListTile(
+                leading: const Icon(Icons.photo_library),
+                title: const Text('Gallery'),
+                onTap: () async {
+                  Navigator.of(context).pop();
+                  await _pickImage(ImageSource.gallery);
+                },
+              ),
+            ],
+          ),
+        );
+      },
+    );
+  }
+
+  Future<void> _pickImage(ImageSource source) async {
+    try {
+      final ImagePicker picker = ImagePicker();
+      final XFile? file = await picker.pickImage(
+        source: source,
+        imageQuality: 85,
+      );
+      if (file == null) return;
+
+      await MessageController.instance.addNewMessage(imagePath: file.path);
+    } catch (_) {}
   }
 }
