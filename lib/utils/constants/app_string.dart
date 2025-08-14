@@ -82,6 +82,7 @@ class AppString {
   static const String signInWithTwitter = "Sign in with Twitter";
   static const String signInWithLinkedin = "Sign in with Linkedin";
   static const String availableBrands = "Available Brands";
+  static const String brandsCategory = "Brands Category";
   static const String rolex = "Rolex";
   static const String omega = "Omega";
   static const String tagHeuer = "Tag Heuer";
