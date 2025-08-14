@@ -40,12 +40,12 @@ class BrandsCategoryScreen extends StatelessWidget {
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  const Text('Failed to load categories'),
+                  const Text('No categories found'),
                   8.verticalSpace,
-                  ElevatedButton(
-                    onPressed: () => controller.loadCategories(),
-                    child: const Text('Retry'),
-                  ),
+                  // ElevatedButton(
+                  //   onPressed: () => controller.loadCategories(),
+                  //   child: const Text('Retry'),
+                  // ),
                 ],
               ),
             );

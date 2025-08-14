@@ -57,12 +57,12 @@ class BrandsScreen extends StatelessWidget {
                       child: Column(
                         mainAxisSize: MainAxisSize.min,
                         children: [
-                          const Text('Failed to load products'),
+                          const Text('No Watches found'),
                           8.verticalSpace,
-                          ElevatedButton(
-                            onPressed: () => controller.loadProducts(),
-                            child: const Text('Retry'),
-                          ),
+                          // ElevatedButton(
+                          //   onPressed: () => controller.loadProducts(),
+                          //   child: const Text('Retry'),
+                          // ),
                         ],
                       ),
                     ),
