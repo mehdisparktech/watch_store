@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 import 'package:watch_store/component/text/common_text.dart';
+import 'package:watch_store/config/route/app_routes.dart';
 import 'package:watch_store/utils/constants/app_colors.dart';
 
 class CommonAppBar extends StatelessWidget implements PreferredSizeWidget {
@@ -71,7 +73,11 @@ class CommonAppBar extends StatelessWidget implements PreferredSizeWidget {
               ? Padding(
                 padding: EdgeInsets.all(8.w),
                 child: GestureDetector(
-                  onTap: onProfilePressed,
+                  onTap:
+                      onProfilePressed ??
+                      () {
+                        Get.toNamed(AppRoutes.viewProfile);
+                      },
                   child: CircleAvatar(
                     radius: 20.r,
                     backgroundColor: Colors.grey.shade300,

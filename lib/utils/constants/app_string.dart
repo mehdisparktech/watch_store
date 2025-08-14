@@ -125,4 +125,6 @@ class AppString {
   static const String enterYourEmail = "Enter your email";
   static const String otpVerifyInstruction =
       "Enter the 4-digit code sent to your email";
+  static const String photos = "Photos";
+  static const String archives = "Archives";
 }

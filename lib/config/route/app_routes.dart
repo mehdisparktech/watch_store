@@ -6,6 +6,7 @@ import 'package:watch_store/features/brands/presentation/screen/watch_detail_scr
 import 'package:watch_store/features/home/presentation/screen/home_screen.dart';
 import 'package:watch_store/features/news/presenation/screens/news_screen.dart';
 import 'package:watch_store/features/onboarding_screen/onboarding_spanish_screen.dart';
+import 'package:watch_store/features/profile/presentation/screen/view_profile.dart';
 import 'package:watch_store/features/wishlist/presentation/screen/wishlist_detail_screen.dart';
 import 'package:watch_store/features/wishlist/presentation/screen/wishlist_screen.dart';
 import '../../features/auth/sign up/presentation/controller/sign_up_controller.dart';
@@ -59,6 +60,7 @@ class AppRoutes {
   static const String products = "/product_list_screen.dart";
   static const String demoApi = "/demo_api_screen.dart";
   static const String brandsCategory = "/brands_category_screen.dart";
+  static const String viewProfile = "/view_profile_screen.dart";
 
   static List<GetPage> routes = [
     GetPage(name: splash, page: () => const SplashScreen()),
@@ -134,5 +136,6 @@ class AppRoutes {
       name: wishlistDetail,
       page: () => WishlistDetailScreen(watch: Get.arguments),
     ),
+    GetPage(name: viewProfile, page: () => const ViewProfile()),
   ];
 }
