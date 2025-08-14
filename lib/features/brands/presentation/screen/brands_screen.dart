@@ -3,105 +3,94 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:watch_store/component/app_bar/common_app_bar.dart';
 import 'package:watch_store/component/drawer/common_drawer.dart';
 import 'package:watch_store/component/text_field/common_text_field.dart';
-import 'package:watch_store/features/brands/data/watch_model.dart';
+import 'package:get/get.dart';
+import 'package:watch_store/features/brands/presentation/controller/brands_controller.dart';
 import 'package:watch_store/features/brands/presentation/widgets/watch_card.dart';
 import 'package:watch_store/utils/constants/app_icons.dart';
 import 'package:watch_store/utils/constants/app_images.dart';
-import 'package:watch_store/utils/constants/app_string.dart';
 import 'package:watch_store/component/image/common_image.dart';
+import 'package:watch_store/utils/enum/enum.dart';
 
 class BrandsScreen extends StatelessWidget {
   final String title;
+  final String categoryId;
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
-  BrandsScreen({super.key, this.title = 'Brands'});
+  BrandsScreen({super.key, this.title = 'Brands', required this.categoryId});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       key: _scaffoldKey,
       appBar: CommonAppBar(
-        title: '$title \n 150 ${AppString.watchBrand}',
+        title: title,
         subTitle: true,
         profileImageUrl: AppImages.profileImage,
         onMenuPressed: () => _scaffoldKey.currentState?.openEndDrawer(),
       ),
       endDrawer: CommonDrawer(profileImage: AppImages.availableWatch),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          children: [
-            Padding(
-              padding: const EdgeInsets.only(bottom: 16.0),
-              child: CommonTextField(
-                hintText: 'Search...',
-                prefixIcon: Padding(
-                  padding: EdgeInsets.only(left: 16.w, right: 16.w),
-                  child: CommonImage(imageSrc: AppIcons.search, size: 24),
+      body: GetBuilder<BrandsController>(
+        init: BrandsController(categoryId),
+        builder: (controller) {
+          return Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Column(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.only(bottom: 16.0),
+                  child: CommonTextField(
+                    hintText: 'Search...',
+                    prefixIcon: Padding(
+                      padding: EdgeInsets.only(left: 16.w, right: 16.w),
+                      child: CommonImage(imageSrc: AppIcons.search, size: 24),
+                    ),
+                    paddingVertical: 16,
+                  ),
                 ),
-                paddingVertical: 16,
-              ),
+                if (controller.status == Status.loading &&
+                    controller.products.isEmpty)
+                  const Expanded(
+                    child: Center(child: CircularProgressIndicator()),
+                  ),
+                if (controller.status == Status.error)
+                  Expanded(
+                    child: Center(
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          const Text('Failed to load products'),
+                          8.verticalSpace,
+                          ElevatedButton(
+                            onPressed: () => controller.loadProducts(),
+                            child: const Text('Retry'),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                if (controller.status != Status.loading &&
+                    controller.status != Status.error)
+                  Expanded(
+                    child: RefreshIndicator(
+                      onRefresh: () async => controller.loadProducts(),
+                      child: GridView.builder(
+                        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                          crossAxisCount: 2,
+                          crossAxisSpacing: 16.0,
+                          mainAxisSpacing: 16.0,
+                        ),
+                        itemCount: controller.products.length,
+                        itemBuilder: (context, index) {
+                          final product = controller.products[index];
+                          return WatchCard(watch: product);
+                        },
+                      ),
+                    ),
+                  ),
+              ],
             ),
-            Expanded(
-              child: GridView.builder(
-                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 2,
-                  crossAxisSpacing: 16.0,
-                  mainAxisSpacing: 16.0,
-                ),
-                itemCount: watches.length,
-                itemBuilder: (context, index) {
-                  return WatchCard(watch: watches[index]);
-                },
-              ),
-            ),
-          ],
-        ),
+          );
+        },
       ),
     );
   }
-
-  final List<WatchModel> watches = [
-    WatchModel(
-      id: 1,
-      name: 'Submariner',
-      price: '\$25,000',
-      imageUrl: AppImages.submariner,
-      isFavorite: true,
-    ),
-    WatchModel(
-      id: 2,
-      name: 'Omega 11Gold',
-      price: '\$25,000',
-      imageUrl: AppImages.tissotGpw,
-      isFavorite: false,
-    ),
-    WatchModel(
-      id: 3,
-      name: 'Capiter 223A2',
-      price: '\$25,000',
-      imageUrl: AppImages.iwc,
-      isFavorite: false,
-    ),
-    WatchModel(
-      id: 4,
-      name: 'Tissot - GPw',
-      price: '\$25,000',
-      imageUrl: AppImages.tissotGpw,
-      isFavorite: true,
-    ),
-    WatchModel(
-      id: 5,
-      name: 'IWC Black Limited',
-      price: '\$25,000',
-      imageUrl: AppImages.tissotGpw,
-      isFavorite: false,
-    ),
-    WatchModel(
-      id: 6,
-      name: 'Tissot 0021',
-      price: '\$25,000',
-      imageUrl: AppImages.tissotGpw,
-      isFavorite: true,
-    ),
-  ];
 }

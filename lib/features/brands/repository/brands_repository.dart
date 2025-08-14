@@ -1,5 +1,5 @@
 import '../data/model/brand_model.dart';
-import '../../home/data/model/product_model.dart';
+import '../data/model/product_model.dart';
 
 abstract class BrandsRepository {
   Future<List<BrandModel>> getAllBrands();

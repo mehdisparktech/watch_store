@@ -6,8 +6,8 @@ import 'package:watch_store/features/brands/presentation/screen/watch_detail_scr
 import 'package:watch_store/features/home/presentation/screen/home_screen.dart';
 import 'package:watch_store/features/news/presenation/screens/news_screen.dart';
 import 'package:watch_store/features/onboarding_screen/onboarding_spanish_screen.dart';
-import 'package:watch_store/features/wishlist/screen/wishlist_detail_screen.dart';
-import 'package:watch_store/features/wishlist/screen/wishlist_screen.dart';
+import 'package:watch_store/features/wishlist/presentation/screen/wishlist_detail_screen.dart';
+import 'package:watch_store/features/wishlist/presentation/screen/wishlist_screen.dart';
 import '../../features/auth/sign up/presentation/controller/sign_up_controller.dart';
 import '../../features/auth/change_password/presentation/screen/change_password_screen.dart';
 import '../../features/auth/forgot password/presentation/screen/create_password.dart';
@@ -91,7 +91,21 @@ class AppRoutes {
     GetPage(name: termsOfServices, page: () => const TermsOfServicesScreen()),
     GetPage(name: setting, page: () => const SettingScreen()),
     GetPage(name: home, page: () => HomeScreen()),
-    GetPage(name: brands, page: () => BrandsScreen(title: Get.arguments)),
+    GetPage(
+      name: brands,
+      page: () {
+        final args = Get.arguments;
+        String title = 'Brands';
+        String categoryId = '';
+        if (args is Map) {
+          title = (args['title'] ?? 'Brands').toString();
+          categoryId = (args['categoryId'] ?? '').toString();
+        } else if (args is String) {
+          categoryId = args;
+        }
+        return BrandsScreen(title: title, categoryId: categoryId);
+      },
+    ),
     GetPage(
       name: watchDetail,
       page: () => WatchDetailScreen(watch: Get.arguments),

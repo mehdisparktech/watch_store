@@ -1,4 +1,4 @@
-import '../data/model/product_model.dart';
+import '../../brands/data/model/product_model.dart';
 import '../data/model/banner_model.dart';
 import '../data/model/brand_model.dart';
 import 'package:watch_store/config/api/api_end_point.dart';

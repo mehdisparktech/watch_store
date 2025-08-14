@@ -4,7 +4,7 @@ import 'package:watch_store/component/app_bar/common_app_bar.dart';
 import 'package:watch_store/component/drawer/common_drawer.dart';
 import 'package:watch_store/component/text_field/common_text_field.dart';
 import 'package:watch_store/features/brands/data/watch_model.dart';
-import 'package:watch_store/features/brands/presentation/widgets/watch_card.dart';
+import 'package:watch_store/features/wishlist/presentation/widgets/watch_card.dart';
 import 'package:watch_store/utils/constants/app_icons.dart';
 import 'package:watch_store/utils/constants/app_images.dart';
 import 'package:watch_store/component/image/common_image.dart';

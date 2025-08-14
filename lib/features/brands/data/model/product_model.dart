@@ -37,11 +37,17 @@ class ProductModel {
 
   factory ProductModel.fromJson(Map<String, dynamic> json) {
     return ProductModel(
-      id: json['id']?.toString(),
+      id: (json['id'] ?? json['_id'])?.toString(),
       name: json['name']?.toString(),
       description: json['description']?.toString(),
-      price: json['price']?.toDouble(),
-      discountPrice: json['discount_price']?.toDouble(),
+      price:
+          json['price'] is num
+              ? (json['price'] as num).toDouble()
+              : double.tryParse(json['price']?.toString() ?? ''),
+      discountPrice:
+          json['discount_price'] is num
+              ? (json['discount_price'] as num).toDouble()
+              : double.tryParse(json['discount_price']?.toString() ?? ''),
       image: json['image']?.toString(),
       images:
           json['images'] != null
@@ -49,15 +55,23 @@ class ProductModel {
               : null,
       brandId: json['brand_id']?.toString(),
       brandName: json['brand_name']?.toString(),
-      category: json['category']?.toString(),
+      category:
+          json['category'] is Map
+              ? (json['category']['_id'] ?? json['category']['id'])?.toString()
+              : json['category']?.toString(),
       isAvailable: json['is_available'],
       stock: json['stock']?.toInt(),
-      rating: json['rating']?.toDouble(),
+      rating:
+          json['rating'] is num
+              ? (json['rating'] as num).toDouble()
+              : double.tryParse(json['rating']?.toString() ?? ''),
       reviewCount: json['review_count']?.toInt(),
-      isFavorite: json['is_favorite'],
+      isFavorite: json['is_favorite'] ?? json['isFavorite'],
       createdAt:
-          json['created_at'] != null
-              ? DateTime.tryParse(json['created_at'].toString())
+          (json['created_at'] ?? json['createdAt']) != null
+              ? DateTime.tryParse(
+                (json['created_at'] ?? json['createdAt']).toString(),
+              )
               : null,
     );
   }

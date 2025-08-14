@@ -2,13 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:watch_store/component/image/common_image.dart';
 import 'package:watch_store/component/text/common_text.dart';
-import 'package:watch_store/config/api/api_end_point.dart';
 import 'package:watch_store/config/route/app_routes.dart';
-import 'package:watch_store/features/brands/data/model/product_model.dart';
-import 'package:watch_store/utils/constants/app_images.dart';
+import 'package:watch_store/features/brands/data/watch_model.dart';
 
 class WatchCard extends StatelessWidget {
-  final ProductModel watch;
+  final WatchModel watch;
 
   const WatchCard({super.key, required this.watch});
 
@@ -34,7 +32,7 @@ class WatchCard extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     CommonText(
-                      text: watch.name ?? '',
+                      text: watch.name,
                       fontSize: 18,
                       fontWeight: FontWeight.bold,
                       fontFamily: 'PlayfairDisplay',
@@ -60,14 +58,7 @@ class WatchCard extends StatelessWidget {
               height: 150,
               width: 150,
               child: CommonImage(
-                imageSrc:
-                    (watch.images != null &&
-                            watch.images!.isNotEmpty &&
-                            watch.images!.first.isNotEmpty)
-                        ? ApiEndPoint.imageUrl + watch.images!.first
-                        : ((watch.image ?? '').isNotEmpty
-                            ? ApiEndPoint.imageUrl + (watch.image ?? '')
-                            : AppImages.omega),
+                imageSrc: watch.imageUrl,
                 fill: BoxFit.contain,
               ),
             ),
@@ -86,15 +77,12 @@ class WatchCard extends StatelessWidget {
               child: IconButton(
                 icon: Icon(
                   Icons.favorite,
-                  color:
-                      watch.isFavorite ?? false
-                          ? Colors.red
-                          : Colors.red.shade100,
+                  color: watch.isFavorite ? Colors.red : Colors.red.shade100,
                   size: 20,
                 ),
                 padding: EdgeInsets.zero,
                 onPressed: () {
-                  // watch.isFavorite = !watch.isFavorite!;
+                  watch.isFavorite = !watch.isFavorite;
                 },
               ),
             ),
