@@ -3,16 +3,20 @@ import 'package:get/get.dart';
 import 'package:watch_store/component/app_bar/common_app_bar.dart';
 import 'package:watch_store/component/button/common_button.dart';
 import 'package:watch_store/component/drawer/common_drawer.dart';
+import 'package:watch_store/component/image/common_image.dart';
 import 'package:watch_store/component/text/common_text.dart';
 import 'package:watch_store/config/route/app_routes.dart';
-import 'package:watch_store/features/brands/data/watch_model.dart';
+import 'package:watch_store/config/api/api_end_point.dart';
+import 'package:watch_store/features/brands/data/model/product_model.dart';
+import 'package:watch_store/features/brands/presentation/controller/product_detail_controller.dart';
 import 'package:watch_store/utils/constants/app_colors.dart';
 import 'package:watch_store/utils/constants/app_images.dart';
+import 'package:watch_store/utils/enum/enum.dart';
 
 class WatchDetailScreen extends StatefulWidget {
-  final WatchModel watch;
+  final String productId;
 
-  const WatchDetailScreen({super.key, required this.watch});
+  const WatchDetailScreen({super.key, required this.productId});
 
   @override
   State<WatchDetailScreen> createState() => _WatchDetailScreenState();
@@ -44,146 +48,163 @@ class _WatchDetailScreenState extends State<WatchDetailScreen>
         onMenuPressed: () => _scaffoldKey.currentState?.openEndDrawer(),
       ),
       endDrawer: CommonDrawer(profileImage: AppImages.availableWatch),
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
-            Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: Column(
-                children: [
-                  CommonText(
-                    text: 'Rolex ${widget.watch.name}',
-                    fontSize: 32,
-                    fontWeight: FontWeight.bold,
-                    fontFamily: 'PlayfairDisplay',
-                  ),
-                  SizedBox(height: 16),
-                  Image.asset(
-                    widget.watch.imageUrl,
-                    height: 300,
-                    width: double.infinity,
-                    fit: BoxFit.contain,
-                  ),
-                  SizedBox(height: 16),
-                  CommonText(
-                    text: widget.watch.price,
-                    fontSize: 24,
-                    color: AppColors.tertiaryText,
-                    fontWeight: FontWeight.bold,
-                  ),
-                  SizedBox(height: 16),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
+      body: GetBuilder<ProductDetailController>(
+        init: ProductDetailController(widget.productId),
+        builder: (controller) {
+          if (controller.status == Status.loading) {
+            return const Center(child: CircularProgressIndicator());
+          }
+          if (controller.status == Status.error || controller.product == null) {
+            return const Center(child: Text('Failed to load product'));
+          }
+          final ProductModel product = controller.product!;
+          final String displayedImage =
+              (product.images != null && (product.images!.isNotEmpty))
+                  ? (ApiEndPoint.imageUrl + product.images!.first)
+                  : ((product.image ?? '').isNotEmpty
+                      ? (ApiEndPoint.imageUrl + (product.image ?? ''))
+                      : AppImages.omega);
+          return SingleChildScrollView(
+            child: Column(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: Column(
                     children: [
-                      CircleAvatar(
-                        radius: 6,
-                        backgroundColor: AppColors.socialIconBackground,
+                      CommonText(
+                        text: product.name ?? 'Product',
+                        fontSize: 32,
+                        fontWeight: FontWeight.bold,
+                        fontFamily: 'PlayfairDisplay',
                       ),
-                      SizedBox(width: 8),
-                      CircleAvatar(
-                        radius: 6,
-                        backgroundColor: AppColors.tertiaryText.withValues(
-                          alpha: 0.5,
-                        ),
+                      SizedBox(height: 16),
+                      CommonImage(
+                        imageSrc: displayedImage,
+                        height: 300,
+                        width: double.infinity,
+                        fill: BoxFit.contain,
                       ),
-                      SizedBox(width: 8),
-                      CircleAvatar(
-                        radius: 6,
-                        backgroundColor: AppColors.tertiaryText.withValues(
-                          alpha: 0.5,
-                        ),
+                      SizedBox(height: 16),
+                      CommonText(
+                        text: (product.price ?? 0).toString(),
+                        fontSize: 24,
+                        color: AppColors.tertiaryText,
+                        fontWeight: FontWeight.bold,
                       ),
-                      SizedBox(width: 8),
-                      CircleAvatar(
-                        radius: 6,
-                        backgroundColor: AppColors.tertiaryText.withValues(
-                          alpha: 0.5,
-                        ),
+                      SizedBox(height: 16),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          CircleAvatar(
+                            radius: 6,
+                            backgroundColor: AppColors.socialIconBackground,
+                          ),
+                          SizedBox(width: 8),
+                          CircleAvatar(
+                            radius: 6,
+                            backgroundColor: AppColors.tertiaryText.withValues(
+                              alpha: 0.5,
+                            ),
+                          ),
+                          SizedBox(width: 8),
+                          CircleAvatar(
+                            radius: 6,
+                            backgroundColor: AppColors.tertiaryText.withValues(
+                              alpha: 0.5,
+                            ),
+                          ),
+                          SizedBox(width: 8),
+                          CircleAvatar(
+                            radius: 6,
+                            backgroundColor: AppColors.tertiaryText.withValues(
+                              alpha: 0.5,
+                            ),
+                          ),
+                        ],
                       ),
+                      SizedBox(height: 16),
+                      CommonButton(
+                        titleText: 'Start Chat With Retailer',
+                        onTap: () {
+                          Get.toNamed(
+                            AppRoutes.message,
+                            arguments: true,
+                            parameters: {
+                              "chatId": "123",
+                              "name": product.name ?? '',
+                              "image": AppImages.profileImage,
+                              "itemImage": displayedImage,
+                              "itemPrice": (product.price ?? 0).toString(),
+                              "itemName": product.name ?? '',
+                            },
+                          );
+                        },
+                      ),
+                      SizedBox(height: 24),
                     ],
                   ),
-                  SizedBox(height: 16),
-                  CommonButton(
-                    titleText: 'Start Chat With Retailer',
-                    onTap: () {
-                      Get.toNamed(
-                        AppRoutes.message,
-                        arguments: true,
-                        parameters: {
-                          "chatId": "123",
-                          "name": widget.watch.name,
-                          "image": AppImages.profileImage,
-                          "itemImage": widget.watch.imageUrl,
-                          "itemPrice": widget.watch.price,
-                          "itemName": widget.watch.name,
-                        },
-                      );
-                    },
+                ),
+                // TabBar Section
+                Container(
+                  color: AppColors.white,
+                  child: TabBar(
+                    controller: _tabController,
+                    labelColor: AppColors.primaryText,
+                    unselectedLabelColor: AppColors.hintText,
+                    indicatorColor: AppColors.socialIconBackground,
+                    indicatorWeight: 2,
+                    labelStyle: TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold,
+                      fontFamily: 'PlayfairDisplay',
+                    ),
+                    unselectedLabelStyle: TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.normal,
+                      fontFamily: 'PlayfairDisplay',
+                    ),
+                    tabs: [
+                      Tab(text: 'Product'),
+                      Tab(text: 'Specification'),
+                      Tab(text: 'Review'),
+                    ],
                   ),
-                  SizedBox(height: 24),
-                ],
-              ),
-            ),
-            // TabBar Section
-            Container(
-              color: AppColors.white,
-              child: TabBar(
-                controller: _tabController,
-                labelColor: AppColors.primaryText,
-                unselectedLabelColor: AppColors.hintText,
-                indicatorColor: AppColors.socialIconBackground,
-                indicatorWeight: 2,
-                labelStyle: TextStyle(
-                  fontSize: 16,
-                  fontWeight: FontWeight.bold,
-                  fontFamily: 'PlayfairDisplay',
                 ),
-                unselectedLabelStyle: TextStyle(
-                  fontSize: 16,
-                  fontWeight: FontWeight.normal,
-                  fontFamily: 'PlayfairDisplay',
+                // TabBarView Section
+                SizedBox(
+                  height: 400,
+                  child: TabBarView(
+                    controller: _tabController,
+                    children: [
+                      _buildProductTab(product),
+                      _buildSpecificationTab(product),
+                      _buildReviewTab(),
+                    ],
+                  ),
                 ),
-                tabs: [
-                  Tab(text: 'Product'),
-                  Tab(text: 'Specification'),
-                  Tab(text: 'Review'),
-                ],
-              ),
+              ],
             ),
-            // TabBarView Section
-            SizedBox(
-              height: 400,
-              child: TabBarView(
-                controller: _tabController,
-                children: [
-                  _buildProductTab(),
-                  _buildSpecificationTab(),
-                  _buildReviewTab(),
-                ],
-              ),
-            ),
-          ],
-        ),
+          );
+        },
       ),
     );
   }
 
-  Widget _buildProductTab() {
+  Widget _buildProductTab(ProductModel product) {
     return Padding(
       padding: const EdgeInsets.all(16.0),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           CommonText(
-            text: 'Rolex ${widget.watch.name}',
+            text: product.name ?? 'Product',
             fontSize: 18,
             fontWeight: FontWeight.bold,
             fontFamily: 'PlayfairDisplay',
           ),
           SizedBox(height: 12),
           CommonText(
-            text:
-                'This is a premium luxury watch from Rolex featuring exceptional craftsmanship and timeless design. Perfect for both formal and casual occasions.',
+            text: product.description ?? '',
             fontSize: 14,
             color: AppColors.tertiaryText,
             fontFamily: 'PlayfairDisplay',
@@ -205,10 +226,10 @@ class _WatchDetailScreenState extends State<WatchDetailScreen>
     );
   }
 
-  Widget _buildSpecificationTab() {
+  Widget _buildSpecificationTab(ProductModel product) {
     return Padding(
       padding: const EdgeInsets.all(16.0),
-      child: Column(children: [_buildSpecificationTable()]),
+      child: Column(children: [_buildSpecificationTable(product)]),
     );
   }
 
@@ -258,14 +279,13 @@ class _WatchDetailScreenState extends State<WatchDetailScreen>
     );
   }
 
-  Widget _buildSpecificationTable() {
+  Widget _buildSpecificationTable(ProductModel product) {
     final specifications = [
-      {'label': 'Gender', 'value': 'Male'},
-      {'label': 'Movement', 'value': 'Quartz Battery'},
-      {'label': 'Case Thickness', 'value': '12 mm'},
-      {'label': 'Case Diameter', 'value': '44 mm'},
-      {'label': 'Model No', 'value': 'NK1789'},
-      {'label': 'Water Resistance', 'value': '100m'},
+      {'label': 'Gender', 'value': product.gender ?? '-'},
+      {'label': 'Movement', 'value': product.movement ?? '-'},
+      {'label': 'Case Thickness', 'value': product.caseThickness ?? '-'},
+      {'label': 'Case Diameter', 'value': product.caseDiameter ?? '-'},
+      {'label': 'Model No', 'value': product.modelNumber ?? '-'},
     ];
 
     return Container(

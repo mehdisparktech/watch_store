@@ -27,6 +27,7 @@ import '../../features/setting/presentation/screen/setting_screen.dart';
 import '../../features/setting/presentation/screen/terms_of_services_screen.dart';
 import '../../features/splash/splash_screen.dart';
 import '../../features/news/binding/news_binding.dart';
+import 'package:watch_store/features/brands/data/model/product_model.dart';
 
 class AppRoutes {
   static const String test = "/test_screen.dart";
@@ -108,7 +109,18 @@ class AppRoutes {
     ),
     GetPage(
       name: watchDetail,
-      page: () => WatchDetailScreen(watch: Get.arguments),
+      page: () {
+        final args = Get.arguments;
+        String productId = '';
+        if (args is String) {
+          productId = args;
+        } else if (args is Map) {
+          productId = (args['productId'] ?? '').toString();
+        } else if (args is ProductModel) {
+          productId = args.id ?? '';
+        }
+        return WatchDetailScreen(productId: productId);
+      },
     ),
     // News route with binding
     GetPage(name: news, page: () => NewsScreen(), binding: NewsBinding()),

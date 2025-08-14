@@ -16,7 +16,8 @@ class WatchCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        Get.toNamed(AppRoutes.watchDetail, arguments: watch);
+        final id = watch.id ?? '';
+        Get.toNamed(AppRoutes.watchDetail, arguments: id);
       },
       child: Stack(
         children: [

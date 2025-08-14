@@ -9,6 +9,11 @@ class ProductModel {
   final String? brandId;
   final String? brandName;
   final String? category;
+  final String? gender;
+  final String? modelNumber;
+  final String? movement;
+  final String? caseDiameter;
+  final String? caseThickness;
   final bool? isAvailable;
   final int? stock;
   final double? rating;
@@ -27,6 +32,11 @@ class ProductModel {
     this.brandId,
     this.brandName,
     this.category,
+    this.gender,
+    this.modelNumber,
+    this.movement,
+    this.caseDiameter,
+    this.caseThickness,
     this.isAvailable,
     this.stock,
     this.rating,
@@ -59,6 +69,12 @@ class ProductModel {
           json['category'] is Map
               ? (json['category']['_id'] ?? json['category']['id'])?.toString()
               : json['category']?.toString(),
+      gender: json['gender']?.toString(),
+      modelNumber: (json['modelNumber'] ?? json['model_no'])?.toString(),
+      movement: json['movement']?.toString(),
+      caseDiameter: (json['caseDiameter'] ?? json['case_diameter'])?.toString(),
+      caseThickness:
+          (json['caseThickness'] ?? json['case_thickness'])?.toString(),
       isAvailable: json['is_available'],
       stock: json['stock']?.toInt(),
       rating:
@@ -88,6 +104,11 @@ class ProductModel {
       'brand_id': brandId,
       'brand_name': brandName,
       'category': category,
+      'gender': gender,
+      'model_no': modelNumber,
+      'movement': movement,
+      'case_diameter': caseDiameter,
+      'case_thickness': caseThickness,
       'is_available': isAvailable,
       'stock': stock,
       'rating': rating,
