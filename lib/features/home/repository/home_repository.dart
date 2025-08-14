@@ -1,5 +1,8 @@
 import '../data/model/product_model.dart';
 import '../data/model/banner_model.dart';
+import '../data/model/brand_model.dart';
+import 'package:watch_store/config/api/api_end_point.dart';
+import 'package:watch_store/services/api/api_service.dart';
 
 abstract class HomeRepository {
   Future<List<BannerModel>> getBanners();
@@ -9,6 +12,7 @@ abstract class HomeRepository {
   Future<List<ProductModel>> getDiscountedProducts();
   Future<List<ProductModel>> searchProducts(String query);
   Future<List<String>> getCategories();
+  Future<List<HomeBrandModel>> getBrands({int page = 1, int limit = 10});
 }
 
 class HomeRepositoryImpl implements HomeRepository {
@@ -118,6 +122,25 @@ class HomeRepositoryImpl implements HomeRepository {
       throw UnimplementedError('API service not implemented yet');
     } catch (e) {
       throw Exception('Failed to get categories: $e');
+    }
+  }
+
+  @override
+  Future<List<HomeBrandModel>> getBrands({int page = 1, int limit = 10}) async {
+    try {
+      final response = await ApiService.get(
+        "${ApiEndPoint.brands}?page=$page&limit=$limit",
+      );
+
+      if (response.isSuccess) {
+        final parsed = HomeBrandsResponse.fromJson(
+          Map<String, dynamic>.from(response.data),
+        );
+        return parsed.data.data;
+      }
+      return [];
+    } catch (e) {
+      throw Exception('Failed to get brands: $e');
     }
   }
 }

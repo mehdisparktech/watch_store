@@ -1,5 +1,6 @@
 import 'package:get/get.dart';
 import 'package:watch_store/features/FAQ/presentation/screens/faq_screen.dart';
+import 'package:watch_store/features/brands/presentation/screen/brands_category_screen.dart';
 import 'package:watch_store/features/brands/presentation/screen/brands_screen.dart';
 import 'package:watch_store/features/brands/presentation/screen/watch_detail_screen.dart';
 import 'package:watch_store/features/home/presentation/screen/home_screen.dart';
@@ -56,6 +57,7 @@ class AppRoutes {
   static const String wishlistDetail = "/wishlist_detail_screen.dart";
   static const String products = "/product_list_screen.dart";
   static const String demoApi = "/demo_api_screen.dart";
+  static const String brandsCategory = "/brands_category_screen.dart";
 
   static List<GetPage> routes = [
     GetPage(name: splash, page: () => const SplashScreen()),
@@ -98,6 +100,10 @@ class AppRoutes {
     GetPage(name: news, page: () => NewsScreen(), binding: NewsBinding()),
     GetPage(name: faq, page: () => FAQScreen()),
     GetPage(name: wishlist, page: () => WishlistScreen()),
+    GetPage(
+      name: brandsCategory,
+      page: () => BrandsCategoryScreen(brandId: Get.arguments),
+    ),
     GetPage(
       name: wishlistDetail,
       page: () => WishlistDetailScreen(watch: Get.arguments),

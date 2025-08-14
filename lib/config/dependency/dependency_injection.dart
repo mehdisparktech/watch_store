@@ -9,6 +9,8 @@ import '../../features/message/presentation/controller/chat_controller.dart';
 import '../../features/message/presentation/controller/message_controller.dart';
 import '../../features/news/presenation/controller/news_controller.dart';
 import '../../features/news/repository/news_repository.dart';
+import '../../features/home/repository/home_repository.dart';
+import '../../features/home/presentation/controller/home_controller.dart';
 import '../../features/notifications/presentation/controller/notifications_controller.dart';
 import '../../features/profile/presentation/controller/profile_controller.dart';
 import '../../features/setting/presentation/controller/privacy_policy_controller.dart';
@@ -33,6 +35,8 @@ class DependencyInjection extends Bindings {
 
     // News Repository
     Get.lazyPut<NewsRepository>(() => NewsRepositoryImpl(), fenix: true);
+    // Home Repository
+    Get.lazyPut<HomeRepository>(() => HomeRepositoryImpl(), fenix: true);
 
     // FAQ Repository
     Get.lazyPut<FAQRepository>(() => FAQRepositoryImpl(), fenix: true);
@@ -57,5 +61,7 @@ class DependencyInjection extends Bindings {
 
     // News Controller
     Get.lazyPut(() => NewsController(), fenix: true);
+    // Home Controller
+    Get.lazyPut(() => HomeController(), fenix: true);
   }
 }

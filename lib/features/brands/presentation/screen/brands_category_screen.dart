@@ -10,7 +10,8 @@ import 'package:watch_store/utils/constants/app_images.dart';
 import 'package:watch_store/utils/constants/app_string.dart';
 
 class BrandsCategoryScreen extends StatelessWidget {
-  BrandsCategoryScreen({super.key});
+  BrandsCategoryScreen({super.key, required this.brandId});
+  final String brandId;
 
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
