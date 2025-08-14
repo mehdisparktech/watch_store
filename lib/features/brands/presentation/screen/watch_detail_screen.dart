@@ -26,15 +26,19 @@ class _WatchDetailScreenState extends State<WatchDetailScreen>
     with SingleTickerProviderStateMixin {
   late TabController _tabController;
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+  late PageController _imagePageController;
+  int _currentImageIndex = 0;
   @override
   void initState() {
     super.initState();
     _tabController = TabController(length: 3, vsync: this);
+    _imagePageController = PageController();
   }
 
   @override
   void dispose() {
     _tabController.dispose();
+    _imagePageController.dispose();
     super.dispose();
   }
 
@@ -58,12 +62,15 @@ class _WatchDetailScreenState extends State<WatchDetailScreen>
             return const Center(child: Text('Failed to load product'));
           }
           final ProductModel product = controller.product!;
-          final String displayedImage =
-              (product.images != null && (product.images!.isNotEmpty))
-                  ? (ApiEndPoint.imageUrl + product.images!.first)
+          final List<String> imageUrls =
+              (product.images != null && product.images!.isNotEmpty)
+                  ? product.images!
+                      .map((e) => ApiEndPoint.imageUrl + e)
+                      .toList()
                   : ((product.image ?? '').isNotEmpty
-                      ? (ApiEndPoint.imageUrl + (product.image ?? ''))
-                      : AppImages.omega);
+                      ? [ApiEndPoint.imageUrl + (product.image ?? '')]
+                      : [AppImages.omega]);
+          final String displayedImage = imageUrls.first;
           return SingleChildScrollView(
             child: Column(
               children: [
@@ -78,11 +85,25 @@ class _WatchDetailScreenState extends State<WatchDetailScreen>
                         fontFamily: 'PlayfairDisplay',
                       ),
                       SizedBox(height: 16),
-                      CommonImage(
-                        imageSrc: displayedImage,
+                      SizedBox(
                         height: 300,
-                        width: double.infinity,
-                        fill: BoxFit.contain,
+                        child: PageView.builder(
+                          controller: _imagePageController,
+                          itemCount: imageUrls.length,
+                          onPageChanged: (index) {
+                            setState(() {
+                              _currentImageIndex = index;
+                            });
+                          },
+                          itemBuilder: (context, index) {
+                            return CommonImage(
+                              imageSrc: imageUrls[index],
+                              height: 300,
+                              width: double.infinity,
+                              fill: BoxFit.contain,
+                            );
+                          },
+                        ),
                       ),
                       SizedBox(height: 16),
                       CommonText(
@@ -94,33 +115,21 @@ class _WatchDetailScreenState extends State<WatchDetailScreen>
                       SizedBox(height: 16),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          CircleAvatar(
-                            radius: 6,
-                            backgroundColor: AppColors.socialIconBackground,
-                          ),
-                          SizedBox(width: 8),
-                          CircleAvatar(
-                            radius: 6,
-                            backgroundColor: AppColors.tertiaryText.withValues(
-                              alpha: 0.5,
+                        children: List.generate(imageUrls.length, (index) {
+                          final bool isActive = index == _currentImageIndex;
+                          return Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 4),
+                            child: CircleAvatar(
+                              radius: 6,
+                              backgroundColor:
+                                  isActive
+                                      ? AppColors.socialIconBackground
+                                      : AppColors.tertiaryText.withValues(
+                                        alpha: 0.5,
+                                      ),
                             ),
-                          ),
-                          SizedBox(width: 8),
-                          CircleAvatar(
-                            radius: 6,
-                            backgroundColor: AppColors.tertiaryText.withValues(
-                              alpha: 0.5,
-                            ),
-                          ),
-                          SizedBox(width: 8),
-                          CircleAvatar(
-                            radius: 6,
-                            backgroundColor: AppColors.tertiaryText.withValues(
-                              alpha: 0.5,
-                            ),
-                          ),
-                        ],
+                          );
+                        }),
                       ),
                       SizedBox(height: 16),
                       CommonButton(
