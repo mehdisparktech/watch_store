@@ -38,7 +38,7 @@ class SettingScreen extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 CommonText(
-                  text: 'Configuración',
+                  text: AppString.configuration,
                   fontSize: 20,
                   fontWeight: FontWeight.w600,
                   color: AppColors.white,
@@ -48,8 +48,9 @@ class SettingScreen extends StatelessWidget {
                 /// User Email here
                 Align(
                   alignment: Alignment.centerLeft,
-                  child: const CommonText(
-                    text: "Empresa",
+                  child: CommonText(
+                    text: AppString.registerEmail,
+                    fontSize: 16,
                     fontWeight: FontWeight.w600,
                     bottom: 12,
                     color: AppColors.white,
@@ -60,12 +61,13 @@ class SettingScreen extends StatelessWidget {
                   validator: OtherHelper.validator,
                   hintText: AppString.email,
                   keyboardType: TextInputType.emailAddress,
-                  borderColor: AppColors.secondary,
-                  fillColor: AppColors.filledColor,
+                  borderColor: AppColors.white,
+                  fillColor: AppColors.transparent,
+                  textColor: AppColors.white,
                 ),
                 60.height,
                 CommonButton(
-                  titleText: "Cambiar correo",
+                  titleText: AppString.changeEmail,
                   isLoading: controller.isLoading,
                   onTap: controller.deleteAccountRepo,
                   buttonColor: AppColors.socialIconBackground,

@@ -28,6 +28,7 @@ class AppString {
   static const String password = "Password";
   static const String continues = "Continue";
   static const String email = "Email";
+  static const String registerEmail = "Register Email";
   static const String codeHasBeenSendTo = "Code has been send to";
   static const String otpIsInValid = "Otp is inValid";
   static const String resendCode = "Resend Code";
@@ -72,7 +73,7 @@ class AppString {
   static const String thePasswordDoesNotMatch = "The password does not match";
   static const String startServer = "Please, start the Server";
   static const String unknownError = "Unknown Error";
-
+  static const String save = "Save";
   static const String splashTitle = "A Watch that makes you look perfect";
   static const String splashDescription =
       "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus justo elit, semper tristique tempus sollicitudin.";
@@ -102,7 +103,9 @@ class AppString {
   static const String products = "Products";
   static const String contactUs = "Contact Us";
   static const String termsAndConditions = "Terms and Conditions";
-
+  static const String configuration = "Configuration";
+  static const String enterprise = "Enterprise";
+  static const String changeEmail = "Change Email";
   // Watch Details
   static const String watchDetails = "Watch Details";
   static const String watchDescription = "Watch Description";

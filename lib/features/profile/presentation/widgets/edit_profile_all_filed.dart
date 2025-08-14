@@ -18,9 +18,9 @@ class EditProfileAllFiled extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         /// User Full Name here
-        const CommonText(
-          text: "Nombre",
-          fontWeight: FontWeight.w600,
+        CommonText(
+          text: AppString.fullName,
+          fontWeight: FontWeight.w500,
           bottom: 12,
           color: AppColors.white,
         ),
@@ -31,13 +31,14 @@ class EditProfileAllFiled extends StatelessWidget {
           keyboardType: TextInputType.text,
           borderColor: AppColors.secondary,
           fillColor: AppColors.transparent,
+          textColor: AppColors.white,
         ),
         30.height,
 
         /// User Email here
-        const CommonText(
-          text: "Empresa",
-          fontWeight: FontWeight.w600,
+        CommonText(
+          text: AppString.enterprise,
+          fontWeight: FontWeight.w500,
           bottom: 12,
           color: AppColors.white,
         ),
@@ -48,6 +49,7 @@ class EditProfileAllFiled extends StatelessWidget {
           keyboardType: TextInputType.emailAddress,
           borderColor: AppColors.secondary,
           fillColor: AppColors.transparent,
+          textColor: AppColors.white,
         ),
 
         /// User Phone number here

@@ -1,6 +1,8 @@
-import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:watch_store/config/api/api_end_point.dart';
+import 'package:watch_store/services/storage/storage_services.dart';
 import 'package:watch_store/utils/constants/app_colors.dart';
+import 'package:watch_store/utils/constants/app_string.dart';
 import '../../../../../utils/extensions/extension.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
@@ -49,12 +51,14 @@ class EditProfile extends StatelessWidget {
                           backgroundColor: Colors.transparent,
                           child: ClipOval(
                             child:
-                                controller.image != null
-                                    ? Image.file(
-                                      File(controller.image!),
-                                      width: 80,
-                                      height: 80,
-                                      fit: BoxFit.fill,
+                                LocalStorage.myImage.isNotEmpty
+                                    ? CommonImage(
+                                      imageSrc:
+                                          ApiEndPoint.imageUrl +
+                                          LocalStorage.myImage,
+                                      width: 80.r,
+                                      height: 80.r,
+                                      fill: BoxFit.cover,
                                     )
                                     : const CommonImage(
                                       imageSrc: AppImages.profileImage,
@@ -89,7 +93,7 @@ class EditProfile extends StatelessWidget {
                   ),
                   10.height,
                   CommonText(
-                    text: "Ramón G.",
+                    text: LocalStorage.myName,
                     fontSize: 20,
                     fontWeight: FontWeight.w500,
                     color: AppColors.white,
@@ -110,7 +114,7 @@ class EditProfile extends StatelessWidget {
 
                   /// Submit Button here
                   CommonButton(
-                    titleText: "Guardar",
+                    titleText: AppString.save,
                     isLoading: controller.isLoading,
                     onTap: controller.editProfileRepo,
                     buttonColor: AppColors.socialIconBackground,

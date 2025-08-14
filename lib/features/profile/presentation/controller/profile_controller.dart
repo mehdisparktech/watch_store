@@ -25,9 +25,11 @@ class ProfileController extends GetxController {
   bool isLoading = false;
 
   /// all controller here
-  TextEditingController nameController = TextEditingController();
+  TextEditingController nameController =
+      TextEditingController()..text = LocalStorage.myName;
   TextEditingController numberController = TextEditingController();
-  TextEditingController emailController = TextEditingController();
+  TextEditingController emailController =
+      TextEditingController()..text = 'Raconli Group';
 
   /// select image function here
   getProfileImage() async {

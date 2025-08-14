@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
+import 'package:watch_store/services/storage/storage_services.dart';
 import '../../../../config/route/app_routes.dart';
 import '../../../../services/api/api_service.dart';
 import '../../../../config/api/api_end_point.dart';
@@ -9,7 +10,8 @@ class SettingController extends GetxController {
   /// Password controller here , use for delete account
   TextEditingController passwordController = TextEditingController();
   TextEditingController nameController = TextEditingController();
-  TextEditingController emailController = TextEditingController();
+  TextEditingController emailController =
+      TextEditingController()..text = LocalStorage.myEmail;
 
   /// loading check , use delete account
   bool isLoading = false;
