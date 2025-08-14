@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:watch_store/utils/constants/app_images.dart';
 import '../../data/model/chat_list_model.dart';
-// import '../../../../services/api/api_service.dart';
+import '../../../../services/api/api_service.dart';
 import '../../../../services/socket/socket_service.dart';
-// import '../../../../config/api/api_end_point.dart';
+import '../../../../config/api/api_end_point.dart';
 import '../../../../services/storage/storage_services.dart';
-// import '../../../../utils/app_utils.dart';
+import '../../../../utils/app_utils.dart';
 import '../../../../utils/enum/enum.dart';
 
 class ChatController extends GetxController {
@@ -20,56 +19,7 @@ class ChatController extends GetxController {
   int page = 1;
 
   /// Chat List here
-  List chats = [
-    ChatModel(
-      id: '1',
-      participant: Participant(
-        id: 'user1',
-        fullName: 'John Smith',
-        image: AppImages.profileImage,
-      ),
-      latestMessage: LatestMessage(
-        id: 'msg1',
-        message: 'Hey! Are you interested in the Rolex watch?',
-        createdAt: DateTime.now().subtract(Duration(minutes: 5)),
-        isFromMe: true,
-        isRead: true,
-      ),
-      unreadCount: 0,
-    ),
-    ChatModel(
-      id: '2',
-      participant: Participant(
-        id: 'user2',
-        fullName: 'Sarah Johnson',
-        image: AppImages.profileImage,
-      ),
-      latestMessage: LatestMessage(
-        id: 'msg2',
-        message: 'Thanks for the quick delivery!',
-        createdAt: DateTime.now().subtract(Duration(hours: 2)),
-        isFromMe: false,
-        isRead: true,
-      ),
-      unreadCount: 0,
-    ),
-    ChatModel(
-      id: '3',
-      participant: Participant(
-        id: 'user3',
-        fullName: 'Mike Wilson',
-        image: AppImages.profileImage,
-      ),
-      latestMessage: LatestMessage(
-        id: 'msg3',
-        message: 'Do you have this model in silver?',
-        createdAt: DateTime.now().subtract(Duration(days: 1)),
-        isFromMe: false,
-        isRead: true,
-      ),
-      unreadCount: 0,
-    ),
-  ];
+  List<ChatModel> chats = [];
 
   /// Chat Scroll Controller
   ScrollController scrollController = ScrollController();
@@ -91,29 +41,74 @@ class ChatController extends GetxController {
 
   /// Chat data Loading function
   Future<void> getChatRepo() async {
-    return;
-    // if (page == 1) {
-    //   status = Status.loading;
-    //   update();
-    // }
+    try {
+      if (page == 1) {
+        status = Status.loading;
+        update();
+      }
 
-    // var response = await ApiService.get("${ApiEndPoint.chats}?page=$page");
+      final response = await ApiService.get("${ApiEndPoint.chats}?page=$page");
 
-    // if (response.statusCode == 200) {
-    //   var data = response.data['chats'] ?? [];
+      if (response.isSuccess) {
+        final root = response.data;
+        final data = (root['data'] ?? {}) as Map;
+        final List chatsList = (data['chats'] ?? []) as List;
 
-    //   for (var item in data) {
-    //     chats.add(ChatModel.fromJson(item));
-    //   }
+        if (page == 1) {
+          chats.clear();
+        }
 
-    //   page = page + 1;
-    //   status = Status.completed;
-    //   update();
-    // } else {
-    //   Utils.errorSnackBar(response.statusCode.toString(), response.message);
-    //   status = Status.error;
-    //   update();
-    // }
+        for (final dynamic raw in chatsList) {
+          final Map item = (raw ?? {}) as Map;
+
+          // Map API -> UI model
+          final Map last = (item['lastMessage'] ?? {}) as Map;
+          final List participants = (item['participants'] ?? []) as List;
+          final Map participantRaw =
+              participants.isNotEmpty ? (participants.first as Map) : {};
+
+          final participant = Participant(
+            id: (participantRaw['_id'] ?? '').toString(),
+            fullName:
+                (participantRaw['fullName'] ?? participantRaw['email'] ?? '')
+                    .toString(),
+            image: (participantRaw['image'] ?? '').toString(),
+          );
+
+          final latestMessage = LatestMessage(
+            id: (last['_id'] ?? '').toString(),
+            message: (last['text'] ?? last['message'] ?? '').toString(),
+            createdAt:
+                DateTime.tryParse((last['createdAt'] ?? '').toString()) ??
+                DateTime.now(),
+            isFromMe: (last['sender']?.toString() ?? '') == LocalStorage.userId,
+            isRead: (last['read'] ?? false) == true,
+          );
+
+          chats.add(
+            ChatModel(
+              id: (item['_id'] ?? '').toString(),
+              participant: participant,
+              latestMessage: latestMessage,
+              unreadCount:
+                  int.tryParse((item['unreadCount'] ?? 0).toString()) ?? 0,
+            ),
+          );
+        }
+
+        page = page + 1;
+        status = Status.completed;
+        update();
+      } else {
+        Utils.errorSnackBar(response.statusCode.toString(), response.message);
+        status = Status.error;
+        update();
+      }
+    } catch (e) {
+      Utils.errorSnackBar('Error', e.toString());
+      status = Status.error;
+      update();
+    }
   }
 
   /// Chat data Update  Socket listener

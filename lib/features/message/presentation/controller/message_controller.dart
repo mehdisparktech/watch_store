@@ -1,15 +1,14 @@
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../../data/model/chat_message_model.dart';
 import '../../data/model/message_model.dart';
 
-// import '../../../../services/api/api_service.dart';
+import '../../../../services/api/api_service.dart';
 import '../../../../services/socket/socket_service.dart';
-// import '../../../../config/api/api_end_point.dart';
+import '../../../../config/api/api_end_point.dart';
 import '../../../../services/storage/storage_services.dart';
-// import '../../../../utils/app_utils.dart';
+import '../../../../utils/app_utils.dart';
 import '../../../../utils/enum/enum.dart';
 
 class MessageController extends GetxController {
@@ -21,6 +20,7 @@ class MessageController extends GetxController {
 
   String chatId = "";
   String name = "";
+  String peerImage = "";
 
   int page = 1;
   int currentIndex = 0;
@@ -37,45 +37,69 @@ class MessageController extends GetxController {
   MessageModel messageModel = MessageModel.fromJson({});
 
   Future<void> getMessageRepo() async {
-    return;
-    // if (page == 1) {
-    //   messages.clear();
-    //   status = Status.loading;
-    //   update();
-    // }
+    try {
+      if (page == 1) {
+        messages.clear();
+        status = Status.loading;
+        update();
+      }
 
-    // var response = await ApiService.get(
-    //   "${ApiEndPoint.messages}?chatId=$chatId&page=$page&limit=15",
-    // );
+      final response = await ApiService.get(
+        "${ApiEndPoint.messages}/$chatId?page=$page&limit=15",
+      );
 
-    // if (response.statusCode == 200) {
-    //   var data = response.data['data']['attributes']['messages'];
+      if (response.isSuccess) {
+        final Map root = (response.data);
+        final Map data = (root['data'] ?? {}) as Map;
+        final List rawMessages = (data['messages'] ?? []) as List;
 
-    //   for (var messageData in data) {
-    //     messageModel = MessageModel.fromJson(messageData);
+        for (final dynamic raw in rawMessages) {
+          final Map item = (raw ?? {}) as Map;
+          final Map sender = (item['sender'] ?? {}) as Map;
+          final String text =
+              (item['text'] ?? item['message'] ?? '').toString();
+          // final String senderId =
+          //     (sender['_id'] ?? sender['id'] ?? '').toString();
+          final String senderEmail =
+              (sender['email'] ?? sender['email'] ?? '').toString();
+          final String otherImage = peerImage;
+          // final String myImage = LocalStorage.myImage;
 
-    //     messages.add(
-    //       ChatMessageModel(
-    //         time: messageModel.createdAt.toLocal(),
-    //         text: messageModel.message,
-    //         image: messageModel.sender.image,
-    //         isNotice: messageModel.type == "notice" ? true : false,
-    //         isMe: LocalStorage.userId == messageModel.sender.id ? true : false,
-    //       ),
-    //     );
-    //   }
+          final DateTime createdAt =
+              DateTime.tryParse((item['createdAt'] ?? '').toString()) ??
+              DateTime.now();
 
-    //   page = page + 1;
-    //   status = Status.completed;
-    //   update();
-    // } else {
-    //   Utils.errorSnackBar(response.statusCode.toString(), response.message);
-    //   status = Status.error;
-    //   update();
-    // }
+          messages.add(
+            ChatMessageModel(
+              time: createdAt.toLocal(),
+              text: text,
+              image:
+                  senderEmail == LocalStorage.myEmail
+                      ? LocalStorage.myImage
+                      : otherImage,
+              isMe: senderEmail == LocalStorage.myEmail,
+              isNotice: (item['type'] ?? '') == 'notice',
+              isRead: (item['read'] ?? false) == true,
+            ),
+          );
+        }
+
+        page = page + 1;
+        status = Status.completed;
+        update();
+      } else {
+        Utils.errorSnackBar(response.statusCode.toString(), response.message);
+        status = Status.error;
+        update();
+      }
+    } catch (e) {
+      Utils.errorSnackBar('Error', e.toString());
+      status = Status.error;
+      update();
+    }
   }
 
-  addNewMessage() async {
+  addNewMessage({String? imagePath}) async {
     isMessage = true;
     update();
 
@@ -97,42 +121,59 @@ class MessageController extends GetxController {
     isMessage = false;
     update();
 
-    var body = {
-      "chat": chatId,
-      "message": messageController.text,
-      "sender": LocalStorage.userId,
-    };
-
+    final String text = messageController.text;
     messageController.clear();
 
-    SocketServices.emitWithAck("add-new-message", body, (data) {
-      if (kDebugMode) {
-        print(
-          "===============================================================> Received acknowledgment: $data",
-        );
+    try {
+      // Build multipart body: data (json string), images (file)
+      final Map<String, String> body = {
+        'data': '{"text":"${text.replaceAll("\"", "\\\"")}"}',
+      };
+
+      final result = await ApiService.multipart(
+        "${ApiEndPoint.baseUrl}messages/send-message/$chatId",
+        body: body,
+        imageName: 'images',
+        imagePath: imagePath,
+        header: {'Authorization': 'Bearer ${LocalStorage.token}'},
+      );
+
+      if (!result.isSuccess) {
+        Utils.errorSnackBar(result.statusCode.toString(), result.message);
       }
-    });
+    } catch (e) {
+      Utils.errorSnackBar('Error', e.toString());
+    }
   }
 
   listenMessage(String chatId) async {
     SocketServices.on('new-message::$chatId', (data) {
-      status = Status.loading;
-      update();
+      try {
+        final String text = (data['text'] ?? data['message'] ?? '').toString();
+        final String senderId =
+            (data['sender']?['_id'] ?? data['sender']?.toString() ?? '')
+                .toString();
+        final String avatar =
+            senderId == LocalStorage.userId ? LocalStorage.myImage : peerImage;
+        final DateTime createdAt =
+            DateTime.tryParse((data['createdAt'] ?? '').toString()) ??
+            DateTime.now();
 
-      var time = data['createdAt'].toLocal();
-      messages.insert(
-        0,
-        ChatMessageModel(
-          isNotice: data['messageType'] == "notice" ? true : false,
-          time: time,
-          text: data['message'],
-          image: data['sender']['image'],
-          isMe: false,
-        ),
-      );
+        messages.insert(
+          0,
+          ChatMessageModel(
+            isNotice: (data['type'] ?? data['messageType'] ?? '') == "notice",
+            time: createdAt.toLocal(),
+            text: text,
+            image: avatar,
+            isMe: senderId == LocalStorage.userId,
+            isRead: (data['read'] ?? false) == true,
+          ),
+        );
 
-      status = Status.completed;
-      update();
+        status = Status.completed;
+        update();
+      } catch (_) {}
     });
   }
 
