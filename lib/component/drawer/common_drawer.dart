@@ -4,24 +4,24 @@ import 'package:get/get.dart';
 import 'package:watch_store/component/button/common_button.dart';
 import 'package:watch_store/component/image/common_image.dart';
 import 'package:watch_store/component/text/common_text.dart';
+import 'package:watch_store/config/api/api_end_point.dart';
 import 'package:watch_store/config/route/app_routes.dart';
+import 'package:watch_store/services/storage/storage_services.dart';
 import 'package:watch_store/utils/constants/app_colors.dart';
 import 'package:watch_store/utils/constants/app_icons.dart';
 import 'package:watch_store/utils/constants/app_string.dart';
 
 class CommonDrawer extends StatelessWidget {
   final String profileImage;
-  final String userName;
   final String companyName;
   final VoidCallback? onLogout;
 
   const CommonDrawer({
-    Key? key,
+    super.key,
     required this.profileImage,
-    this.userName = "Mike Joe",
     this.companyName = "Raconli Group",
     this.onLogout,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -45,8 +45,14 @@ class CommonDrawer extends StatelessWidget {
                       child: CommonImage(imageSrc: AppIcons.settings, size: 24),
                     ),
                     CircleAvatar(
-                      radius: 40.r,
-                      backgroundImage: AssetImage(profileImage),
+                      backgroundColor: AppColors.socialIconBackground,
+                      radius: 30.r,
+                      child: CommonImage(
+                        imageSrc: ApiEndPoint.imageUrl + LocalStorage.myImage,
+                        size: 35.r,
+                        fill: BoxFit.cover,
+                        borderRadius: 35.r,
+                      ),
                     ),
                     GestureDetector(
                       onTap: () {
@@ -59,7 +65,7 @@ class CommonDrawer extends StatelessWidget {
                 SizedBox(height: 15.h),
                 // User Name
                 CommonText(
-                  text: userName,
+                  text: LocalStorage.myName,
                   fontSize: 20,
                   fontWeight: FontWeight.w600,
                   color: AppColors.white,
@@ -100,6 +106,7 @@ class CommonDrawer extends StatelessWidget {
               onTap:
                   onLogout ??
                   () {
+                    LocalStorage.removeAllPrefData();
                     Get.offAllNamed(AppRoutes.signIn);
                   },
             ),

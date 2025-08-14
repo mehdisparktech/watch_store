@@ -17,7 +17,7 @@ class AlreadyAccountRichText extends StatelessWidget {
         children: [
           /// Already Have Account
           TextSpan(
-            text: "Already have an account".tr,
+            text: "Already have an account?".tr,
             style: GoogleFonts.plusJakartaSans(
               color: AppColors.black,
               fontSize: 16,

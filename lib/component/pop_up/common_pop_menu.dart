@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:watch_store/config/route/app_routes.dart';
 import 'package:watch_store/utils/helpers/other_helper.dart';
 import '../../services/storage/storage_services.dart';
 import '../../utils/constants/app_colors.dart';
@@ -135,9 +136,9 @@ logOutPopUp() {
                       Expanded(
                         child: CommonButton(
                           titleText: AppString.yes,
-                          onTap: () {
-                            LocalStorage.removeAllPrefData();
-                            Get.back();
+                          onTap: () async {
+                            await LocalStorage.removeAllPrefData();
+                            Get.offAllNamed(AppRoutes.signIn);
                           },
                         ),
                       ),
@@ -273,7 +274,8 @@ logOutPopUps() {
                     titleText: AppString.yes,
                     onTap: () async {
                       await AnimationPopUpState.closeDialog();
-                      LocalStorage.removeAllPrefData();
+                      await LocalStorage.removeAllPrefData();
+                      Get.offAllNamed(AppRoutes.signIn);
                     },
                   ),
                 ),

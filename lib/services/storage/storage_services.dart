@@ -1,7 +1,5 @@
-import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import '../../config/route/app_routes.dart';
 import '../../utils/log/app_log.dart';
 import 'storage_keys.dart';
 
@@ -43,7 +41,6 @@ class LocalStorage {
     final localStorage = await _getStorage();
     await localStorage.clear();
     _resetLocalStorageData();
-    Get.offAllNamed(AppRoutes.signIn);
     await getAllPrefData();
   }
 
