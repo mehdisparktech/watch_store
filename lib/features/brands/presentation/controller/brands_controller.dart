@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:watch_store/config/api/api_end_point.dart';
 import 'package:watch_store/features/brands/data/model/product_model.dart';
@@ -11,6 +12,9 @@ class BrandsController extends GetxController {
 
   Status status = Status.completed;
   List<ProductModel> products = [];
+  List<ProductModel> filteredProducts = [];
+  TextEditingController searchController = TextEditingController();
+  String searchQuery = '';
 
   Future<void> loadProducts() async {
     status = Status.loading;
@@ -26,6 +30,7 @@ class BrandsController extends GetxController {
             productsJson
                 .map((e) => ProductModel.fromJson(Map<String, dynamic>.from(e)))
                 .toList();
+        filteredProducts = List.from(products);
         status = Status.completed;
       } else {
         status = Status.error;
@@ -72,9 +77,44 @@ class BrandsController extends GetxController {
     }
   }
 
+  void searchProducts(String query) {
+    searchQuery = query.toLowerCase().trim();
+    if (searchQuery.isEmpty) {
+      filteredProducts = List.from(products);
+    } else {
+      filteredProducts =
+          products.where((product) {
+            final name = product.name?.toLowerCase() ?? '';
+            final brandName = product.brandName?.toLowerCase() ?? '';
+            final description = product.description?.toLowerCase() ?? '';
+
+            return name.contains(searchQuery) ||
+                brandName.contains(searchQuery) ||
+                description.contains(searchQuery);
+          }).toList();
+    }
+    update();
+  }
+
+  void clearSearch() {
+    searchController.clear();
+    searchQuery = '';
+    filteredProducts = List.from(products);
+    update();
+  }
+
   @override
   void onInit() {
+    searchController.addListener(() {
+      searchProducts(searchController.text);
+    });
     loadProducts();
     super.onInit();
+  }
+
+  @override
+  void onClose() {
+    searchController.dispose();
+    super.onClose();
   }
 }

@@ -39,10 +39,18 @@ class BrandsScreen extends StatelessWidget {
                   padding: const EdgeInsets.only(bottom: 16.0),
                   child: CommonTextField(
                     hintText: 'Search...',
+                    controller: controller.searchController,
                     prefixIcon: Padding(
                       padding: EdgeInsets.only(left: 16.w, right: 16.w),
                       child: CommonImage(imageSrc: AppIcons.search, size: 24),
                     ),
+                    suffixIcon:
+                        controller.searchQuery.isNotEmpty
+                            ? IconButton(
+                              onPressed: controller.clearSearch,
+                              icon: Icon(Icons.clear, size: 20),
+                            )
+                            : null,
                     paddingVertical: 16,
                   ),
                 ),
@@ -70,25 +78,58 @@ class BrandsScreen extends StatelessWidget {
                 if (controller.status != Status.loading &&
                     controller.status != Status.error)
                   Expanded(
-                    child: RefreshIndicator(
-                      onRefresh: () async => controller.loadProducts(),
-                      child: GridView.builder(
-                        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                          crossAxisCount: 2,
-                          crossAxisSpacing: 16.0,
-                          mainAxisSpacing: 16.0,
-                        ),
-                        itemCount: controller.products.length,
-                        itemBuilder: (context, index) {
-                          final product = controller.products[index];
-                          return WatchCard(
-                            watch: product,
-                            addBookmark: controller.addBookmark,
-                            removeBookmark: controller.removeBookmark,
-                          );
-                        },
-                      ),
-                    ),
+                    child:
+                        controller.filteredProducts.isEmpty
+                            ? Center(
+                              child: Column(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  Icon(
+                                    Icons.search_off,
+                                    size: 64,
+                                    color: Colors.grey,
+                                  ),
+                                  8.verticalSpace,
+                                  Text(
+                                    controller.searchQuery.isNotEmpty
+                                        ? 'No watches found for "${controller.searchQuery}"'
+                                        : 'No watches available',
+                                    style: TextStyle(
+                                      fontSize: 16,
+                                      color: Colors.grey[600],
+                                    ),
+                                  ),
+                                  if (controller.searchQuery.isNotEmpty) ...[
+                                    8.verticalSpace,
+                                    TextButton(
+                                      onPressed: controller.clearSearch,
+                                      child: Text('Clear Search'),
+                                    ),
+                                  ],
+                                ],
+                              ),
+                            )
+                            : RefreshIndicator(
+                              onRefresh: () async => controller.loadProducts(),
+                              child: GridView.builder(
+                                gridDelegate:
+                                    SliverGridDelegateWithFixedCrossAxisCount(
+                                      crossAxisCount: 2,
+                                      crossAxisSpacing: 16.0,
+                                      mainAxisSpacing: 16.0,
+                                    ),
+                                itemCount: controller.filteredProducts.length,
+                                itemBuilder: (context, index) {
+                                  final product =
+                                      controller.filteredProducts[index];
+                                  return WatchCard(
+                                    watch: product,
+                                    addBookmark: controller.addBookmark,
+                                    removeBookmark: controller.removeBookmark,
+                                  );
+                                },
+                              ),
+                            ),
                   ),
               ],
             ),
