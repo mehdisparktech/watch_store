@@ -4,8 +4,7 @@ import 'package:watch_store/component/app_bar/common_app_bar.dart';
 import 'package:get/get.dart';
 import 'package:watch_store/component/drawer/common_drawer.dart';
 import 'package:watch_store/component/text_field/common_text_field.dart';
-import 'package:watch_store/features/brands/presentation/widgets/watch_card.dart'
-    as brands;
+import 'package:watch_store/features/wishlist/presentation/widgets/watch_card.dart';
 import 'package:watch_store/features/wishlist/presentation/controller/wishlist_controller.dart';
 import 'package:watch_store/utils/constants/app_icons.dart';
 import 'package:watch_store/utils/constants/app_images.dart';
@@ -73,9 +72,7 @@ class WishlistScreen extends StatelessWidget {
                               ),
                           itemCount: controller.products.length,
                           itemBuilder: (context, index) {
-                            return brands.WatchCard(
-                              watch: controller.products[index],
-                            );
+                            return WatchCard(watch: controller.products[index]);
                           },
                         ),
                       );

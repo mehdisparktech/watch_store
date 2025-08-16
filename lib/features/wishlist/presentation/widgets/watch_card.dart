@@ -2,11 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:watch_store/component/image/common_image.dart';
 import 'package:watch_store/component/text/common_text.dart';
+import 'package:watch_store/config/api/api_end_point.dart';
 import 'package:watch_store/config/route/app_routes.dart';
-import 'package:watch_store/features/brands/data/watch_model.dart';
+import 'package:watch_store/features/brands/data/model/product_model.dart';
+import 'package:watch_store/utils/constants/app_images.dart';
 
 class WatchCard extends StatelessWidget {
-  final WatchModel watch;
+  final ProductModel watch;
 
   const WatchCard({super.key, required this.watch});
 
@@ -14,7 +16,8 @@ class WatchCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        Get.toNamed(AppRoutes.watchDetail, arguments: watch);
+        final id = watch.id ?? '';
+        Get.toNamed(AppRoutes.watchDetail, arguments: id);
       },
       child: Stack(
         children: [
@@ -32,7 +35,7 @@ class WatchCard extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     CommonText(
-                      text: watch.name,
+                      text: watch.name ?? '',
                       fontSize: 18,
                       fontWeight: FontWeight.bold,
                       fontFamily: 'PlayfairDisplay',
@@ -58,7 +61,14 @@ class WatchCard extends StatelessWidget {
               height: 150,
               width: 150,
               child: CommonImage(
-                imageSrc: watch.imageUrl,
+                imageSrc:
+                    (watch.images != null &&
+                            watch.images!.isNotEmpty &&
+                            watch.images!.first.isNotEmpty)
+                        ? ApiEndPoint.imageUrl + watch.images!.first
+                        : ((watch.image ?? '').isNotEmpty
+                            ? ApiEndPoint.imageUrl + (watch.image ?? '')
+                            : AppImages.omega),
                 fill: BoxFit.contain,
               ),
             ),
@@ -75,14 +85,10 @@ class WatchCard extends StatelessWidget {
                 shape: BoxShape.circle,
               ),
               child: IconButton(
-                icon: Icon(
-                  Icons.favorite,
-                  color: watch.isFavorite ? Colors.red : Colors.red.shade100,
-                  size: 20,
-                ),
+                icon: Icon(Icons.favorite, color: Colors.red, size: 20),
                 padding: EdgeInsets.zero,
                 onPressed: () {
-                  watch.isFavorite = !watch.isFavorite;
+                  // watch.isFavorite = !watch.isFavorite!;
                 },
               ),
             ),

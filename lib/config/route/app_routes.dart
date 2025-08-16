@@ -7,7 +7,6 @@ import 'package:watch_store/features/home/presentation/screen/home_screen.dart';
 import 'package:watch_store/features/news/presenation/screens/news_screen.dart';
 import 'package:watch_store/features/onboarding_screen/onboarding_spanish_screen.dart';
 import 'package:watch_store/features/profile/presentation/screen/view_profile.dart';
-import 'package:watch_store/features/wishlist/presentation/screen/wishlist_detail_screen.dart';
 import 'package:watch_store/features/wishlist/presentation/screen/wishlist_screen.dart';
 import '../../features/auth/sign up/presentation/controller/sign_up_controller.dart';
 import '../../features/auth/change_password/presentation/screen/change_password_screen.dart';
@@ -56,7 +55,6 @@ class AppRoutes {
   static const String news = "/news_screen.dart";
   static const String faq = "/faq_screen.dart";
   static const String wishlist = "/wishlist_screen.dart";
-  static const String wishlistDetail = "/wishlist_detail_screen.dart";
   static const String products = "/product_list_screen.dart";
   static const String demoApi = "/demo_api_screen.dart";
   static const String brandsCategory = "/brands_category_screen.dart";
@@ -132,10 +130,7 @@ class AppRoutes {
       name: brandsCategory,
       page: () => BrandsCategoryScreen(brandId: Get.arguments),
     ),
-    GetPage(
-      name: wishlistDetail,
-      page: () => WishlistDetailScreen(watch: Get.arguments),
-    ),
+
     GetPage(name: viewProfile, page: () => const ViewProfile()),
   ];
 }
