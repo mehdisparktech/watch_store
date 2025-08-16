@@ -31,13 +31,40 @@ Future<void> main() async {
 }
 
 init() async {
-  DependencyInjection dI = DependencyInjection();
-  dI.dependencies();
-  SocketServices.connectToSocket();
+  try {
+    // Initialize dependency injection first
+    DependencyInjection dI = DependencyInjection();
+    dI.dependencies();
 
-  await Future.wait([
-    LocalStorage.getAllPrefData(),
-    NotificationService.initLocalNotification(),
-    dotenv.load(fileName: ".env"),
-  ]);
+    // Initialize critical services
+    await Future.wait([
+      LocalStorage.getAllPrefData(),
+      NotificationService.initLocalNotification(),
+      _loadEnvFile(),
+    ]);
+
+    // Initialize socket connection (non-blocking)
+    _initializeSocket();
+  } catch (e) {
+    debugPrint('Initialization error: $e');
+    // Continue app execution even if some services fail to initialize
+  }
+}
+
+void _initializeSocket() {
+  try {
+    SocketServices.connectToSocket();
+  } catch (e) {
+    debugPrint('Socket initialization error: $e');
+    // Continue without socket connection
+  }
+}
+
+Future<void> _loadEnvFile() async {
+  try {
+    await dotenv.load(fileName: ".env");
+  } catch (e) {
+    debugPrint('Warning: .env file not found or could not be loaded: $e');
+    // Continue without .env file - this is not critical for app functionality
+  }
 }

@@ -67,6 +67,9 @@ class LocalConstants extends Translations {
       "Delete account": "Delete account",
       "Terms of Services": "Terms of Services",
       "language": "Language",
+      "Welcome to Watch Store": "Welcome to Watch Store",
+      "Please select your preferred language":
+          "Please select your preferred language",
     },
     'es_ES': {
       "No Data found": "No se encontraron datos",
@@ -132,6 +135,9 @@ class LocalConstants extends Translations {
       "Delete account": "Eliminar cuenta",
       "Terms of Services": "Términos de servicio",
       "language": "Idioma",
+      "Welcome to Watch Store": "Bienvenido a Watch Store",
+      "Please select your preferred language":
+          "Por favor selecciona tu idioma preferido",
     },
   };
 }

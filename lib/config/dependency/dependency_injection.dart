@@ -25,7 +25,7 @@ class DependencyInjection extends Bindings {
   @override
   void dependencies() {
     // Language Controller
-    Get.put(() => LanguageController(), permanent: true);
+    Get.put(LanguageController(), permanent: true);
 
     // Repositories
     Get.lazyPut<AuthRepository>(

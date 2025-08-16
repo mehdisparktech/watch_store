@@ -1,6 +1,8 @@
 import 'dart:ui';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import '../../services/storage/storage_services.dart';
+import '../../services/storage/storage_keys.dart';
 
 class LanguageController extends GetxController {
   static const String _languageKey = 'selected_language';
@@ -14,10 +16,14 @@ class LanguageController extends GetxController {
   // Current language
   Rx<Locale> currentLanguage = const Locale('en', 'US').obs;
 
+  // Check if this is first time language selection
+  RxBool isFirstTimeLanguageSelection = true.obs;
+
   @override
   void onInit() {
     super.onInit();
     _loadSavedLanguage();
+    _checkFirstTimeLanguageSelection();
   }
 
   // Load saved language from SharedPreferences
@@ -84,4 +90,24 @@ class LanguageController extends GetxController {
 
   // Check if current language is Spanish
   bool get isSpanish => currentLanguage.value.languageCode == 'es';
+
+  // Check if this is first time language selection
+  Future<void> _checkFirstTimeLanguageSelection() async {
+    await LocalStorage.getAllPrefData();
+    isFirstTimeLanguageSelection.value = !LocalStorage.languageSelected;
+  }
+
+  // Mark language as selected (first time setup completed)
+  Future<void> markLanguageAsSelected() async {
+    await LocalStorage.setBool(LocalStorageKeys.languageSelected, true);
+    LocalStorage.languageSelected = true;
+    isFirstTimeLanguageSelection.value = false;
+  }
+
+  // Reset language selection (for testing purposes)
+  Future<void> resetLanguageSelection() async {
+    await LocalStorage.setBool(LocalStorageKeys.languageSelected, false);
+    LocalStorage.languageSelected = false;
+    isFirstTimeLanguageSelection.value = true;
+  }
 }

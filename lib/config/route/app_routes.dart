@@ -4,6 +4,7 @@ import 'package:watch_store/features/brands/presentation/screen/brands_category_
 import 'package:watch_store/features/brands/presentation/screen/brands_screen.dart';
 import 'package:watch_store/features/brands/presentation/screen/watch_detail_screen.dart';
 import 'package:watch_store/features/home/presentation/screen/home_screen.dart';
+import 'package:watch_store/features/language_selection/language_selection_screen.dart';
 import 'package:watch_store/features/news/presenation/screens/news_screen.dart';
 import 'package:watch_store/features/onboarding_screen/onboarding_spanish_screen.dart';
 import 'package:watch_store/features/profile/presentation/screen/view_profile.dart';
@@ -32,6 +33,7 @@ import 'package:watch_store/features/brands/data/model/product_model.dart';
 class AppRoutes {
   static const String test = "/test_screen.dart";
   static const String splash = "/splash_screen.dart";
+  static const String languageSelection = "/language_selection_screen.dart";
   static const String onboarding = "/onboarding_screen.dart";
   static const String onboardingSpanish = "/onboarding_spanish_screen.dart";
   static const String signUp = "/sign_up_screen.dart";
@@ -62,6 +64,10 @@ class AppRoutes {
 
   static List<GetPage> routes = [
     GetPage(name: splash, page: () => const SplashScreen()),
+    GetPage(
+      name: languageSelection,
+      page: () => const LanguageSelectionScreen(),
+    ),
     GetPage(name: onboarding, page: () => const OnboardingScreen()),
     GetPage(
       name: onboardingSpanish,
