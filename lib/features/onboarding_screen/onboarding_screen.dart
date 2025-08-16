@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:watch_store/component/text/common_text.dart';
 import 'package:watch_store/utils/constants/app_text_style.dart';
+import 'package:watch_store/utils/extensions/extension.dart';
 import '../../../config/route/app_routes.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
@@ -69,9 +70,10 @@ class OnboardingScreen extends StatelessWidget {
             CommonButton(
               titleText: AppString.getStarted,
               onTap: () {
-                Get.toNamed(AppRoutes.onboardingSpanish);
+                Get.toNamed(AppRoutes.signIn);
               },
             ),
+            20.height,
           ],
         ),
       ),
