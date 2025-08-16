@@ -26,5 +26,6 @@ class ApiEndPoint {
   static const categories = "categories";
   static const brands = "brands";
   static const wishlist = "wishlist";
+  static const bookmarks = "bookmarks";
   static const news = "news";
 }
