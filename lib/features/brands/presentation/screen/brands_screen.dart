@@ -81,7 +81,11 @@ class BrandsScreen extends StatelessWidget {
                         itemCount: controller.products.length,
                         itemBuilder: (context, index) {
                           final product = controller.products[index];
-                          return WatchCard(watch: product);
+                          return WatchCard(
+                            watch: product,
+                            addBookmark: controller.addBookmark,
+                            removeBookmark: controller.removeBookmark,
+                          );
                         },
                       ),
                     ),

@@ -9,8 +9,15 @@ import 'package:watch_store/utils/constants/app_images.dart';
 
 class WatchCard extends StatelessWidget {
   final ProductModel watch;
+  final Function(String) addBookmark;
+  final Function(String) removeBookmark;
 
-  const WatchCard({super.key, required this.watch});
+  const WatchCard({
+    super.key,
+    required this.watch,
+    required this.addBookmark,
+    required this.removeBookmark,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -95,7 +102,11 @@ class WatchCard extends StatelessWidget {
                 ),
                 padding: EdgeInsets.zero,
                 onPressed: () {
-                  // watch.isFavorite = !watch.isFavorite!;
+                  if (watch.isFavorite ?? false) {
+                    removeBookmark(watch.id ?? '');
+                  } else {
+                    addBookmark(watch.id ?? '');
+                  }
                 },
               ),
             ),
