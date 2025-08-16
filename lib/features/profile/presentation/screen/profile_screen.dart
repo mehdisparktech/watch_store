@@ -21,7 +21,7 @@ class ProfileScreen extends StatelessWidget {
       /// App Bar Section Starts here
       appBar: AppBar(
         centerTitle: true,
-        title: const CommonText(
+        title: CommonText(
           text: AppString.profile,
           fontWeight: FontWeight.w600,
           fontSize: 24,

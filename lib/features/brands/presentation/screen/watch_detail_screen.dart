@@ -11,6 +11,7 @@ import 'package:watch_store/features/brands/data/model/product_model.dart';
 import 'package:watch_store/features/brands/presentation/controller/product_detail_controller.dart';
 import 'package:watch_store/utils/constants/app_colors.dart';
 import 'package:watch_store/utils/constants/app_images.dart';
+import 'package:watch_store/utils/constants/app_string.dart';
 import 'package:watch_store/utils/enum/enum.dart';
 
 class WatchDetailScreen extends StatefulWidget {
@@ -47,7 +48,7 @@ class _WatchDetailScreenState extends State<WatchDetailScreen>
     return Scaffold(
       key: _scaffoldKey,
       appBar: CommonAppBar(
-        title: 'Watch Detail',
+        title: AppString.watchDetails,
         profileImageUrl: AppImages.profileImage,
         onMenuPressed: () => _scaffoldKey.currentState?.openEndDrawer(),
       ),
@@ -133,7 +134,7 @@ class _WatchDetailScreenState extends State<WatchDetailScreen>
                       ),
                       SizedBox(height: 16),
                       CommonButton(
-                        titleText: 'Start Chat With Retailer',
+                        titleText: AppString.startChatWithRetailer,
                         onTap: () {
                           Get.toNamed(
                             AppRoutes.message,
@@ -173,9 +174,9 @@ class _WatchDetailScreenState extends State<WatchDetailScreen>
                       fontFamily: 'PlayfairDisplay',
                     ),
                     tabs: [
-                      Tab(text: 'Product'),
-                      Tab(text: 'Specification'),
-                      Tab(text: 'Review'),
+                      Tab(text: AppString.product),
+                      Tab(text: AppString.specification),
+                      Tab(text: AppString.review),
                     ],
                   ),
                 ),
@@ -220,16 +221,16 @@ class _WatchDetailScreenState extends State<WatchDetailScreen>
           ),
           SizedBox(height: 16),
           CommonText(
-            text: 'Features:',
+            text: AppString.features,
             fontSize: 16,
             fontWeight: FontWeight.bold,
             fontFamily: 'PlayfairDisplay',
           ),
           SizedBox(height: 8),
-          _buildFeatureItem('• Water resistant up to 100m'),
-          _buildFeatureItem('• Scratch-resistant sapphire crystal'),
-          _buildFeatureItem('• Swiss made movement'),
-          _buildFeatureItem('• Premium leather strap'),
+          _buildFeatureItem(AppString.waterResistantUpTo100m),
+          _buildFeatureItem(AppString.scratchResistantSapphireCrystal),
+          _buildFeatureItem(AppString.swissMadeMovement),
+          _buildFeatureItem(AppString.premiumLeatherStrap),
         ],
       ),
     );

@@ -6,6 +6,7 @@ import 'package:watch_store/component/text/common_text.dart';
 import 'package:watch_store/component/text_field/common_text_field.dart';
 import 'package:watch_store/utils/constants/app_colors.dart';
 import 'package:watch_store/utils/constants/app_images.dart';
+import 'package:watch_store/utils/constants/app_string.dart';
 import '../controller/faq_controller.dart';
 import '../../../../utils/enum/enum.dart';
 
@@ -24,7 +25,7 @@ class _FAQScreenState extends State<FAQScreen> {
     return Scaffold(
       key: _scaffoldKey,
       appBar: CommonAppBar(
-        title: 'FAQ',
+        title: AppString.faq,
         profileImageUrl: AppImages.profileImage,
         onMenuPressed: () => _scaffoldKey.currentState?.openEndDrawer(),
       ),
@@ -38,7 +39,7 @@ class _FAQScreenState extends State<FAQScreen> {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 CommonText(
-                  text: 'What need help you?',
+                  text: AppString.whatNeedHelpYou,
                   fontSize: 24,
                   fontWeight: FontWeight.bold,
                   color: AppColors.socialIconBackground,
@@ -46,8 +47,7 @@ class _FAQScreenState extends State<FAQScreen> {
                 ),
                 SizedBox(height: 8),
                 CommonText(
-                  text:
-                      'Need something cleared up? Here our most frequently asked questions',
+                  text: AppString.needSomethingClearedUp,
                   fontSize: 16,
                   color: AppColors.hintText,
                   textAlign: TextAlign.center,

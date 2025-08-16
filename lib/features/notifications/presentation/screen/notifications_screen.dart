@@ -37,26 +37,27 @@ class NotificationScreen extends StatelessWidget {
               ? const NoData()
               /// show all Notifications here
               : ListView.builder(
-                  controller: controller.scrollController,
-                  padding: EdgeInsets.symmetric(
-                    horizontal: 20.sp,
-                    vertical: 10.sp,
-                  ),
-                  itemCount: controller.isLoadingMore
-                      ? controller.notifications.length + 1
-                      : controller.notifications.length,
-                  physics: const BouncingScrollPhysics(),
-                  itemBuilder: (context, index) {
-                    ///  Notification More Data Loading Bar
-                    if (index > controller.notifications.length) {
-                      return CommonLoader(size: 40, strokeWidth: 2);
-                    }
-                    NotificationModel item = controller.notifications[index];
+                controller: controller.scrollController,
+                padding: EdgeInsets.symmetric(
+                  horizontal: 20.sp,
+                  vertical: 10.sp,
+                ),
+                itemCount:
+                    controller.isLoadingMore
+                        ? controller.notifications.length + 1
+                        : controller.notifications.length,
+                physics: const BouncingScrollPhysics(),
+                itemBuilder: (context, index) {
+                  ///  Notification More Data Loading Bar
+                  if (index > controller.notifications.length) {
+                    return CommonLoader(size: 40, strokeWidth: 2);
+                  }
+                  NotificationModel item = controller.notifications[index];
 
-                    ///  Notification card item
-                    return NotificationItem(item: item);
-                  },
-                );
+                  ///  Notification card item
+                  return NotificationItem(item: item);
+                },
+              );
         },
       ),
 

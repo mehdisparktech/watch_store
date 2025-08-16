@@ -15,7 +15,7 @@ class ErrorScreen extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           const SizedBox(height: 20),
-          const Text(
+          Text(
             AppString.someThingWrong,
             style: TextStyle(
               fontWeight: FontWeight.w500,
@@ -36,7 +36,7 @@ class ErrorScreen extends StatelessWidget {
                 ),
               ),
             ),
-            child: const Text(
+            child: Text(
               AppString.tryAgain,
               style: TextStyle(
                 fontSize: 18,

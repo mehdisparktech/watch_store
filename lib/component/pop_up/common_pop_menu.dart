@@ -114,7 +114,7 @@ logOutPopUp() {
                   borderRadius: BorderRadius.circular(20.r),
                 ),
                 contentPadding: EdgeInsets.all(12.sp),
-                title: const CommonText(
+                title: CommonText(
                   text: AppString.youSureWantToLogout,
                   maxLines: 2,
                   fontWeight: FontWeight.w600,
@@ -248,7 +248,7 @@ logOutPopUps() {
             borderRadius: BorderRadius.circular(20.r),
           ),
           contentPadding: EdgeInsets.all(12.sp),
-          title: const CommonText(
+          title: CommonText(
             text: AppString.youSureWantToLogout,
             maxLines: 2,
             fontWeight: FontWeight.w600,

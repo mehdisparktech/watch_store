@@ -9,6 +9,7 @@ import 'package:watch_store/features/wishlist/presentation/controller/wishlist_c
 import 'package:watch_store/utils/constants/app_icons.dart';
 import 'package:watch_store/utils/constants/app_images.dart';
 import 'package:watch_store/component/image/common_image.dart';
+import 'package:watch_store/utils/constants/app_string.dart';
 import 'package:watch_store/utils/enum/enum.dart';
 
 class WishlistScreen extends StatelessWidget {
@@ -21,7 +22,7 @@ class WishlistScreen extends StatelessWidget {
     return Scaffold(
       key: _scaffoldKey,
       appBar: CommonAppBar(
-        title: 'Wishlist',
+        title: AppString.wishlist,
         subTitle: true,
         profileImageUrl: AppImages.profileImage,
         onMenuPressed: () => _scaffoldKey.currentState?.openEndDrawer(),

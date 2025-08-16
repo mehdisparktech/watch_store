@@ -22,7 +22,7 @@ class NewsScreen extends StatelessWidget {
     return Scaffold(
       key: _scaffoldKey,
       appBar: CommonAppBar(
-        title: 'News',
+        title: AppString.news,
         profileImageUrl: AppImages.profileImage,
         onMenuPressed: () => _scaffoldKey.currentState?.openEndDrawer(),
       ),

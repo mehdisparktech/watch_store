@@ -88,11 +88,11 @@ class CommonDrawer extends StatelessWidget {
           Expanded(
             child: Column(
               children: [
-                _buildMenuItem("Chat", AppRoutes.chat),
-                _buildMenuItem("Catalogue", AppRoutes.home),
-                _buildMenuItem("Wishlist", AppRoutes.wishlist),
-                _buildMenuItem("News", AppRoutes.news),
-                _buildMenuItem("FAQ", AppRoutes.faq),
+                _buildMenuItem(AppString.chat, AppRoutes.chat),
+                _buildMenuItem(AppString.catalogue, AppRoutes.home),
+                _buildMenuItem(AppString.wishlist, AppRoutes.wishlist),
+                _buildMenuItem(AppString.news, AppRoutes.news),
+                _buildMenuItem(AppString.faq, AppRoutes.faq),
               ],
             ),
           ),

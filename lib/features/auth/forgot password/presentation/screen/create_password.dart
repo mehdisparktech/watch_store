@@ -21,7 +21,7 @@ class CreatePassword extends StatelessWidget {
     return Scaffold(
       /// App Bar Section starts here
       appBar: AppBar(
-        title: const CommonText(
+        title: CommonText(
           text: AppString.createNewPassword,
           fontWeight: FontWeight.w700,
           fontSize: 24,

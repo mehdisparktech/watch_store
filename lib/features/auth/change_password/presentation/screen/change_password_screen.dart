@@ -19,7 +19,7 @@ class ChangePasswordScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        title: const CommonText(
+        title: CommonText(
           text: AppString.changePassword,
           fontSize: 20,
           fontWeight: FontWeight.w600,
@@ -37,7 +37,7 @@ class ChangePasswordScreen extends StatelessWidget {
                   70.height,
 
                   /// current Password section
-                  const CommonText(text: AppString.currentPassword, bottom: 8),
+                  CommonText(text: AppString.currentPassword, bottom: 8),
                   CommonTextField(
                     controller: controller.currentPasswordController,
                     hintText: AppString.currentPassword,
@@ -47,11 +47,7 @@ class ChangePasswordScreen extends StatelessWidget {
                   ),
 
                   /// New Password section
-                  const CommonText(
-                    text: AppString.newPassword,
-                    bottom: 8,
-                    top: 16,
-                  ),
+                  CommonText(text: AppString.newPassword, bottom: 8, top: 16),
                   CommonTextField(
                     controller: controller.newPasswordController,
                     hintText: AppString.newPassword,
@@ -61,7 +57,7 @@ class ChangePasswordScreen extends StatelessWidget {
                   ),
 
                   /// confirm Password section
-                  const CommonText(
+                  CommonText(
                     text: AppString.confirmPassword,
                     bottom: 8,
                     top: 16,
@@ -69,10 +65,11 @@ class ChangePasswordScreen extends StatelessWidget {
                   CommonTextField(
                     controller: controller.confirmPasswordController,
                     hintText: AppString.confirmPassword,
-                    validator: (value) => OtherHelper.confirmPasswordValidator(
-                      value,
-                      controller.newPasswordController,
-                    ),
+                    validator:
+                        (value) => OtherHelper.confirmPasswordValidator(
+                          value,
+                          controller.newPasswordController,
+                        ),
                     isPassword: true,
                     prefixIcon: Icon(Icons.lock, size: 20.sp),
                   ),

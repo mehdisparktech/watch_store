@@ -19,7 +19,7 @@ class CommonPhoneNumberTextFiled extends StatelessWidget {
     return IntlPhoneField(
       controller: controller,
       onCountryChanged: countryChange,
-      decoration: const InputDecoration(
+      decoration: InputDecoration(
         hintText: AppString.phoneNumber,
         fillColor: AppColors.filledColor,
         filled: true,

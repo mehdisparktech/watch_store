@@ -46,7 +46,7 @@ class SignInScreen extends StatelessWidget {
                   /// Account Email Input here
                   Align(
                     alignment: Alignment.centerLeft,
-                    child: const CommonText(
+                    child: CommonText(
                       text: AppString.email,
                       bottom: 10,
                       fontSize: 16,
@@ -64,7 +64,7 @@ class SignInScreen extends StatelessWidget {
                   /// Account Password Input here
                   Align(
                     alignment: Alignment.centerLeft,
-                    child: const CommonText(
+                    child: CommonText(
                       text: AppString.password,
                       bottom: 10,
                       fontSize: 16,
@@ -83,7 +83,7 @@ class SignInScreen extends StatelessWidget {
                     alignment: Alignment.centerRight,
                     child: GestureDetector(
                       onTap: () => Get.toNamed(AppRoutes.forgotPassword),
-                      child: const CommonText(
+                      child: CommonText(
                         text: AppString.forgotThePassword,
                         top: 15,
                         bottom: 20,

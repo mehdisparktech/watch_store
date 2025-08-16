@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:watch_store/component/app_bar/common_app_bar.dart';
 import 'package:watch_store/component/drawer/common_drawer.dart';
 import 'package:watch_store/utils/constants/app_images.dart';
+import 'package:watch_store/utils/constants/app_string.dart';
 import '../../../../../config/route/app_routes.dart';
 import '../../../../component/other_widgets/common_loader.dart';
 import '../../../../component/screen/error_screen.dart';
@@ -24,7 +25,7 @@ class ChatListScreen extends StatelessWidget {
 
       /// Modern App Bar Section
       appBar: CommonAppBar(
-        title: 'Message',
+        title: AppString.message,
         profileImageUrl: AppImages.profileImage,
         onMenuPressed: () => _scaffoldKey.currentState?.openEndDrawer(),
       ),

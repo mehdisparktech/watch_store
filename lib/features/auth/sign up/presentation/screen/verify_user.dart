@@ -31,7 +31,7 @@ class _VerifyUserState extends State<VerifyUser> {
     return Scaffold(
       /// App Bar Section starts here
       appBar: AppBar(
-        title: const CommonText(
+        title: CommonText(
           text: AppString.otpVerify,
           fontWeight: FontWeight.w700,
           fontSize: 24,
@@ -105,7 +105,8 @@ class _VerifyUserState extends State<VerifyUser> {
                         controller.time == '00:00'
                             ? () {
                               controller.startTimer();
-                              controller.resendOtp(); // signUpUser() এর পরিবর্তে resendOtp() কল করা হয়েছে
+                              controller
+                                  .resendOtp(); // signUpUser() এর পরিবর্তে resendOtp() কল করা হয়েছে
                             }
                             : () {},
                     child: CommonText(

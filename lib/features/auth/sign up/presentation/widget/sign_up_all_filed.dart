@@ -25,7 +25,7 @@ class SignUpAllField extends StatelessWidget {
         // ),
 
         /// User Email here
-        const CommonText(text: AppString.email, bottom: 8, top: 12),
+        CommonText(text: AppString.email, bottom: 8, top: 12),
         CommonTextField(
           controller: controller.emailController,
           //prefixIcon: const Icon(Icons.mail, color: AppColors.black),
@@ -34,7 +34,7 @@ class SignUpAllField extends StatelessWidget {
         ),
 
         /// User Password here
-        const CommonText(text: AppString.password, bottom: 8, top: 12),
+        CommonText(text: AppString.password, bottom: 8, top: 12),
         CommonTextField(
           controller: controller.passwordController,
           //prefixIcon: const Icon(Icons.lock, color: AppColors.black),
@@ -44,7 +44,7 @@ class SignUpAllField extends StatelessWidget {
         ),
 
         /// User Confirm Password here
-        const CommonText(text: AppString.confirmPassword, bottom: 8, top: 12),
+        CommonText(text: AppString.confirmPassword, bottom: 8, top: 12),
         CommonTextField(
           controller: controller.confirmPasswordController,
           //prefixIcon: const Icon(Icons.lock, color: AppColors.black),

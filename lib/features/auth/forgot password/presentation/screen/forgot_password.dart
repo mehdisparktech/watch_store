@@ -22,7 +22,7 @@ class ForgotPasswordScreen extends StatelessWidget {
           (controller) => Scaffold(
             /// App Bar Section
             appBar: AppBar(
-              title: const CommonText(
+              title: CommonText(
                 text: AppString.forgotPassword,
                 fontWeight: FontWeight.w700,
                 fontSize: 24,
