@@ -61,12 +61,18 @@ class MessageController extends GetxController {
           final Map sender = (item['sender'] ?? {}) as Map;
           final String text =
               (item['text'] ?? item['message'] ?? '').toString();
-          // final String senderId =
-          //     (sender['_id'] ?? sender['id'] ?? '').toString();
           final String senderEmail =
               (sender['email'] ?? sender['email'] ?? '').toString();
-          final String otherImage = peerImage;
-          // final String myImage = LocalStorage.myImage;
+          final String senderName = (sender['name'] ?? '').toString();
+          final String senderImage = (sender['profileImage'] ?? '').toString();
+
+          // Update sender info from API response
+          if (senderEmail != LocalStorage.myEmail && senderName.isNotEmpty) {
+            name = senderName;
+            peerImage = senderImage;
+            sellerImage = senderImage;
+          }
+
           final DateTime createdAt =
               DateTime.tryParse((item['createdAt'] ?? '').toString()) ??
               DateTime.now();
@@ -78,7 +84,9 @@ class MessageController extends GetxController {
               image:
                   senderEmail == LocalStorage.myEmail
                       ? LocalStorage.myImage
-                      : otherImage,
+                      : senderImage.isNotEmpty
+                      ? senderImage
+                      : peerImage,
               isMe: senderEmail == LocalStorage.myEmail,
               isNotice: (item['type'] ?? '') == 'notice',
               isRead: (item['read'] ?? false) == true,

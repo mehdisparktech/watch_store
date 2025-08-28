@@ -142,8 +142,8 @@ class _WatchDetailScreenState extends State<WatchDetailScreen>
                             arguments: true,
                             parameters: {
                               "chatId": product.createdBy ?? '',
-                              "name": product.name ?? '',
-                              "image": AppImages.profileImage,
+                              "name": "", // Will be updated from API
+                              "image": "", // Will be updated from API
                               "itemImage": displayedImage,
                               "itemPrice": (product.price ?? 0).toString(),
                               "itemName": product.name ?? '',

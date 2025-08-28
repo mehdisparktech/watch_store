@@ -5,6 +5,7 @@ import 'package:watch_store/config/api/api_end_point.dart';
 import 'package:watch_store/utils/constants/app_colors.dart';
 import 'package:watch_store/utils/constants/app_icons.dart';
 import 'package:watch_store/utils/constants/app_images.dart';
+import 'package:watch_store/utils/enum/enum.dart';
 import '../../../../component/image/common_image.dart';
 import '../../../../component/text/common_text.dart';
 import '../../data/model/chat_message_model.dart';
@@ -38,6 +39,7 @@ class _MessageScreenState extends State<MessageScreen> {
     MessageController.instance.name = name;
     MessageController.instance.chatId = chatId;
     MessageController.instance.peerImage = image;
+    MessageController.instance.sellerImage = image; // Set seller image
     MessageController.instance.page = 1;
     if (!widget.isItemChat) MessageController.instance.getMessageRepo();
     if (widget.isItemChat) MessageController.instance.createChat();
@@ -143,28 +145,67 @@ class _MessageScreenState extends State<MessageScreen> {
                       color: Colors.white,
                       child: Row(
                         children: [
-                          CircleAvatar(
-                            radius: 20.r,
-                            backgroundColor: Colors.grey[300],
-                            child: ClipOval(
-                              child: CommonImage(
-                                imageSrc:
-                                    ApiEndPoint.imageUrl +
-                                    controller.sellerImage,
-                                size: 40,
-                              ),
-                            ),
+                          GetBuilder<MessageController>(
+                            builder: (controller) {
+                              if (controller.status == Status.loading) {
+                                return CircleAvatar(
+                                  radius: 20.r,
+                                  backgroundColor: Colors.grey[300],
+                                  child: Container(
+                                    width: 40,
+                                    height: 40,
+                                    decoration: BoxDecoration(
+                                      color: Colors.grey[200],
+                                      shape: BoxShape.circle,
+                                    ),
+                                  ),
+                                );
+                              }
+                              return CircleAvatar(
+                                radius: 20.r,
+                                backgroundColor: Colors.grey[300],
+                                child: ClipOval(
+                                  child: CommonImage(
+                                    imageSrc:
+                                        controller.sellerImage.isNotEmpty
+                                            ? ApiEndPoint.imageUrl +
+                                                controller.sellerImage
+                                            : ApiEndPoint.imageUrl + image,
+                                    size: 40,
+                                  ),
+                                ),
+                              );
+                            },
                           ),
                           12.width,
                           Expanded(
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                CommonText(
-                                  text: name,
-                                  fontWeight: FontWeight.w600,
-                                  fontSize: 16,
-                                  color: Colors.black,
+                                GetBuilder<MessageController>(
+                                  builder: (controller) {
+                                    if (controller.status == Status.loading) {
+                                      return Container(
+                                        width: 120,
+                                        height: 16,
+                                        decoration: BoxDecoration(
+                                          color: Colors.grey[200],
+                                          borderRadius: BorderRadius.circular(
+                                            4,
+                                          ),
+                                        ),
+                                      );
+                                    }
+                                    return CommonText(
+                                      text:
+                                          controller.name.isNotEmpty
+                                              ? controller.name
+                                              : name,
+                                      fontWeight: FontWeight.w600,
+                                      fontSize: 16,
+                                      color: Colors.black,
+                                    );
+                                  },
                                 ),
                                 CommonText(
                                   text: 'Online',
@@ -233,33 +274,54 @@ class _MessageScreenState extends State<MessageScreen> {
       title: Row(
         children: [
           /// Participant Image
-          Stack(
-            children: [
-              CircleAvatar(
-                radius: 20.r,
-                backgroundColor: Colors.grey[300],
-                child: ClipOval(
-                  child: CommonImage(
-                    imageSrc: ApiEndPoint.imageUrl + image,
-                    size: 40,
+          GetBuilder<MessageController>(
+            builder: (controller) {
+              if (controller.status == Status.loading) {
+                return CircleAvatar(
+                  radius: 20.r,
+                  backgroundColor: Colors.grey[300],
+                  child: Container(
+                    width: 40,
+                    height: 40,
+                    decoration: BoxDecoration(
+                      color: Colors.grey[200],
+                      shape: BoxShape.circle,
+                    ),
                   ),
-                ),
-              ),
-              // Online status
-              Positioned(
-                bottom: 0,
-                right: 0,
-                child: Container(
-                  width: 12.w,
-                  height: 12.h,
-                  decoration: BoxDecoration(
-                    color: Colors.green,
-                    shape: BoxShape.circle,
-                    border: Border.all(color: Colors.white, width: 2),
+                );
+              }
+              return Stack(
+                children: [
+                  CircleAvatar(
+                    radius: 20.r,
+                    backgroundColor: Colors.grey[300],
+                    child: ClipOval(
+                      child: CommonImage(
+                        imageSrc:
+                            controller.peerImage.isNotEmpty
+                                ? ApiEndPoint.imageUrl + controller.peerImage
+                                : ApiEndPoint.imageUrl + image,
+                        size: 40,
+                      ),
+                    ),
                   ),
-                ),
-              ),
-            ],
+                  // Online status
+                  Positioned(
+                    bottom: 0,
+                    right: 0,
+                    child: Container(
+                      width: 12.w,
+                      height: 12.h,
+                      decoration: BoxDecoration(
+                        color: Colors.green,
+                        shape: BoxShape.circle,
+                        border: Border.all(color: Colors.white, width: 2),
+                      ),
+                    ),
+                  ),
+                ],
+              );
+            },
           ),
 
           12.width,
@@ -269,11 +331,25 @@ class _MessageScreenState extends State<MessageScreen> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                CommonText(
-                  text: name,
-                  fontWeight: FontWeight.w600,
-                  fontSize: 16,
-                  color: Colors.white,
+                GetBuilder<MessageController>(
+                  builder: (controller) {
+                    if (controller.status == Status.loading) {
+                      return Container(
+                        width: 120,
+                        height: 16,
+                        decoration: BoxDecoration(
+                          color: Colors.white.withOpacity(0.3),
+                          borderRadius: BorderRadius.circular(4),
+                        ),
+                      );
+                    }
+                    return CommonText(
+                      text: controller.name.isNotEmpty ? controller.name : name,
+                      fontWeight: FontWeight.w600,
+                      fontSize: 16,
+                      color: Colors.white,
+                    );
+                  },
                 ),
                 CommonText(
                   text: 'Online',
