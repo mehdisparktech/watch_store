@@ -41,11 +41,16 @@ class CommonDrawer extends StatelessWidget {
                     CircleAvatar(
                       backgroundColor: AppColors.socialIconBackground,
                       radius: 30.r,
-                      child: CommonImage(
-                        imageSrc: ApiEndPoint.imageUrl + LocalStorage.myImage,
-                        size: 35.r,
-                        fill: BoxFit.cover,
-                        borderRadius: 35.r,
+                      child: ClipOval(
+                        child: CommonImage(
+                          imageSrc:
+                              LocalStorage.myImage.isNotEmpty
+                                  ? ApiEndPoint.imageUrl + LocalStorage.myImage
+                                  : '',
+                          width: 60.r,
+                          height: 60.r,
+                          fill: BoxFit.cover,
+                        ),
                       ),
                     ),
                     GestureDetector(

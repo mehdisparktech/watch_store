@@ -1,8 +1,11 @@
+import 'dart:io';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import '../../utils/constants/app_images.dart';
 import '../../utils/log/error_log.dart';
+
+enum ImageType { network, asset, file }
 
 class CommonImage extends StatelessWidget {
   final String imageSrc;
@@ -12,6 +15,7 @@ class CommonImage extends StatelessWidget {
   final double? width;
   final double borderRadius;
   final double? size;
+  final ImageType? imageType;
 
   final BoxFit fill;
 
@@ -24,6 +28,7 @@ class CommonImage extends StatelessWidget {
     this.size,
     this.fill = BoxFit.contain,
     this.defaultImage = AppImages.profile,
+    this.imageType,
     super.key,
   });
 
@@ -31,7 +36,9 @@ class CommonImage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if (imageSrc.contains("assets/icons")) {
+    if (imageType == ImageType.file) {
+      return _buildFileImage();
+    } else if (imageSrc.contains("assets/icons")) {
       return _buildSvgImage();
     } else if (imageSrc.contains("assets/images")) {
       return _buildPngImage();
@@ -84,6 +91,22 @@ class CommonImage extends StatelessWidget {
       child: Image.asset(
         imageSrc,
         color: imageColor,
+        height: size ?? height,
+        width: size ?? width,
+        fit: fill,
+        errorBuilder: (context, error, stackTrace) {
+          errorLog(error, source: "Common Image");
+          return _buildErrorWidget();
+        },
+      ),
+    );
+  }
+
+  Widget _buildFileImage() {
+    return ClipRRect(
+      borderRadius: BorderRadius.circular(borderRadius),
+      child: Image.file(
+        File(imageSrc),
         height: size ?? height,
         width: size ?? width,
         fit: fill,

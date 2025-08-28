@@ -57,7 +57,7 @@ class ViewProfile extends StatelessWidget {
                                   fill: BoxFit.cover,
                                 )
                                 : const CommonImage(
-                                  imageSrc: AppImages.profileImage,
+                                  imageSrc: AppImages.profile,
                                   height: 100,
                                   width: 100,
                                 ),
@@ -74,7 +74,7 @@ class ViewProfile extends StatelessWidget {
                   ),
                   10.height,
                   CommonText(
-                    text: "Raconli Group",
+                    text: LocalStorage.enterprise,
                     fontSize: 16,
                     fontWeight: FontWeight.w500,
                     color: AppColors.white,

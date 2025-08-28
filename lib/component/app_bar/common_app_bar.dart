@@ -72,24 +72,20 @@ class CommonAppBar extends StatelessWidget implements PreferredSizeWidget {
       leading:
           showProfile
               ? Padding(
-                padding: EdgeInsets.all(8.w),
+                padding: EdgeInsets.symmetric(vertical: 18, horizontal: 8),
                 child: GestureDetector(
                   onTap:
                       onProfilePressed ??
                       () {
                         Get.toNamed(AppRoutes.viewProfile);
                       },
-                  child: Container(
-                    padding: EdgeInsets.all(8.w),
-                    decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      color: AppColors.socialIconBackground,
-                      border: Border.all(
-                        color: AppColors.socialIconBackground,
-                        width: 1.5.w,
-                      ),
+                  child: ClipOval(
+                    child: CommonImage(
+                      imageSrc: profileImageUrl ?? '',
+                      width: 40.w,
+                      height: 40.w,
+                      fill: BoxFit.cover,
                     ),
-                    child: CommonImage(imageSrc: profileImageUrl ?? ''),
                   ),
                 ),
               )

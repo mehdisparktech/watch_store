@@ -6,6 +6,7 @@ import 'package:watch_store/component/drawer/common_drawer.dart';
 import 'package:watch_store/component/text/common_text.dart';
 import 'package:watch_store/config/route/app_routes.dart';
 import 'package:watch_store/features/brands/presentation/controller/brands_category_controller.dart';
+import 'package:watch_store/services/storage/storage_services.dart';
 import 'package:watch_store/utils/constants/app_colors.dart';
 import 'package:watch_store/utils/constants/app_images.dart';
 import 'package:watch_store/utils/constants/app_string.dart';
@@ -24,7 +25,7 @@ class BrandsCategoryScreen extends StatelessWidget {
       key: _scaffoldKey,
       appBar: CommonAppBar(
         title: AppString.brandsCategory,
-        profileImageUrl: AppImages.profileImage,
+        profileImageUrl: ApiEndPoint.imageUrl + LocalStorage.myImage,
         onMenuPressed: () => _scaffoldKey.currentState?.openEndDrawer(),
       ),
       endDrawer: CommonDrawer(profileImage: AppImages.availableWatch),

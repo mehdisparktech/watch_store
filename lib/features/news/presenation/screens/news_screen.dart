@@ -5,6 +5,7 @@ import 'package:watch_store/component/drawer/common_drawer.dart';
 import 'package:watch_store/component/image/common_image.dart';
 import 'package:watch_store/component/text/common_text.dart';
 import 'package:watch_store/config/api/api_end_point.dart';
+import 'package:watch_store/services/storage/storage_services.dart';
 import 'package:watch_store/utils/constants/app_colors.dart';
 import 'package:watch_store/utils/constants/app_images.dart';
 import 'package:watch_store/utils/constants/app_string.dart';
@@ -23,7 +24,7 @@ class NewsScreen extends StatelessWidget {
       key: _scaffoldKey,
       appBar: CommonAppBar(
         title: AppString.news,
-        profileImageUrl: AppImages.profileImage,
+        profileImageUrl: ApiEndPoint.imageUrl + LocalStorage.myImage,
         onMenuPressed: () => _scaffoldKey.currentState?.openEndDrawer(),
       ),
       endDrawer: CommonDrawer(profileImage: AppImages.availableWatch),

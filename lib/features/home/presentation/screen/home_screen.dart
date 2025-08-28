@@ -8,6 +8,7 @@ import 'package:watch_store/component/other_widgets/common_loader.dart';
 import 'package:watch_store/config/api/api_end_point.dart';
 import 'package:watch_store/config/route/app_routes.dart';
 import 'package:watch_store/features/home/presentation/controller/home_controller.dart';
+import 'package:watch_store/features/profile/presentation/controller/profile_controller.dart';
 import 'package:watch_store/services/storage/storage_services.dart';
 import 'package:watch_store/utils/constants/app_colors.dart';
 import 'package:watch_store/utils/constants/app_images.dart';
@@ -21,39 +22,51 @@ class HomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      key: _scaffoldKey,
-      appBar: CommonAppBar(
-        title: AppString.availableBrands,
-        profileImageUrl: ApiEndPoint.imageUrl + LocalStorage.myImage,
-        onMenuPressed: () => _scaffoldKey.currentState?.openEndDrawer(),
-      ),
-      endDrawer: CommonDrawer(profileImage: AppImages.availableWatch),
-      body: GetBuilder<HomeController>(
-        init: HomeController(),
-        builder: (controller) {
-          if (controller.status == Status.loading &&
-              controller.brands.isEmpty) {
-            return const CommonLoader();
-          }
-          if (controller.status == Status.error) {
-            return Center(
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  const Text('Failed to load brands'),
-                  8.verticalSpace,
-                  ElevatedButton(
-                    onPressed: () => controller.loadBrands(refresh: true),
-                    child: const Text('Retry'),
+    return GetBuilder<ProfileController>(
+      init: ProfileController(),
+      builder: (profileController) {
+        return Scaffold(
+          key: _scaffoldKey,
+          appBar: CommonAppBar(
+            title: AppString.availableBrands,
+            profileImageUrl:
+                LocalStorage.myImage.isNotEmpty
+                    ? ApiEndPoint.imageUrl + LocalStorage.myImage
+                    : '',
+            onMenuPressed: () => _scaffoldKey.currentState?.openEndDrawer(),
+          ),
+          endDrawer: GetBuilder<ProfileController>(
+            builder:
+                (profileController) =>
+                    CommonDrawer(profileImage: AppImages.availableWatch),
+          ),
+          body: GetBuilder<HomeController>(
+            init: HomeController(),
+            builder: (controller) {
+              if (controller.status == Status.loading &&
+                  controller.brands.isEmpty) {
+                return const CommonLoader();
+              }
+              if (controller.status == Status.error) {
+                return Center(
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      const Text('Failed to load brands'),
+                      8.verticalSpace,
+                      ElevatedButton(
+                        onPressed: () => controller.loadBrands(refresh: true),
+                        child: const Text('Retry'),
+                      ),
+                    ],
                   ),
-                ],
-              ),
-            );
-          }
-          return _buildBody(controller);
-        },
-      ),
+                );
+              }
+              return _buildBody(controller);
+            },
+          ),
+        );
+      },
     );
   }
 

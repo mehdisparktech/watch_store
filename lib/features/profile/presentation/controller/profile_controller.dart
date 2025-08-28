@@ -4,7 +4,6 @@ import 'package:watch_store/services/storage/storage_services.dart';
 import 'package:watch_store/utils/helpers/other_helper.dart';
 
 import '../../../../config/api/api_end_point.dart';
-import '../../../../config/route/app_routes.dart';
 import '../../../../services/api/api_service.dart';
 import '../../../../utils/app_utils.dart';
 
@@ -57,9 +56,12 @@ class ProfileController extends GetxController {
       "enterprise": enterprise.text,
     };
 
-    var response = await ApiService.patch(
+    var response = await ApiService.multipart(
       ApiEndPoint.baseUrl + ApiEndPoint.profile,
       body: body,
+      imagePath: image,
+      imageName: "profileImage",
+      method: "PATCH",
     );
 
     if (response.statusCode == 200) {
@@ -75,13 +77,24 @@ class ProfileController extends GetxController {
       LocalStorage.setString("myName", LocalStorage.myName);
       LocalStorage.setString("myEmail", LocalStorage.myEmail);
       LocalStorage.setString("enterprise", LocalStorage.enterprise);
+
+      // Clear the selected image after successful update
+      image = null;
+
       Utils.successSnackBar("Successfully Profile Updated", response.message);
-      Get.toNamed(AppRoutes.editProfile);
+      Get.back(); // Go back instead of navigating to edit profile again
     } else {
       Utils.errorSnackBar(response.statusCode, response.message);
     }
 
     isLoading = false;
     update();
+  }
+
+  /// Clear selected image when leaving the screen
+  @override
+  void onClose() {
+    image = null;
+    super.onClose();
   }
 }

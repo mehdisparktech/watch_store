@@ -3,6 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:watch_store/component/app_bar/common_app_bar.dart';
 import 'package:watch_store/component/drawer/common_drawer.dart';
+import 'package:watch_store/config/api/api_end_point.dart';
 import 'package:watch_store/services/storage/storage_services.dart';
 import 'package:watch_store/utils/constants/app_images.dart';
 import 'package:watch_store/utils/constants/app_string.dart';
@@ -27,7 +28,7 @@ class ChatListScreen extends StatelessWidget {
       /// Modern App Bar Section
       appBar: CommonAppBar(
         title: AppString.message,
-        profileImageUrl: LocalStorage.myImage,
+        profileImageUrl: ApiEndPoint.imageUrl + LocalStorage.myImage,
         onMenuPressed: () => _scaffoldKey.currentState?.openEndDrawer(),
       ),
       endDrawer: CommonDrawer(profileImage: AppImages.availableWatch),

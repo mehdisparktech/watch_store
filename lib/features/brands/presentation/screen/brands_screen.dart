@@ -7,7 +7,7 @@ import 'package:get/get.dart';
 import 'package:watch_store/config/api/api_end_point.dart';
 import 'package:watch_store/features/brands/presentation/controller/brands_controller.dart';
 import 'package:watch_store/features/brands/presentation/widgets/watch_card.dart';
-import 'package:watch_store/services/storage/storage_keys.dart';
+import 'package:watch_store/services/storage/storage_services.dart';
 import 'package:watch_store/utils/constants/app_icons.dart';
 import 'package:watch_store/utils/constants/app_images.dart';
 import 'package:watch_store/component/image/common_image.dart';
@@ -26,7 +26,7 @@ class BrandsScreen extends StatelessWidget {
       appBar: CommonAppBar(
         title: title,
         subTitle: true,
-        profileImageUrl: ApiEndPoint.imageUrl + LocalStorageKeys.myImage,
+        profileImageUrl: ApiEndPoint.imageUrl + LocalStorage.myImage,
         onMenuPressed: () => _scaffoldKey.currentState?.openEndDrawer(),
       ),
       endDrawer: CommonDrawer(profileImage: AppImages.availableWatch),

@@ -51,7 +51,15 @@ class EditProfile extends StatelessWidget {
                           backgroundColor: Colors.transparent,
                           child: ClipOval(
                             child:
-                                LocalStorage.myImage.isNotEmpty
+                                controller.image != null
+                                    ? CommonImage(
+                                      imageSrc: controller.image!,
+                                      width: 80.r,
+                                      height: 80.r,
+                                      fill: BoxFit.cover,
+                                      imageType: ImageType.file,
+                                    )
+                                    : LocalStorage.myImage.isNotEmpty
                                     ? CommonImage(
                                       imageSrc:
                                           ApiEndPoint.imageUrl +
