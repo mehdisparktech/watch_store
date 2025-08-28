@@ -34,47 +34,50 @@ class SettingScreen extends StatelessWidget {
         builder: (controller) {
           return Padding(
             padding: EdgeInsets.symmetric(horizontal: 30.w),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                CommonText(
-                  text: AppString.configuration,
-                  fontSize: 20,
-                  fontWeight: FontWeight.w600,
-                  color: AppColors.white,
-                ),
-                40.height,
-
-                /// User Email here
-                Align(
-                  alignment: Alignment.centerLeft,
-                  child: CommonText(
-                    text: AppString.registerEmail,
-                    fontSize: 16,
+            child: Form(
+              key: controller.formKey,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  CommonText(
+                    text: AppString.configuration,
+                    fontSize: 20,
                     fontWeight: FontWeight.w600,
-                    bottom: 12,
                     color: AppColors.white,
                   ),
-                ),
-                CommonTextField(
-                  controller: controller.emailController,
-                  validator: OtherHelper.validator,
-                  hintText: AppString.email,
-                  keyboardType: TextInputType.emailAddress,
-                  borderColor: AppColors.white,
-                  fillColor: AppColors.transparent,
-                  textColor: AppColors.white,
-                ),
-                60.height,
-                CommonButton(
-                  titleText: AppString.changeEmail,
-                  isLoading: controller.isLoading,
-                  onTap: controller.deleteAccountRepo,
-                  buttonColor: AppColors.socialIconBackground,
-                  titleColor: AppColors.buttonText,
-                  buttonWidth: 180.w,
-                ),
-              ],
+                  40.height,
+
+                  /// User Email here
+                  Align(
+                    alignment: Alignment.centerLeft,
+                    child: CommonText(
+                      text: AppString.registerEmail,
+                      fontSize: 16,
+                      fontWeight: FontWeight.w600,
+                      bottom: 12,
+                      color: AppColors.white,
+                    ),
+                  ),
+                  CommonTextField(
+                    controller: controller.emailController,
+                    validator: OtherHelper.validator,
+                    hintText: AppString.email,
+                    keyboardType: TextInputType.emailAddress,
+                    borderColor: AppColors.white,
+                    fillColor: AppColors.transparent,
+                    textColor: AppColors.white,
+                  ),
+                  60.height,
+                  CommonButton(
+                    titleText: AppString.changeEmail,
+                    isLoading: controller.isLoading,
+                    onTap: controller.editProfileRepo,
+                    buttonColor: AppColors.socialIconBackground,
+                    titleColor: AppColors.buttonText,
+                    buttonWidth: 180.w,
+                  ),
+                ],
+              ),
             ),
           );
         },

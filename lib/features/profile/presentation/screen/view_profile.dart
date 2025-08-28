@@ -90,26 +90,29 @@ class ViewProfile extends StatelessWidget {
                     ),
                   ),
                   30.height,
-                  Row(
-                    children: [
-                      CommonImage(
-                        imageSrc: AppImages.availableWatch,
-                        height: 100,
-                        width: 100,
-                      ),
-                      20.width,
-                      CommonImage(
-                        imageSrc: AppImages.profileImage,
-                        height: 100,
-                        width: 100,
-                      ),
-                      20.width,
-                      CommonImage(
-                        imageSrc: AppImages.profileImage,
-                        height: 100,
-                        width: 100,
-                      ),
-                    ],
+                  SingleChildScrollView(
+                    scrollDirection: Axis.horizontal,
+                    child: Row(
+                      children: [
+                        CommonImage(
+                          imageSrc: AppImages.availableWatch,
+                          height: 100.r,
+                          width: 100.r,
+                        ),
+                        20.width,
+                        CommonImage(
+                          imageSrc: AppImages.profileImage,
+                          height: 100.r,
+                          width: 100.r,
+                        ),
+                        20.width,
+                        CommonImage(
+                          imageSrc: AppImages.profileImage,
+                          height: 100.r,
+                          width: 100.r,
+                        ),
+                      ],
+                    ),
                   ),
                   30.height,
                   Align(
