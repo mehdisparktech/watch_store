@@ -16,12 +16,14 @@ class MessageController extends GetxController {
   bool isLoading = false;
   bool isMoreLoading = false;
   String? video;
+  bool isItemChat = false;
 
   List messages = [];
 
   String chatId = "";
   String name = "";
   String peerImage = "";
+  String sellerImage = "";
 
   int page = 1;
   int currentIndex = 0;
@@ -65,7 +67,6 @@ class MessageController extends GetxController {
               (sender['email'] ?? sender['email'] ?? '').toString();
           final String otherImage = peerImage;
           // final String myImage = LocalStorage.myImage;
-
           final DateTime createdAt =
               DateTime.tryParse((item['createdAt'] ?? '').toString()) ??
               DateTime.now();
@@ -97,6 +98,25 @@ class MessageController extends GetxController {
       Utils.errorSnackBar('Error', e.toString());
       status = Status.error;
       update();
+    }
+  }
+
+  Future<void> createChat() async {
+    final response = await ApiService.post(
+      ApiEndPoint.createChat,
+      body: {
+        "participant": [chatId],
+      },
+    );
+
+    if (response.isSuccess) {
+      final Map root = (response.data);
+      final Map data = (root['data'] ?? {}) as Map;
+      final String chatId = (data['_id'] ?? '').toString();
+      this.chatId = chatId;
+      getMessageRepo();
+    } else {
+      Utils.errorSnackBar(response.statusCode.toString(), response.message);
     }
   }
 

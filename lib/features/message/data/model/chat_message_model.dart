@@ -6,6 +6,7 @@ class ChatMessageModel {
   final bool isCall;
   final bool isNotice;
   final bool isRead;
+  final String sellerImage;
 
   ChatMessageModel({
     required this.time,
@@ -15,5 +16,6 @@ class ChatMessageModel {
     this.isCall = false,
     this.isNotice = false,
     this.isRead = false,
+    this.sellerImage = "",
   });
 }

@@ -14,6 +14,7 @@ class ProductModel {
   final String? movement;
   final String? caseDiameter;
   final String? caseThickness;
+  final String? createdBy;
   final bool? isAvailable;
   final int? stock;
   final double? rating;
@@ -43,6 +44,7 @@ class ProductModel {
     this.reviewCount,
     this.isFavorite,
     this.createdAt,
+    this.createdBy,
   });
 
   factory ProductModel.fromJson(Map<String, dynamic> json) {
@@ -75,6 +77,7 @@ class ProductModel {
       caseDiameter: (json['caseDiameter'] ?? json['case_diameter'])?.toString(),
       caseThickness:
           (json['caseThickness'] ?? json['case_thickness'])?.toString(),
+      createdBy: json['createdBy']?.toString(),
       isAvailable: json['is_available'],
       stock: json['stock']?.toInt(),
       rating:
@@ -109,6 +112,7 @@ class ProductModel {
       'movement': movement,
       'case_diameter': caseDiameter,
       'case_thickness': caseThickness,
+      'createdBy': createdBy,
       'is_available': isAvailable,
       'stock': stock,
       'rating': rating,
@@ -129,6 +133,7 @@ class ProductModel {
     String? brandId,
     String? brandName,
     String? category,
+    String? createdBy,
     bool? isAvailable,
     int? stock,
     double? rating,
@@ -153,6 +158,7 @@ class ProductModel {
       reviewCount: reviewCount ?? this.reviewCount,
       isFavorite: isFavorite ?? this.isFavorite,
       createdAt: createdAt ?? this.createdAt,
+      createdBy: createdBy ?? this.createdBy,
     );
   }
 }

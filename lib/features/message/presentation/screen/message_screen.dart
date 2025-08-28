@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:emoji_picker_flutter/emoji_picker_flutter.dart';
-import 'package:characters/characters.dart';
 import 'package:watch_store/config/api/api_end_point.dart';
 import 'package:watch_store/utils/constants/app_colors.dart';
 import 'package:watch_store/utils/constants/app_icons.dart';
@@ -30,17 +29,18 @@ class _MessageScreenState extends State<MessageScreen> {
   String? itemImage = Get.parameters["itemImage"];
   String? itemPrice = Get.parameters["itemPrice"];
   String? itemName = Get.parameters["itemName"];
-
   bool _isEmojiVisible = false;
   final FocusNode _inputFocusNode = FocusNode();
 
   @override
   void initState() {
+    MessageController.instance.isItemChat = widget.isItemChat;
     MessageController.instance.name = name;
     MessageController.instance.chatId = chatId;
     MessageController.instance.peerImage = image;
     MessageController.instance.page = 1;
-    MessageController.instance.getMessageRepo();
+    if (!widget.isItemChat) MessageController.instance.getMessageRepo();
+    if (widget.isItemChat) MessageController.instance.createChat();
 
     // Add a small delay to ensure socket is connected before setting up listeners
     Future.delayed(const Duration(milliseconds: 1000), () {
@@ -147,7 +147,12 @@ class _MessageScreenState extends State<MessageScreen> {
                             radius: 20.r,
                             backgroundColor: Colors.grey[300],
                             child: ClipOval(
-                              child: CommonImage(imageSrc: image, size: 40),
+                              child: CommonImage(
+                                imageSrc:
+                                    ApiEndPoint.imageUrl +
+                                    controller.sellerImage,
+                                size: 40,
+                              ),
                             ),
                           ),
                           12.width,

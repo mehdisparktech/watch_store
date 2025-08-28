@@ -1,6 +1,7 @@
 import 'package:get/get.dart';
 import 'package:watch_store/config/api/api_end_point.dart';
 import 'package:watch_store/features/brands/data/model/product_model.dart';
+import 'package:watch_store/features/brands/data/model/product_review_model.dart';
 import 'package:watch_store/services/api/api_service.dart';
 import 'package:watch_store/utils/enum/enum.dart';
 
@@ -9,7 +10,9 @@ class ProductDetailController extends GetxController {
   ProductDetailController(this.productId);
 
   Status status = Status.loading;
+  Status reviewStatus = Status.loading;
   ProductModel? product;
+  ProductReviewResponse? productReviews;
 
   Future<void> loadProduct() async {
     status = Status.loading;
@@ -33,9 +36,31 @@ class ProductDetailController extends GetxController {
     }
   }
 
+  Future<void> loadProductReviews() async {
+    reviewStatus = Status.loading;
+    update();
+    try {
+      final response = await ApiService.get(
+        "${ApiEndPoint.baseUrl}reviews/product/$productId",
+      );
+      if (response.isSuccess) {
+        final data = Map<String, dynamic>.from(response.data);
+        productReviews = ProductReviewResponse.fromJson(data);
+        reviewStatus = Status.completed;
+      } else {
+        reviewStatus = Status.error;
+      }
+    } catch (_) {
+      reviewStatus = Status.error;
+    } finally {
+      update();
+    }
+  }
+
   @override
   void onInit() {
     loadProduct();
+    loadProductReviews();
     super.onInit();
   }
 }

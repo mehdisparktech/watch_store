@@ -141,7 +141,7 @@ class _WatchDetailScreenState extends State<WatchDetailScreen>
                             AppRoutes.message,
                             arguments: true,
                             parameters: {
-                              "chatId": "123",
+                              "chatId": product.createdBy ?? '',
                               "name": product.name ?? '',
                               "image": AppImages.profileImage,
                               "itemImage": displayedImage,
@@ -245,48 +245,80 @@ class _WatchDetailScreenState extends State<WatchDetailScreen>
   }
 
   Widget _buildReviewTab() {
-    return Padding(
-      padding: const EdgeInsets.all(16.0),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
+    return GetBuilder<ProductDetailController>(
+      builder: (controller) {
+        if (controller.reviewStatus == Status.loading) {
+          return const Center(child: CircularProgressIndicator());
+        }
+
+        if (controller.reviewStatus == Status.error ||
+            controller.productReviews == null) {
+          return const Center(child: Text('product no review'));
+        }
+
+        final reviews = controller.productReviews!.data.reviews;
+        final totalReviews = controller.productReviews!.data.totalReviews;
+
+        // Calculate average rating
+        double averageRating = 0.0;
+        if (reviews.isNotEmpty) {
+          averageRating =
+              reviews.map((r) => r.rating).reduce((a, b) => a + b) /
+              reviews.length;
+        }
+
+        return Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Icon(Icons.star, color: Colors.amber, size: 20),
-              SizedBox(width: 4),
-              CommonText(
-                text: '4.8',
-                fontSize: 16,
-                fontWeight: FontWeight.bold,
+              Row(
+                children: [
+                  Icon(Icons.star, color: Colors.amber, size: 20),
+                  SizedBox(width: 4),
+                  CommonText(
+                    text: averageRating.toStringAsFixed(1),
+                    fontSize: 16,
+                    fontWeight: FontWeight.bold,
+                  ),
+                  SizedBox(width: 8),
+                  CommonText(
+                    text: '($totalReviews reviews)',
+                    fontSize: 14,
+                    color: AppColors.tertiaryText,
+                  ),
+                ],
               ),
-              SizedBox(width: 8),
-              CommonText(
-                text: '(124 reviews)',
-                fontSize: 14,
-                color: AppColors.tertiaryText,
-              ),
+              SizedBox(height: 16),
+              if (reviews.isEmpty)
+                Center(
+                  child: CommonText(
+                    text: 'No reviews yet',
+                    fontSize: 16,
+                    color: AppColors.tertiaryText,
+                  ),
+                )
+              else
+                Expanded(
+                  child: ListView.separated(
+                    itemCount: reviews.length,
+                    separatorBuilder: (context, index) => SizedBox(height: 12),
+                    itemBuilder: (context, index) {
+                      final review = reviews[index];
+                      return _buildReviewItem(
+                        review.user.name,
+                        review.rating,
+                        review.comment,
+                        review.user.profileImage,
+                        review.createdAt,
+                      );
+                    },
+                  ),
+                ),
             ],
           ),
-          SizedBox(height: 16),
-          _buildReviewItem(
-            'John Doe',
-            5,
-            'Excellent quality watch! Highly recommended.',
-          ),
-          SizedBox(height: 12),
-          _buildReviewItem(
-            'Jane Smith',
-            4,
-            'Beautiful design and great build quality.',
-          ),
-          SizedBox(height: 12),
-          _buildReviewItem(
-            'Mike Johnson',
-            5,
-            'Perfect watch for daily wear. Love it!',
-          ),
-        ],
-      ),
+        );
+      },
     );
   }
 
@@ -365,7 +397,13 @@ class _WatchDetailScreenState extends State<WatchDetailScreen>
     );
   }
 
-  Widget _buildReviewItem(String name, int rating, String comment) {
+  Widget _buildReviewItem(
+    String name,
+    int rating,
+    String comment,
+    String profileImage,
+    DateTime createdAt,
+  ) {
     return Container(
       padding: EdgeInsets.all(12),
       decoration: BoxDecoration(
@@ -378,8 +416,31 @@ class _WatchDetailScreenState extends State<WatchDetailScreen>
         children: [
           Row(
             children: [
-              CommonText(text: name, fontSize: 14, fontWeight: FontWeight.bold),
-              Spacer(),
+              CircleAvatar(
+                radius: 16,
+                backgroundImage:
+                    profileImage.isNotEmpty
+                        ? NetworkImage(ApiEndPoint.imageUrl + profileImage)
+                        : AssetImage(AppImages.profileImage) as ImageProvider,
+              ),
+              SizedBox(width: 8),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    CommonText(
+                      text: name,
+                      fontSize: 14,
+                      fontWeight: FontWeight.bold,
+                    ),
+                    CommonText(
+                      text: _formatDate(createdAt),
+                      fontSize: 12,
+                      color: AppColors.tertiaryText,
+                    ),
+                  ],
+                ),
+              ),
               Row(
                 children: List.generate(5, (index) {
                   return Icon(
@@ -391,7 +452,7 @@ class _WatchDetailScreenState extends State<WatchDetailScreen>
               ),
             ],
           ),
-          SizedBox(height: 4),
+          SizedBox(height: 8),
           CommonText(
             text: comment,
             fontSize: 13,
@@ -400,5 +461,20 @@ class _WatchDetailScreenState extends State<WatchDetailScreen>
         ],
       ),
     );
+  }
+
+  String _formatDate(DateTime date) {
+    final now = DateTime.now();
+    final difference = now.difference(date);
+
+    if (difference.inDays > 0) {
+      return '${difference.inDays} days ago';
+    } else if (difference.inHours > 0) {
+      return '${difference.inHours} hours ago';
+    } else if (difference.inMinutes > 0) {
+      return '${difference.inMinutes} minutes ago';
+    } else {
+      return 'Just now';
+    }
   }
 }

@@ -20,6 +20,7 @@ class ApiEndPoint {
   static const privacyPolicies = "privacy-policies";
   static const termsOfServices = "terms-and-conditions";
   static const chats = "chats";
+  static const createChat = "chats/create-chat";
   static const messages = "messages";
 
   // Product endpoints
