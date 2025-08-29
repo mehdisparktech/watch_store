@@ -97,6 +97,14 @@ class MessageController extends GetxController {
         page = page + 1;
         status = Status.completed;
         update();
+
+        // Scroll to bottom after loading messages
+        if (page == 2) {
+          // First load
+          WidgetsBinding.instance.addPostFrameCallback((_) {
+            scrollToBottom();
+          });
+        }
       } else {
         Utils.errorSnackBar(response.statusCode.toString(), response.message);
         status = Status.error;
@@ -122,7 +130,14 @@ class MessageController extends GetxController {
       final Map data = (root['data'] ?? {}) as Map;
       final String chatId = (data['_id'] ?? '').toString();
       this.chatId = chatId;
-      getMessageRepo();
+      await getMessageRepo();
+
+      // Scroll to bottom after creating chat and loading messages
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        Future.delayed(const Duration(milliseconds: 500), () {
+          scrollToBottom();
+        });
+      });
     } else {
       Utils.errorSnackBar(response.statusCode.toString(), response.message);
     }
@@ -152,6 +167,11 @@ class MessageController extends GetxController {
 
     final String text = messageController.text;
     messageController.clear();
+
+    // Scroll to bottom after sending message
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      scrollToBottom();
+    });
 
     try {
       // Build multipart body: data (json string), images (file)
@@ -217,6 +237,12 @@ class MessageController extends GetxController {
 
           status = Status.completed;
           update();
+
+          // Scroll to bottom when new message arrives
+          WidgetsBinding.instance.addPostFrameCallback((_) {
+            scrollToBottom();
+          });
+
           appLog("Message added to chat");
         } else {
           appLog("Message ignored - different chat ID");
@@ -255,6 +281,12 @@ class MessageController extends GetxController {
 
         status = Status.completed;
         update();
+
+        // Scroll to bottom when new message arrives
+        WidgetsBinding.instance.addPostFrameCallback((_) {
+          scrollToBottom();
+        });
+
         appLog("Chat-specific message added");
       } catch (e) {
         appLog("Error processing chat-specific message: $e");
@@ -297,6 +329,17 @@ class MessageController extends GetxController {
     if (!SocketServices.isConnected) {
       appLog("Attempting to reconnect socket...");
       SocketServices.reconnect();
+    }
+  }
+
+  /// Scroll to bottom of the chat
+  void scrollToBottom() {
+    if (scrollController.hasClients) {
+      scrollController.animateTo(
+        scrollController.position.maxScrollExtent,
+        duration: const Duration(milliseconds: 300),
+        curve: Curves.easeOut,
+      );
     }
   }
 

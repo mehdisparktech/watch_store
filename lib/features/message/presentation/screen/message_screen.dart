@@ -49,6 +49,13 @@ class _MessageScreenState extends State<MessageScreen> {
       MessageController.instance.listenMessage(chatId);
     });
 
+    // Scroll to bottom after screen is built
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      Future.delayed(const Duration(milliseconds: 1500), () {
+        MessageController.instance.scrollToBottom();
+      });
+    });
+
     super.initState();
   }
 
@@ -227,20 +234,29 @@ class _MessageScreenState extends State<MessageScreen> {
             ),
           ),
 
-          // Chat messages in a SliverList
+          // Chat messages in a SliverList (reversed to show latest at bottom)
           SliverPadding(
             padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 8.h),
             sliver: SliverList(
               delegate: SliverChildBuilderDelegate(
                 (BuildContext context, int index) {
-                  if (index < controller.messages.length) {
-                    ChatMessageModel message = controller.messages[index];
+                  // Reverse the index to show latest messages at bottom
+                  int reversedIndex = controller.messages.length - 1 - index;
+
+                  if (reversedIndex >= 0 &&
+                      reversedIndex < controller.messages.length) {
+                    ChatMessageModel message =
+                        controller.messages[reversedIndex];
                     return ModernChatBubble(
                       message: message,
                       isMe: message.isMe,
-                      showAvatar: _shouldShowAvatar(controller.messages, index),
+                      showAvatar: _shouldShowAvatar(
+                        controller.messages,
+                        reversedIndex,
+                      ),
                     );
-                  } else if (controller.isMoreLoading) {
+                  } else if (controller.isMoreLoading &&
+                      index == controller.messages.length) {
                     return const Center(
                       child: Padding(
                         padding: EdgeInsets.all(16.0),
@@ -338,7 +354,7 @@ class _MessageScreenState extends State<MessageScreen> {
                         width: 120,
                         height: 16,
                         decoration: BoxDecoration(
-                          color: Colors.white.withOpacity(0.3),
+                          color: Colors.white.withValues(alpha: 0.3),
                           borderRadius: BorderRadius.circular(4),
                         ),
                       );
