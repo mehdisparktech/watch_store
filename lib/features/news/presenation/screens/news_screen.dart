@@ -10,6 +10,7 @@ import 'package:watch_store/utils/constants/app_colors.dart';
 import 'package:watch_store/utils/constants/app_images.dart';
 import 'package:watch_store/utils/constants/app_string.dart';
 import 'package:watch_store/utils/enum/enum.dart';
+import 'package:watch_store/config/route/app_routes.dart';
 import '../controller/news_controller.dart';
 import '../../data/model/news_model.dart';
 
@@ -100,85 +101,88 @@ class NewsItemWidget extends StatelessWidget {
     final String timeAgo =
         item.createdAt != null ? _getTimeAgo(item.createdAt!) : '2 hours ago';
 
-    return Container(
-      margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
-      decoration: BoxDecoration(color: AppColors.textFieldBackground),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        mainAxisAlignment: MainAxisAlignment.start,
-        children: [
-          imageRight
-              ? Expanded(
-                flex: 3,
-                child: Padding(
-                  padding: const EdgeInsets.all(16.0),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      CommonText(
-                        text: timeAgo,
-                        fontSize: 14,
-                        color: AppColors.hintText,
-                      ),
-                      const SizedBox(height: 8),
-                      CommonText(
-                        text: item.title ?? '',
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold,
-                        maxLines: 3,
-                        overflow: TextOverflow.ellipsis,
-                        textAlign: TextAlign.start,
-                      ),
-                    ],
+    return GestureDetector(
+      onTap: () => Get.toNamed(AppRoutes.newsDetails, arguments: item),
+      child: Container(
+        margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
+        decoration: BoxDecoration(color: AppColors.textFieldBackground),
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            imageRight
+                ? Expanded(
+                  flex: 3,
+                  child: Padding(
+                    padding: const EdgeInsets.all(16.0),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        CommonText(
+                          text: timeAgo,
+                          fontSize: 14,
+                          color: AppColors.hintText,
+                        ),
+                        const SizedBox(height: 8),
+                        CommonText(
+                          text: item.title ?? '',
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                          maxLines: 3,
+                          overflow: TextOverflow.ellipsis,
+                          textAlign: TextAlign.start,
+                        ),
+                      ],
+                    ),
+                  ),
+                )
+                : Expanded(
+                  flex: 2,
+                  child: CommonImage(
+                    imageSrc: imageUrl,
+                    height: 150,
+                    fill: BoxFit.cover,
                   ),
                 ),
-              )
-              : Expanded(
-                flex: 2,
-                child: CommonImage(
-                  imageSrc: imageUrl,
-                  height: 150,
-                  fill: BoxFit.cover,
-                ),
-              ),
-          const SizedBox(width: 16),
-          imageRight
-              ? Expanded(
-                flex: 2,
-                child: CommonImage(
-                  imageSrc: imageUrl,
-                  height: 150,
-                  fill: BoxFit.cover,
-                ),
-              )
-              : Expanded(
-                flex: 3,
-                child: Padding(
-                  padding: const EdgeInsets.all(16.0),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      CommonText(
-                        text: timeAgo,
-                        fontSize: 14,
-                        color: AppColors.hintText,
-                      ),
-                      const SizedBox(height: 8),
-                      CommonText(
-                        text: item.title ?? '',
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold,
-                        maxLines: 3,
-                        overflow: TextOverflow.ellipsis,
-                        textAlign: TextAlign.start,
-                      ),
-                    ],
+            const SizedBox(width: 16),
+            imageRight
+                ? Expanded(
+                  flex: 2,
+                  child: CommonImage(
+                    imageSrc: imageUrl,
+                    height: 150,
+                    fill: BoxFit.cover,
+                  ),
+                )
+                : Expanded(
+                  flex: 3,
+                  child: Padding(
+                    padding: const EdgeInsets.all(16.0),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        CommonText(
+                          text: timeAgo,
+                          fontSize: 14,
+                          color: AppColors.hintText,
+                        ),
+                        const SizedBox(height: 8),
+                        CommonText(
+                          text: item.title ?? '',
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                          maxLines: 3,
+                          overflow: TextOverflow.ellipsis,
+                          textAlign: TextAlign.start,
+                        ),
+                      ],
+                    ),
                   ),
                 ),
-              ),
-        ],
+          ],
+        ),
       ),
     );
   }

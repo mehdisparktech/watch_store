@@ -12,6 +12,7 @@ class AppColors {
   static const Color filledColor = Color(0xFFF7F7F7);
   static const Color textFiledColor = Color(0xFF979797);
   static const blueLight = Color(0xffe8e8f5);
+  static const Color grey = Colors.grey;
 
   static const Color primaryText = Color(0xFF000000);
   static const Color secondaryText = Color(0xFF5A5A5A);

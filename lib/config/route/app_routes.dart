@@ -6,6 +6,7 @@ import 'package:watch_store/features/brands/presentation/screen/watch_detail_scr
 import 'package:watch_store/features/home/presentation/screen/home_screen.dart';
 import 'package:watch_store/features/language_selection/language_selection_screen.dart';
 import 'package:watch_store/features/news/presenation/screens/news_screen.dart';
+import 'package:watch_store/features/news/presenation/screens/news_details_screen.dart';
 import 'package:watch_store/features/onboarding_screen/onboarding_spanish_screen.dart';
 import 'package:watch_store/features/profile/presentation/screen/view_profile.dart';
 import 'package:watch_store/features/wishlist/presentation/screen/wishlist_screen.dart';
@@ -53,6 +54,7 @@ class AppRoutes {
   static const String brands = "/brands_screen.dart";
   static const String watchDetail = "/watch_detail_screen.dart";
   static const String news = "/news_screen.dart";
+  static const String newsDetails = "/news_details_screen.dart";
   static const String faq = "/faq_screen.dart";
   static const String wishlist = "/wishlist_screen.dart";
   static const String products = "/product_list_screen.dart";
@@ -127,6 +129,10 @@ class AppRoutes {
     ),
     // News route with binding
     GetPage(name: news, page: () => NewsScreen(), binding: NewsBinding()),
+    GetPage(
+      name: newsDetails,
+      page: () => NewsDetailsScreen(newsItem: Get.arguments),
+    ),
     GetPage(name: faq, page: () => FAQScreen()),
     GetPage(name: wishlist, page: () => WishlistScreen()),
     GetPage(
