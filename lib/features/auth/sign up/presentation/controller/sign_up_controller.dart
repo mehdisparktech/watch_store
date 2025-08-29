@@ -5,11 +5,10 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl_phone_field/countries.dart';
 import 'package:watch_store/utils/helpers/other_helper.dart';
+import 'package:watch_store/utils/log/app_log.dart';
 
 import '../../../../../config/route/app_routes.dart';
-import '../../../../../services/storage/storage_keys.dart';
 import '../../../../../config/api/api_end_point.dart';
-import '../../../../../services/storage/storage_services.dart';
 import '../../../../../utils/app_utils.dart';
 import '../../../data/model/auth_response_model.dart';
 import '../../../repository/auth_repository.dart';
@@ -54,9 +53,7 @@ class SignUpController extends GetxController {
   TextEditingController numberController = TextEditingController(
     text: kDebugMode ? '1865965581' : '',
   );
-  TextEditingController otpController = TextEditingController(
-    text: kDebugMode ? '123456' : '',
-  );
+  TextEditingController otpController = TextEditingController();
 
   @override
   void onInit() {
@@ -155,8 +152,6 @@ class SignUpController extends GetxController {
 
       if (response.success) {
         // Save user data to local storage
-        LocalStorage.isLogIn = true;
-        await LocalStorage.setBool(LocalStorageKeys.isLogIn, true);
 
         Utils.successSnackBar(
           'Success',
@@ -164,6 +159,7 @@ class SignUpController extends GetxController {
         );
         Get.offAllNamed(AppRoutes.signIn);
       } else {
+        appLog('Error: ${response.message ?? 'Verification failed'}');
         Utils.errorSnackBar('Error', response.message ?? 'Verification failed');
       }
     } catch (e) {

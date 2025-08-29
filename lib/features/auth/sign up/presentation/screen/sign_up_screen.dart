@@ -39,7 +39,7 @@ class SignUpScreen extends StatelessWidget {
                   /// All Text Filed here
                   SignUpAllField(controller: controller),
 
-                  16.height,
+                  40.height,
 
                   /// Submit Button Here
                   CommonButton(

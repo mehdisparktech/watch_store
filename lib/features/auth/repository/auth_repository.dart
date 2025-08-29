@@ -103,13 +103,9 @@ class AuthRepositoryImpl implements AuthRepository {
         final authResponse = AuthResponseModel(
           success: response.data['success'] ?? false,
           message: response.data['message'],
-          token: response.data['data']['accessToken'],
+          // No token in verify email response based on API structure
+          token: null,
         );
-
-        // Save token to storage
-        if (authResponse.token != null) {
-          await saveToken(authResponse.token!);
-        }
 
         return authResponse;
       } else {
