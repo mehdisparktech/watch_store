@@ -54,6 +54,7 @@ class SignInController extends GetxController {
           LocalStorage.myImage = response.user!.profileImage ?? "";
           LocalStorage.myName = response.user!.name ?? "";
           LocalStorage.myEmail = response.user!.email ?? "";
+          LocalStorage.role = response.user!.role ?? "";
           LocalStorage.enterprise = response.enterprise ?? "";
           LocalStorage.isLogIn = true;
 
@@ -76,6 +77,7 @@ class SignInController extends GetxController {
             LocalStorageKeys.enterprise,
             LocalStorage.enterprise,
           );
+          LocalStorage.setString(LocalStorageKeys.role, LocalStorage.role);
         }
 
         // Navigate to home screen

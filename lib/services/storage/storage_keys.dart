@@ -8,4 +8,5 @@ class LocalStorageKeys {
   static const String myEmail = "myEmail";
   static const String languageSelected = "languageSelected";
   static const String enterprise = "enterprise";
+  static const String role = "role";
 }

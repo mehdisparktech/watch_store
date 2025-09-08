@@ -134,23 +134,24 @@ class _WatchDetailScreenState extends State<WatchDetailScreen>
                         }),
                       ),
                       SizedBox(height: 16),
-                      CommonButton(
-                        titleText: AppString.startChatWithRetailer,
-                        onTap: () {
-                          Get.toNamed(
-                            AppRoutes.message,
-                            arguments: true,
-                            parameters: {
-                              "chatId": product.createdBy ?? '',
-                              "name": "", // Will be updated from API
-                              "image": "", // Will be updated from API
-                              "itemImage": displayedImage,
-                              "itemPrice": (product.price ?? 0).toString(),
-                              "itemName": product.name ?? '',
-                            },
-                          );
-                        },
-                      ),
+                      if (LocalStorage.role == "USER")
+                        CommonButton(
+                          titleText: AppString.startChatWithRetailer,
+                          onTap: () {
+                            Get.toNamed(
+                              AppRoutes.message,
+                              arguments: true,
+                              parameters: {
+                                "chatId": product.createdBy ?? '',
+                                "name": "", // Will be updated from API
+                                "image": "", // Will be updated from API
+                                "itemImage": displayedImage,
+                                "itemPrice": (product.price ?? 0).toString(),
+                                "itemName": product.name ?? '',
+                              },
+                            );
+                          },
+                        ),
                       SizedBox(height: 24),
                     ],
                   ),

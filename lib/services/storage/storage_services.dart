@@ -12,6 +12,7 @@ class LocalStorage {
   static String myName = "";
   static String myEmail = "";
   static String enterprise = "";
+  static String role = "";
   static bool languageSelected = false;
 
   // Create Local Storage Instance
@@ -35,6 +36,7 @@ class LocalStorage {
     myName = localStorage.getString(LocalStorageKeys.myName) ?? "";
     myEmail = localStorage.getString(LocalStorageKeys.myEmail) ?? "";
     enterprise = localStorage.getString(LocalStorageKeys.enterprise) ?? "";
+    role = localStorage.getString(LocalStorageKeys.role) ?? "";
     languageSelected =
         localStorage.getBool(LocalStorageKeys.languageSelected) ?? false;
 
@@ -60,6 +62,7 @@ class LocalStorage {
     localStorage.setString(LocalStorageKeys.myName, "");
     localStorage.setString(LocalStorageKeys.myEmail, "");
     localStorage.setString(LocalStorageKeys.enterprise, "");
+    localStorage.setString(LocalStorageKeys.role, "");
     localStorage.setBool(LocalStorageKeys.isLogIn, false);
     localStorage.setBool(LocalStorageKeys.languageSelected, false);
   }
