@@ -100,11 +100,11 @@ class _CommonTextFieldState extends State<CommonTextField> {
         errorBorder: _buildBorder(),
         hintText: widget.hintText,
         labelText: widget.labelText,
-        hintStyle: GoogleFonts.roboto(
+        hintStyle: GoogleFonts.playfairDisplay(
           fontSize: 14,
           color: widget.hintTextColor,
         ),
-        labelStyle: GoogleFonts.roboto(
+        labelStyle: GoogleFonts.playfairDisplay(
           fontSize: 14,
           color: widget.labelTextColor,
         ),

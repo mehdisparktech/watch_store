@@ -75,7 +75,6 @@ class HomeScreen extends StatelessWidget {
       onRefresh: () => controller.loadBrands(refresh: true),
       child: ListView.builder(
         physics: const AlwaysScrollableScrollPhysics(),
-        padding: EdgeInsets.symmetric(vertical: 12.h),
         itemCount: controller.brands.length,
         itemBuilder: (context, index) {
           final brand = controller.brands[index];
@@ -85,10 +84,7 @@ class HomeScreen extends StatelessWidget {
               (brand.image?.startsWith('http') ?? false)
                   ? brand.image!
                   : "${ApiEndPoint.imageUrl}${brand.image ?? ''}";
-          return Padding(
-            padding: EdgeInsets.only(bottom: 12.h),
-            child: _buildBrabdsCard(name, count, imageUrl, brand.id ?? ''),
-          );
+          return _buildBrabdsCard(name, count, imageUrl, brand.id ?? '');
         },
       ),
     );

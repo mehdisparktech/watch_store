@@ -103,10 +103,20 @@ class SignInScreen extends StatelessWidget {
 
                   20.height,
 
+                  CommonText(
+                    text: AppString.orContinueWithASocialAccount,
+                    fontSize: 14,
+                    fontWeight: FontWeight.w400,
+                    color: AppColors.secondary,
+                  ),
+                  20.height,
+
                   /// Social Icon Buttons here
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
+                      _buildSocialIconButton(Icons.g_mobiledata, () {}),
+                      10.width,
                       _buildSocialIconButton(Icons.facebook, () {}),
                       10.width,
                       _buildSocialIconButton(Icons.apple, () {}),

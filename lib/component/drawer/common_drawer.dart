@@ -125,7 +125,7 @@ class CommonDrawer extends StatelessWidget {
         color: AppColors.white,
         fontFamily: 'PlayfairDisplay',
       ),
-      onTap: () {
+      onTap: () async {
         Get.back();
         if (route.isNotEmpty) {
           Get.toNamed(route, arguments: arguments);

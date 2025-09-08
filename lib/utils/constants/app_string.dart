@@ -143,4 +143,6 @@ class AppString {
   static String swissMadeMovement = "Swiss made movement".tr;
   static String premiumLeatherStrap = "Premium leather strap".tr;
   static String features = "Features".tr;
+  static String noChat = "No Chat".tr;
+  static String noChatMessage = "No chat found".tr;
 }
