@@ -103,6 +103,31 @@ flutter:
         - asset: assets/fonts/playfair_Display/PlayfairDisplay-Regular.ttf
         - asset: assets/fonts/playfair_Display/PlayfairDisplay-Italic.ttf
           style: italic
+        - asset: assets/fonts/playfair_Display/PlayfairDisplay-Bold.ttf
+          weight: 700
+        - asset: assets/fonts/playfair_Display/PlayfairDisplay-BoldItalic.ttf
+          weight: 700
+          style: italic
+        - asset: assets/fonts/playfair_Display/PlayfairDisplay-Medium.ttf
+          weight: 500
+        - asset: assets/fonts/playfair_Display/PlayfairDisplay-MediumItalic.ttf
+          weight: 500
+          style: italic
+        - asset: assets/fonts/playfair_Display/PlayfairDisplay-SemiBold.ttf
+          weight: 600
+        - asset: assets/fonts/playfair_Display/PlayfairDisplay-SemiBoldItalic.ttf
+          weight: 600
+          style: italic
+        - asset: assets/fonts/playfair_Display/PlayfairDisplay-ExtraBold.ttf
+          weight: 800
+        - asset: assets/fonts/playfair_Display/PlayfairDisplay-ExtraBoldItalic.ttf
+          weight: 800
+          style: italic
+        - asset: assets/fonts/playfair_Display/PlayfairDisplay-Black.ttf
+          weight: 900
+        - asset: assets/fonts/playfair_Display/PlayfairDisplay-BlackItalic.ttf
+          weight: 900
+          style: italic
     - family: Roboto
       fonts:
         - asset: assets/fonts/roboto/Roboto-Regular.ttf

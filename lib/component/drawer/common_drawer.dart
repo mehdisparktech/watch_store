@@ -92,6 +92,7 @@ class CommonDrawer extends StatelessWidget {
                 _buildMenuItem(AppString.wishlist, AppRoutes.wishlist),
                 _buildMenuItem(AppString.news, AppRoutes.news),
                 _buildMenuItem(AppString.faq, AppRoutes.faq),
+                _buildMenuItem(AppString.incentivos, AppRoutes.incentivos),
               ],
             ),
           ),

@@ -36,7 +36,7 @@ class _SplashScreenState extends State<SplashScreen> {
 
       if (!languageSelected) {
         // First time user - show language selection
-        Get.offAllNamed(AppRoutes.languageSelection);
+        Get.offAllNamed(AppRoutes.onboardingSpanish);
       } else if (isLoggedIn && token.isNotEmpty) {
         // যদি ব্যবহারকারী লগইন থাকে এবং টোকেন থাকে, তাহলে হোম পেজে নিয়ে যান
         Get.offAllNamed(AppRoutes.home);
@@ -48,16 +48,16 @@ class _SplashScreenState extends State<SplashScreen> {
           if (languageController.isSpanish) {
             Get.offAllNamed(AppRoutes.onboardingSpanish);
           } else {
-            Get.offAllNamed(AppRoutes.onboarding);
+            Get.offAllNamed(AppRoutes.onboardingSpanish);
           }
         } catch (e) {
           // If language controller not found, default to English onboarding
-          Get.offAllNamed(AppRoutes.onboarding);
+          Get.offAllNamed(AppRoutes.onboardingSpanish);
         }
       }
     } catch (e) {
       // If any error occurs, go to language selection as fallback
-      Get.offAllNamed(AppRoutes.languageSelection);
+      Get.offAllNamed(AppRoutes.onboardingSpanish);
     }
   }
 

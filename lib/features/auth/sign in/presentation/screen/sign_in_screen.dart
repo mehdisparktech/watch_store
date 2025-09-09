@@ -38,8 +38,8 @@ class SignInScreen extends StatelessWidget {
                   /// Log In Instruction here
                   CommonImage(
                     imageSrc: AppImages.logo,
-                    height: 50.h,
-                    width: 250.w,
+                    height: 100.h,
+                    width: 320.w,
                   ),
                   30.height,
 

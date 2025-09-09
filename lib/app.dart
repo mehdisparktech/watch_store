@@ -29,11 +29,11 @@ class MyApp extends StatelessWidget {
         initialBinding: DependencyInjection(),
         // Language configuration
         translations: LocalConstants(),
-        locale: const Locale('en', 'US'), // Default language: English
-        fallbackLocale: const Locale('en', 'US'), // Fallback language
+        locale: const Locale('es', 'ES'), // Default language: Spanish
+        fallbackLocale: const Locale('es', 'ES'), // Fallback language
         supportedLocales: const [
-          Locale('en', 'US'), // English
           Locale('es', 'ES'), // Spanish
+          Locale('en', 'US'), // English
         ],
         // Add localization delegates
         localizationsDelegates: const [

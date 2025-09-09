@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:google_fonts/google_fonts.dart';
 import '../../utils/constants/app_colors.dart';
+import '../../utils/constants/app_fonts.dart';
 import '../text/common_text.dart';
 
 class CommonTextField extends StatefulWidget {
@@ -100,11 +100,11 @@ class _CommonTextFieldState extends State<CommonTextField> {
         errorBorder: _buildBorder(),
         hintText: widget.hintText,
         labelText: widget.labelText,
-        hintStyle: GoogleFonts.playfairDisplay(
+        hintStyle: AppFonts.playfairDisplayStyle(
           fontSize: 14,
           color: widget.hintTextColor,
         ),
-        labelStyle: GoogleFonts.playfairDisplay(
+        labelStyle: AppFonts.playfairDisplayStyle(
           fontSize: 14,
           color: widget.labelTextColor,
         ),

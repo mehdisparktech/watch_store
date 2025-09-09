@@ -1,5 +1,6 @@
 import 'package:get/get.dart';
 import 'package:watch_store/features/FAQ/presentation/screens/faq_screen.dart';
+import 'package:watch_store/features/Incentivos/incentivos_screen.dart';
 import 'package:watch_store/features/brands/presentation/screen/brands_category_screen.dart';
 import 'package:watch_store/features/brands/presentation/screen/brands_screen.dart';
 import 'package:watch_store/features/brands/presentation/screen/watch_detail_screen.dart';
@@ -61,7 +62,7 @@ class AppRoutes {
   static const String demoApi = "/demo_api_screen.dart";
   static const String brandsCategory = "/brands_category_screen.dart";
   static const String viewProfile = "/view_profile_screen.dart";
-
+  static const String incentivos = "/incentivos_screen.dart";
   static List<GetPage> routes = [
     GetPage(name: splash, page: () => const SplashScreen()),
     GetPage(
@@ -141,5 +142,6 @@ class AppRoutes {
     ),
 
     GetPage(name: viewProfile, page: () => const ViewProfile()),
+    GetPage(name: incentivos, page: () => const IncentivosScreen()),
   ];
 }

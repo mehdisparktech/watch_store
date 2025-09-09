@@ -77,11 +77,11 @@ class AppString {
   static String startServer = "Please, start the Server".tr;
   static String unknownError = "Unknown Error".tr;
   static String save = "Save".tr;
-  static String splashTitle = "A Watch that makes you look perfect".tr;
+  static String splashTitle = "Tu tiempo merece su propia historia".tr;
   static String splashDescription =
-      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus justo elit, semper tristique tempus sollicitudin."
+      "Bienvenido al espacio que conecta a Raconli con quienes representan su historia todos los días. "
           .tr;
-  static String getStarted = "Get started".tr;
+  static String getStarted = "Inicia Sesión".tr;
   static String orContinueWithASocialAccount =
       "Or continue with a social account".tr;
   static String signInWithTwitter = "Sign in with Twitter".tr;
@@ -110,6 +110,7 @@ class AppString {
   static String configuration = "Configuration".tr;
   static String enterprise = "Enterprise".tr;
   static String changeEmail = "Change Email".tr;
+  static String incentivos = "Incentivos".tr;
   // Watch Details
   static String watchDetails = "Watch Details".tr;
   static String watchDescription = "Watch Description".tr;

@@ -3,9 +3,9 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import '../../../../../config/route/app_routes.dart';
 import 'package:get/get.dart';
-import 'package:google_fonts/google_fonts.dart';
 
 import '../../../../../utils/constants/app_colors.dart';
+import '../../../../../utils/constants/app_fonts.dart';
 
 class DoNotHaveAccount extends StatelessWidget {
   const DoNotHaveAccount({super.key});
@@ -17,7 +17,7 @@ class DoNotHaveAccount extends StatelessWidget {
         children: [
           TextSpan(
             text: "Don't have an account?".tr,
-            style: GoogleFonts.playfairDisplay(
+            style: AppFonts.playfairDisplayStyle(
               color: AppColors.secondary,
               fontSize: 14,
               fontWeight: FontWeight.w400,
@@ -33,7 +33,7 @@ class DoNotHaveAccount extends StatelessWidget {
                   ..onTap = () {
                     Get.offAllNamed(AppRoutes.signUp);
                   },
-            style: GoogleFonts.playfairDisplay(
+            style: AppFonts.playfairDisplayStyle(
               color: AppColors.primaryColor,
               fontSize: 14,
               fontWeight: FontWeight.w700,

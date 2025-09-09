@@ -16,4 +16,5 @@ class AppImages {
   static const String tissot = "$baseurl/tissot.png";
   static const String tissotGpw = "$baseurl/tissot_gpw.png";
   static const String submariner = "$baseurl/submariner.png";
+  static const String incentivos = "$baseurl/invoice.png";
 }
