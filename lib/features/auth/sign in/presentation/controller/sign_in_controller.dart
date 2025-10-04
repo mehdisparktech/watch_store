@@ -58,9 +58,6 @@ class SignInController extends GetxController {
           LocalStorage.enterprise = response.enterprise ?? "";
           LocalStorage.isLogIn = true;
 
-          // Debug log to verify enterprise data
-          print("Enterprise data saved: ${LocalStorage.enterprise}");
-
           // Save to persistent storage
           LocalStorage.setBool(LocalStorageKeys.isLogIn, true);
           LocalStorage.setString(LocalStorageKeys.userId, LocalStorage.userId);
