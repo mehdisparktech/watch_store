@@ -65,6 +65,5 @@ Future<void> _loadEnvFile() async {
     await dotenv.load(fileName: ".env");
   } catch (e) {
     debugPrint('Warning: .env file not found or could not be loaded: $e');
-    // Continue without .env file - this is not critical for app functionality
   }
 }
