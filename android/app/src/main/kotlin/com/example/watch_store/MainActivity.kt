@@ -1,4 +1,4 @@
-package com.example.watch_store
+package com.raconligroup.watch_store
 
 import io.flutter.embedding.android.FlutterActivity
 
