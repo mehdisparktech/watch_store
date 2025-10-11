@@ -112,17 +112,23 @@ class SignInScreen extends StatelessWidget {
                   20.height,
 
                   /// Social Icon Buttons here
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      _buildSocialIconButton(Icons.g_mobiledata, () {}),
-                      10.width,
-                      _buildSocialIconButton(Icons.facebook, () {}),
-                      10.width,
-                      _buildSocialIconButton(Icons.apple, () {}),
-                    ],
-                  ),
-                  30.height,
+                  // Row(
+                  //   mainAxisAlignment: MainAxisAlignment.center,
+                  //   children: [
+                  //     _buildSocialIconButton(Icons.g_mobiledata, () {
+                  //       controller.signInWithGoogle();
+                  //     }),
+                  //     10.width,
+                  //     _buildSocialIconButton(Icons.facebook, () {
+                  //       controller.signInWithFacebook();
+                  //     }),
+                  //     10.width,
+                  //     _buildSocialIconButton(Icons.apple, () {
+                  //       controller.signInWithApple();
+                  //     }),
+                  //   ],
+                  // ),
+                  // 30.height,
 
                   /// Account Creating Instruction here
                   const DoNotHaveAccount(),
@@ -136,6 +142,7 @@ class SignInScreen extends StatelessWidget {
     );
   }
 
+  // ignore: unused_element
   Widget _buildSocialIconButton(IconData icon, VoidCallback onTap) {
     return Container(
       width: 45.w,

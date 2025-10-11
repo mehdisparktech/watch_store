@@ -17,7 +17,7 @@ class SignInController extends GetxController {
 
   /// email and password Controller here
   TextEditingController emailController = TextEditingController(
-    text: kDebugMode ? 'user@gmail.com' : '',
+    text: kDebugMode ? 'hehecoh793@inilas.com' : '',
   );
   TextEditingController passwordController = TextEditingController(
     text: kDebugMode ? 'user@123' : "",
@@ -34,7 +34,7 @@ class SignInController extends GetxController {
 
   /// Sign in Api call here
   Future<void> signInUser() async {
-    if (!formKey.currentState!.validate()) return;
+    //if (!formKey.currentState!.validate()) return;
 
     isLoading = true;
     update();
@@ -92,5 +92,23 @@ class SignInController extends GetxController {
       isLoading = false;
       update();
     }
+  }
+
+  /// Sign in with Google
+  void signInWithGoogle() {
+    print("Sign in with Google");
+    Get.snackbar("coming soon", "Sign in with Google");
+  }
+
+  /// Sign in with Facebook
+  void signInWithFacebook() {
+    print("Sign in with Facebook");
+    Get.snackbar("coming soon", "Sign in with Facebook");
+  }
+
+  /// Sign in with Apple
+  void signInWithApple() {
+    print("Sign in with Apple");
+    Get.snackbar("coming soon", "Sign in with Apple");
   }
 }
