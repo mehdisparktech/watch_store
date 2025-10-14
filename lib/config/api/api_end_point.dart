@@ -25,6 +25,7 @@ class ApiEndPoint {
   static const chats = "chats";
   static const createChat = "chats/create-chat";
   static const messages = "messages";
+  static const deleteUser = "users/profile";
 
   // Product endpoints
   static const products = "products";

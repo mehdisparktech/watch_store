@@ -3,10 +3,13 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:watch_store/component/button/common_button.dart';
 import 'package:watch_store/component/image/common_image.dart';
+import 'package:watch_store/component/pop_up/common_pop_menu.dart';
 import 'package:watch_store/component/text/common_text.dart';
 import 'package:watch_store/config/api/api_end_point.dart';
 import 'package:watch_store/config/route/app_routes.dart';
+import 'package:watch_store/services/api/api_service.dart';
 import 'package:watch_store/services/storage/storage_services.dart';
+import 'package:watch_store/utils/app_utils.dart';
 import 'package:watch_store/utils/constants/app_colors.dart';
 import 'package:watch_store/utils/constants/app_icons.dart';
 import 'package:watch_store/utils/constants/app_string.dart';
@@ -93,6 +96,39 @@ class CommonDrawer extends StatelessWidget {
                 _buildMenuItem(AppString.news, AppRoutes.news),
                 _buildMenuItem(AppString.faq, AppRoutes.faq),
                 _buildMenuItem(AppString.incentivos, AppRoutes.incentivos),
+                GestureDetector(
+                  onTap: () {
+                    deletePopUp(
+                      controller: TextEditingController(),
+                      onTap: () async {
+                        var response = await ApiService.delete(
+                          ApiEndPoint.deleteUser,
+                          //body: {"password": TextEditingController().text},
+                          header: {
+                            "Authorization": "Bearer ${LocalStorage.token}",
+                          },
+                        );
+                        if (response.statusCode == 200) {
+                          await LocalStorage.removeAllPrefData();
+                          Get.offAllNamed(AppRoutes.signIn);
+                        } else {
+                          Utils.errorSnackBar(
+                            response.statusCode,
+                            response.message,
+                          );
+                        }
+                      },
+                    );
+                  },
+                  child: CommonText(
+                    text: AppString.deleteAccount,
+                    fontSize: 24,
+                    fontWeight: FontWeight.w400,
+                    color: AppColors.white,
+                    fontFamily: 'PlayfairDisplay',
+                    top: 20.h,
+                  ),
+                ),
               ],
             ),
           ),

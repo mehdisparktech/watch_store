@@ -2,13 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:watch_store/config/route/app_routes.dart';
-import 'package:watch_store/utils/helpers/other_helper.dart';
 import '../../services/storage/storage_services.dart';
 import '../../utils/constants/app_colors.dart';
 import '../../utils/constants/app_string.dart';
 import '../button/common_button.dart';
 import '../text/common_text.dart';
-import '../text_field/common_text_field.dart';
 
 class PopUpMenu extends StatelessWidget {
   const PopUpMenu({
@@ -192,11 +190,11 @@ deletePopUp({
                   maxLines: 2,
                   bottom: 20.h,
                 ),
-                CommonTextField(
-                  controller: controller,
-                  labelText: AppString.enterYouPassword,
-                  validator: OtherHelper.validator,
-                ),
+                // CommonTextField(
+                //   controller: controller,
+                //   labelText: AppString.enterYouPassword,
+                //   validator: OtherHelper.validator,
+                // ),
               ],
             ),
           ),
@@ -217,15 +215,16 @@ deletePopUp({
                 SizedBox(width: 16.w),
                 Expanded(
                   child: CommonButton(
-                    titleText: AppString.done,
+                    titleText: AppString.yes,
                     titleColor: AppColors.white,
                     buttonRadius: 4.r,
                     buttonHeight: 48.h,
-                    onTap: () async {
-                      if (formKey.currentState!.validate()) {
-                        await AnimationPopUpState.closeDialog();
-                        onTap();
-                      }
+                    onTap: () {
+                      // if (formKey.currentState!.validate()) {
+
+                      // }
+                      AnimationPopUpState.closeDialog();
+                      onTap();
                     },
                   ),
                 ),
