@@ -1,0 +1,30 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "watch_store (Chrome - Disable Security)",
+      "request": "launch",
+      "type": "dart",
+      "program": "lib/main.dart",
+      "args": [
+        "--web-browser-flag",
+        "--disable-web-security",
+        "--web-browser-flag",
+        "--disable-features=BlockInsecurePrivateNetworkRequests"
+      ]
+    },
+    {
+      "name": "watch_store (profile mode)",
+      "request": "launch",
+      "type": "dart",
+      "flutterMode": "profile"
+    },
+    {
+      "name": "watch_store (release mode)",
+      "request": "launch",
+      "type": "dart",
+      "flutterMode": "release"
+    }
+  ]
+}
+

@@ -8,7 +8,11 @@ import '../../../services/storage/storage_services.dart';
 
 abstract class AuthRepository {
   Future<AuthResponseModel> login(LoginRequestModel request);
-  Future<AuthResponseModel> register(RegisterRequestModel request);
+  Future<AuthResponseModel> register(
+    String name,
+    String email,
+    String password,
+  );
   Future<AuthResponseModel> verifyEmail(VerifyEmailRequestModel request);
   Future<AuthResponseModel> resendOtp(String email); // নতুন মেথড যোগ করা হয়েছে
   Future<AuthResponseModel> forgotPassword(ForgotPasswordRequestModel request);
@@ -65,11 +69,15 @@ class AuthRepositoryImpl implements AuthRepository {
   }
 
   @override
-  Future<AuthResponseModel> register(RegisterRequestModel request) async {
+  Future<AuthResponseModel> register(
+    String name,
+    String email,
+    String password,
+  ) async {
     try {
       final response = await ApiService.post(
         baseUrl + ApiEndPoint.user,
-        body: request.toJson(),
+        body: {"name": name, "email": email, "password": password},
       );
 
       if (response.statusCode == 200) {

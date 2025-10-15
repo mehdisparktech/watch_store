@@ -1,13 +1,18 @@
 class ApiEndPoint {
-  //Live Server
-  static const baseUrl = "http://62.72.26.31:5003/api/v1/";
-  static const imageUrl = "http://62.72.26.31:5003";
-  static const socketUrl = "http://62.72.26.31:5003";
+  //Live Server - Web uses proxy or should use HTTPS
+  // For web development, use --disable-web-security flag or configure CORS on backend
+  static const String _liveServerUrl = "http://62.72.26.31:5003";
+  static const String _testServerUrl = "http://10.10.7.111:5003";
 
-  //Test Server
-  // static const baseUrl = "http://10.10.7.111:5003/api/v1/";
-  // static const imageUrl = "http://10.10.7.111:5003";
-  // static const socketUrl = "http://10.10.7.111:5003";
+  // Use live server by default (change to false for test server)
+  static const bool _useLiveServer = true;
+
+  static String get _serverUrl =>
+      _useLiveServer ? _liveServerUrl : _testServerUrl;
+
+  static String get baseUrl => "$_serverUrl/api/v1/";
+  static String get imageUrl => _serverUrl;
+  static String get socketUrl => _serverUrl;
 
   static const signUp = "users/sign-up";
   static const verifyEmail = "auth/verify-email";

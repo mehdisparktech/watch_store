@@ -88,14 +88,11 @@ class SignUpController extends GetxController {
     update();
 
     try {
-      final request = RegisterRequestModel(
-        name: nameController.text,
-        email: emailController.text,
-        password: passwordController.text,
-        phone: numberController.text.isNotEmpty ? numberController.text : null,
+      final response = await _authRepository.register(
+        nameController.text,
+        emailController.text,
+        passwordController.text,
       );
-
-      final response = await _authRepository.register(request);
 
       if (response.success) {
         userEmail = emailController.text;

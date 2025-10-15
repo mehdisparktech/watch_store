@@ -16,13 +16,12 @@ class SignUpAllField extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         /// User Name here
-        // const CommonText(text: AppString.fullName, bottom: 8, top: 12),
-        // CommonTextField(
-        //   prefixIcon: const Icon(Icons.person),
-        //   hintText: AppString.fullName,
-        //   controller: controller.nameController,
-        //   validator: OtherHelper.validator,
-        // ),
+        CommonText(text: AppString.fullName, bottom: 8, top: 12),
+        CommonTextField(
+          hintText: AppString.fullName,
+          controller: controller.nameController,
+          validator: OtherHelper.validator,
+        ),
 
         /// User Email here
         CommonText(text: AppString.email, bottom: 8, top: 12),
