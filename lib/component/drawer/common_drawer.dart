@@ -88,48 +88,51 @@ class CommonDrawer extends StatelessWidget {
 
           // Menu Items
           Expanded(
-            child: Column(
-              children: [
-                _buildMenuItem(AppString.chat, AppRoutes.chat),
-                _buildMenuItem(AppString.catalogue, AppRoutes.home),
-                _buildMenuItem(AppString.wishlist, AppRoutes.wishlist),
-                _buildMenuItem(AppString.news, AppRoutes.news),
-                _buildMenuItem(AppString.faq, AppRoutes.faq),
-                _buildMenuItem(AppString.incentivos, AppRoutes.incentivos),
-                GestureDetector(
-                  onTap: () {
-                    deletePopUp(
-                      controller: TextEditingController(),
-                      onTap: () async {
-                        var response = await ApiService.delete(
-                          ApiEndPoint.deleteUser,
-                          //body: {"password": TextEditingController().text},
-                          header: {
-                            "Authorization": "Bearer ${LocalStorage.token}",
-                          },
-                        );
-                        if (response.statusCode == 200) {
-                          await LocalStorage.removeAllPrefData();
-                          Get.offAllNamed(AppRoutes.signIn);
-                        } else {
-                          Utils.errorSnackBar(
-                            response.statusCode,
-                            response.message,
+            child: SingleChildScrollView(
+              child: Column(
+                children: [
+                  _buildMenuItem(AppString.chat, AppRoutes.chat),
+                  _buildMenuItem(AppString.catalogue, AppRoutes.home),
+                  _buildMenuItem(AppString.wishlist, AppRoutes.wishlist),
+                  _buildMenuItem(AppString.news, AppRoutes.news),
+                  _buildMenuItem(AppString.faq, AppRoutes.faq),
+                  _buildMenuItem(AppString.incentivos, AppRoutes.incentivos),
+                  GestureDetector(
+                    onTap: () {
+                      deletePopUp(
+                        controller: TextEditingController(),
+                        onTap: () async {
+                          var response = await ApiService.delete(
+                            ApiEndPoint.deleteUser,
+                            //body: {"password": TextEditingController().text},
+                            header: {
+                              "Authorization": "Bearer ${LocalStorage.token}",
+                            },
                           );
-                        }
-                      },
-                    );
-                  },
-                  child: CommonText(
-                    text: AppString.deleteAccount,
-                    fontSize: 24,
-                    fontWeight: FontWeight.w400,
-                    color: AppColors.white,
-                    fontFamily: 'PlayfairDisplay',
-                    top: 20.h,
+                          if (response.statusCode == 200) {
+                            await LocalStorage.removeAllPrefData();
+                            Get.offAllNamed(AppRoutes.signIn);
+                          } else {
+                            Utils.errorSnackBar(
+                              response.statusCode,
+                              response.message,
+                            );
+                          }
+                        },
+                      );
+                    },
+                    child: CommonText(
+                      text: AppString.deleteAccount,
+                      fontSize: 24,
+                      fontWeight: FontWeight.w400,
+                      color: AppColors.white,
+                      fontFamily: 'PlayfairDisplay',
+                      top: 20.h,
+                    ),
                   ),
-                ),
-              ],
+                  SizedBox(height: 20.h),
+                ],
+              ),
             ),
           ),
 
