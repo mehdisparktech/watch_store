@@ -47,6 +47,11 @@ class MessageController extends GetxController {
         update();
       }
 
+      appLog("=== Loading Messages ===");
+      appLog("Chat ID: $chatId");
+      appLog("Page: $page");
+      appLog("User Role: ${LocalStorage.role}");
+
       final response = await ApiService.get(
         "${ApiEndPoint.messages}/$chatId?page=$page&limit=15",
       );

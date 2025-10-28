@@ -30,19 +30,12 @@ class _SplashScreenState extends State<SplashScreen> {
       await LocalStorage.getAllPrefData();
 
       // Check if language has been selected before
-      final languageSelected = LocalStorage.languageSelected;
       final token = LocalStorage.token;
       final isLoggedIn = LocalStorage.isLogIn;
 
-      if (!languageSelected) {
-        // First time user - show language selection
-        Get.offAllNamed(AppRoutes.onboardingSpanish);
-      } else if (isLoggedIn && token.isNotEmpty) {
-        // যদি ব্যবহারকারী লগইন থাকে এবং টোকেন থাকে, তাহলে হোম পেজে নিয়ে যান
+      if (isLoggedIn && token.isNotEmpty) {
         Get.offAllNamed(AppRoutes.home);
       } else {
-        // Language already selected, but not logged in - go to appropriate onboarding
-        // Try to get language controller, if not available use default
         try {
           final languageController = Get.find<LanguageController>();
           if (languageController.isSpanish) {

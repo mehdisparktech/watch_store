@@ -7,6 +7,7 @@ import '../../../../config/api/api_end_point.dart';
 import '../../../../services/storage/storage_services.dart';
 import '../../../../utils/app_utils.dart';
 import '../../../../utils/enum/enum.dart';
+import '../../../../utils/log/app_log.dart';
 
 class ChatController extends GetxController {
   /// Api status check here
@@ -23,6 +24,9 @@ class ChatController extends GetxController {
 
   /// Chat Scroll Controller
   ScrollController scrollController = ScrollController();
+
+  /// Check if user is admin
+  bool get isAdmin => LocalStorage.role.toLowerCase() == 'admin';
 
   /// Chat Controller Instance create here
   static ChatController get instance => Get.put(ChatController());
@@ -46,6 +50,11 @@ class ChatController extends GetxController {
         status = Status.loading;
         update();
       }
+
+      appLog("=== Loading Chat List ===");
+      appLog("User Role: ${LocalStorage.role}");
+      appLog("Is Admin: $isAdmin");
+      appLog("Page: $page");
 
       final response = await ApiService.get("${ApiEndPoint.chats}?page=$page");
 

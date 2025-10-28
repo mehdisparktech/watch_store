@@ -21,6 +21,7 @@ import '../../features/auth/sign up/presentation/screen/sign_up_screen.dart';
 import '../../features/auth/sign up/presentation/screen/verify_user.dart';
 import '../../features/message/presentation/screen/chat_screen.dart';
 import '../../features/message/presentation/screen/message_screen.dart';
+import '../../features/message/presentation/screen/message_router_screen.dart';
 import '../../features/notifications/presentation/screen/notifications_screen.dart';
 import '../../features/onboarding_screen/onboarding_screen.dart';
 import '../../features/profile/presentation/screen/edit_profile.dart';
@@ -47,6 +48,7 @@ class AppRoutes {
   static const String notifications = "/notifications_screen.dart";
   static const String chat = "/chat_screen.dart";
   static const String message = "/message_screen.dart";
+  static const String messageRouter = "/message_router_screen.dart";
   static const String editProfile = "/edit_profile.dart";
   static const String privacyPolicy = "/privacy_policy_screen.dart";
   static const String termsOfServices = "/terms_of_services_screen.dart";
@@ -92,6 +94,10 @@ class AppRoutes {
     GetPage(
       name: message,
       page: () => MessageScreen(isItemChat: Get.arguments),
+    ),
+    GetPage(
+      name: messageRouter,
+      page: () => const MessageRouterScreen(),
     ),
     GetPage(name: editProfile, page: () => EditProfile()),
     GetPage(name: privacyPolicy, page: () => const PrivacyPolicyScreen()),
