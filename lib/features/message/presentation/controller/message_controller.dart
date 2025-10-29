@@ -71,6 +71,11 @@ class MessageController extends GetxController {
           final String senderName = (sender['name'] ?? '').toString();
           final String senderImage = (sender['profileImage'] ?? '').toString();
 
+          // Extract image URLs from message
+          final List images = (item['images'] ?? []) as List;
+          final String? messageImageUrl =
+              images.isNotEmpty ? (images[0] ?? '').toString() : null;
+
           // Update sender info from API response
           if (senderEmail != LocalStorage.myEmail && senderName.isNotEmpty) {
             name = senderName;
@@ -95,6 +100,7 @@ class MessageController extends GetxController {
               isMe: senderEmail == LocalStorage.myEmail,
               isNotice: (item['type'] ?? '') == 'notice',
               isRead: (item['read'] ?? false) == true,
+              imageUrl: messageImageUrl, // Add message image URL
             ),
           );
         }
@@ -152,26 +158,23 @@ class MessageController extends GetxController {
     isMessage = true;
     update();
 
+    final String text = messageController.text;
+
+    // Add message to UI immediately with local image path if available
     messages.insert(
       0,
       ChatMessageModel(
         time: DateTime.now(),
-        text: messageController.text,
+        text: text,
         image: LocalStorage.myImage,
         isMe: true,
+        localImagePath: imagePath, // Store local path for preview
       ),
-
-      // ChatMessageModel(
-      //     currentTime.format(context).toString(),
-      //     controller.messageController.text,
-      //     true),
     );
 
     isMessage = false;
-    update();
-
-    final String text = messageController.text;
     messageController.clear();
+    update();
 
     // Scroll to bottom after sending message
     WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -224,6 +227,11 @@ class MessageController extends GetxController {
             DateTime.tryParse((data['createdAt'] ?? '').toString()) ??
             DateTime.now();
 
+        // Extract image URLs from message
+        final List images = (data['images'] ?? []) as List;
+        final String? messageImageUrl =
+            images.isNotEmpty ? (images[0] ?? '').toString() : null;
+
         // Only add message if it belongs to current chat
         final String messageChatId =
             (data['chatId'] ?? data['chat'] ?? '').toString();
@@ -237,6 +245,7 @@ class MessageController extends GetxController {
               image: avatar,
               isMe: senderEmail == LocalStorage.myEmail,
               isRead: (data['read'] ?? false) == true,
+              imageUrl: messageImageUrl, // Add message image URL
             ),
           );
 
@@ -272,6 +281,11 @@ class MessageController extends GetxController {
             DateTime.tryParse((data['createdAt'] ?? '').toString()) ??
             DateTime.now();
 
+        // Extract image URLs from message
+        final List images = (data['images'] ?? []) as List;
+        final String? messageImageUrl =
+            images.isNotEmpty ? (images[0] ?? '').toString() : null;
+
         messages.insert(
           0,
           ChatMessageModel(
@@ -281,6 +295,7 @@ class MessageController extends GetxController {
             image: avatar,
             isMe: senderEmail == LocalStorage.myEmail,
             isRead: (data['read'] ?? false) == true,
+            imageUrl: messageImageUrl, // Add message image URL
           ),
         );
 

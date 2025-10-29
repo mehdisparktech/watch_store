@@ -20,6 +20,8 @@ class SignInScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    /// Sign in form key , help for Validation
+    final formKey = GlobalKey<FormState>();
     return Scaffold(
       /// App Bar Sections Starts here
       appBar: AppBar(),
@@ -30,7 +32,7 @@ class SignInScreen extends StatelessWidget {
           return SingleChildScrollView(
             padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 24.h),
             child: Form(
-              key: controller.formKey,
+              key: formKey,
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.center,

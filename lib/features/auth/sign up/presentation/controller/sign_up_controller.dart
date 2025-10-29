@@ -14,9 +14,6 @@ import '../../../data/model/auth_response_model.dart';
 import '../../../repository/auth_repository.dart';
 
 class SignUpController extends GetxController {
-  /// Sign Up Form Key
-  final signUpFormKey = GlobalKey<FormState>();
-
   bool isPopUpOpen = false;
   bool isLoading = false;
   bool isLoadingVerify = false;
@@ -81,7 +78,7 @@ class SignUpController extends GetxController {
     update();
   }
 
-  signUpUser() async {
+  signUpUser(GlobalKey<FormState> signUpFormKey) async {
     if (!signUpFormKey.currentState!.validate()) return;
 
     isLoading = true;

@@ -12,9 +12,6 @@ class SignInController extends GetxController {
   /// Sign in Button Loading variable
   bool isLoading = false;
 
-  /// Sign in form key , help for Validation
-  final formKey = GlobalKey<FormState>();
-
   /// email and password Controller here
   TextEditingController emailController = TextEditingController(
     text: kDebugMode ? 'hehecoh793@inilas.com' : '',

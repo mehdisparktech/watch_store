@@ -112,8 +112,10 @@ class AuthRepositoryImpl implements AuthRepository {
           success: response.data['success'] ?? false,
           message: response.data['message'],
           // No token in verify email response based on API structure
-          token: null,
+          token: response.data['data'],
         );
+        print("Verify Token: ${response.data['data']}");
+        print("AuthResponse Token: ${authResponse.token}");
 
         return authResponse;
       } else {
@@ -201,7 +203,7 @@ class AuthRepositoryImpl implements AuthRepository {
       final response = await ApiService.post(
         baseUrl + ApiEndPoint.resetPassword,
         body: request.toJson(),
-        header: {"Authorization": "Bearer $verifyToken"},
+        header: {"resettoken": verifyToken},
       );
 
       if (response.statusCode == 200) {

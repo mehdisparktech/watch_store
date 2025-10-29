@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
@@ -56,10 +57,6 @@ class ModernChatBubble extends StatelessWidget {
                     maxWidth: Get.width * 0.75,
                     minWidth: 60.w,
                   ),
-                  padding: EdgeInsets.symmetric(
-                    horizontal: 16.w,
-                    vertical: 10.h,
-                  ),
                   decoration: BoxDecoration(
                     color:
                         isMe
@@ -80,13 +77,58 @@ class ModernChatBubble extends StatelessWidget {
                       ),
                     ],
                   ),
-                  child:
-                  /// Message Text
-                  CommonText(
-                    text: message.text,
-                    fontSize: 15,
-                    color: isMe ? Colors.white : Colors.black87,
-                    fontWeight: FontWeight.w400,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      /// Message Image (if exists)
+                      if (message.localImagePath != null ||
+                          message.imageUrl != null)
+                        ClipRRect(
+                          borderRadius: BorderRadius.only(
+                            topLeft: Radius.circular(12.r),
+                            topRight: Radius.circular(12.r),
+                            bottomLeft:
+                                message.text.isEmpty
+                                    ? Radius.circular(isMe ? 12.r : 0.r)
+                                    : Radius.zero,
+                            bottomRight:
+                                message.text.isEmpty
+                                    ? Radius.circular(isMe ? 0.r : 12.r)
+                                    : Radius.zero,
+                          ),
+                          child:
+                              message.localImagePath != null
+                                  ? Image.file(
+                                    File(message.localImagePath!),
+                                    width: Get.width * 0.75,
+                                    height: 200.h,
+                                    fit: BoxFit.cover,
+                                  )
+                                  : CommonImage(
+                                    imageSrc:
+                                        ApiEndPoint.imageUrl +
+                                        (message.imageUrl ?? ''),
+                                    width: Get.width * 0.75,
+                                    height: 200.h,
+                                    fill: BoxFit.cover,
+                                  ),
+                        ),
+
+                      /// Message Text
+                      if (message.text.isNotEmpty)
+                        Padding(
+                          padding: EdgeInsets.symmetric(
+                            horizontal: 16.w,
+                            vertical: 10.h,
+                          ),
+                          child: CommonText(
+                            text: message.text,
+                            fontSize: 15,
+                            color: isMe ? Colors.white : Colors.black87,
+                            fontWeight: FontWeight.w400,
+                          ),
+                        ),
+                    ],
                   ),
                 ),
                 4.height,

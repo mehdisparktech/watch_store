@@ -31,7 +31,7 @@ class ForgetPasswordController extends GetxController {
     text: kDebugMode ? "user@gmail.com" : '',
   );
   TextEditingController otpController = TextEditingController(
-    text: kDebugMode ? '123456' : '',
+    text: kDebugMode ? '1234' : '',
   );
   TextEditingController passwordController = TextEditingController(
     text: kDebugMode ? 'hello123' : '',
@@ -111,6 +111,7 @@ class ForgetPasswordController extends GetxController {
       final response = await _authRepository.verifyEmail(request);
 
       if (response.success) {
+        print("Verify Token: ${response.token}");
         verifyToken = response.token ?? '';
         Get.toNamed(AppRoutes.createPassword);
       } else {

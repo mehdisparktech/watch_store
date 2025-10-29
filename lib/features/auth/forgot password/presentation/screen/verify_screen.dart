@@ -68,7 +68,7 @@ class _VerifyScreenState extends State<VerifyScreen> {
                       child: PinCodeTextField(
                         controller: controller.otpController,
                         validator: (value) {
-                          if (value != null && value.length == 6) {
+                          if (value != null && value.length == 4) {
                             return null;
                           } else {
                             return AppString.otpIsInValid;
