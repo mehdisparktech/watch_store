@@ -91,7 +91,21 @@ class CommonDrawer extends StatelessWidget {
             child: SingleChildScrollView(
               child: Column(
                 children: [
-                  _buildMenuItem(AppString.chat, AppRoutes.chat),
+                  _buildMenuItem(
+                    AppString.chat,
+                    LocalStorage.role == "admin"
+                        ? AppRoutes.chat
+                        : AppRoutes.userMessage,
+                    arguments: true,
+                    parameters: {
+                      "chatId": "68ea2acc45a913909adb8f45",
+                      "name": "Admin", // Will be updated from API
+                      "image": "", // Will be updated from API
+                      "itemImage": "",
+                      "itemPrice": "",
+                      "itemName": "",
+                    },
+                  ),
                   _buildMenuItem(AppString.catalogue, AppRoutes.home),
                   _buildMenuItem(AppString.wishlist, AppRoutes.wishlist),
                   _buildMenuItem(AppString.news, AppRoutes.news),
@@ -156,7 +170,12 @@ class CommonDrawer extends StatelessWidget {
     );
   }
 
-  Widget _buildMenuItem(String title, String route, {dynamic arguments}) {
+  Widget _buildMenuItem(
+    String title,
+    String route, {
+    dynamic arguments,
+    Map<String, String>? parameters,
+  }) {
     return ListTile(
       title: CommonText(
         text: title,
@@ -168,7 +187,7 @@ class CommonDrawer extends StatelessWidget {
       onTap: () async {
         Get.back();
         if (route.isNotEmpty) {
-          Get.toNamed(route, arguments: arguments);
+          Get.toNamed(route, arguments: arguments, parameters: parameters);
         }
       },
     );

@@ -6,6 +6,7 @@ import 'package:watch_store/features/brands/presentation/screen/brands_screen.da
 import 'package:watch_store/features/brands/presentation/screen/watch_detail_screen.dart';
 import 'package:watch_store/features/home/presentation/screen/home_screen.dart';
 import 'package:watch_store/features/language_selection/language_selection_screen.dart';
+import 'package:watch_store/features/message/presentation/screen/message_screen_user.dart';
 import 'package:watch_store/features/news/presenation/screens/news_screen.dart';
 import 'package:watch_store/features/news/presenation/screens/news_details_screen.dart';
 import 'package:watch_store/features/onboarding_screen/onboarding_spanish_screen.dart';
@@ -48,6 +49,7 @@ class AppRoutes {
   static const String notifications = "/notifications_screen.dart";
   static const String chat = "/chat_screen.dart";
   static const String message = "/message_screen.dart";
+  static const String userMessage = "/message_screen_user.dart";
   static const String messageRouter = "/message_router_screen.dart";
   static const String editProfile = "/edit_profile.dart";
   static const String privacyPolicy = "/privacy_policy_screen.dart";
@@ -96,9 +98,10 @@ class AppRoutes {
       page: () => MessageScreen(isItemChat: Get.arguments),
     ),
     GetPage(
-      name: messageRouter,
-      page: () => const MessageRouterScreen(),
+      name: userMessage,
+      page: () => MessageScreenUser(isItemChat: Get.arguments),
     ),
+    GetPage(name: messageRouter, page: () => const MessageRouterScreen()),
     GetPage(name: editProfile, page: () => EditProfile()),
     GetPage(name: privacyPolicy, page: () => const PrivacyPolicyScreen()),
     GetPage(name: termsOfServices, page: () => const TermsOfServicesScreen()),
