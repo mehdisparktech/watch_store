@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:emoji_picker_flutter/emoji_picker_flutter.dart';
 import 'package:watch_store/config/api/api_end_point.dart';
@@ -260,7 +261,7 @@ class _MessageScreenState extends State<MessageScreen> {
                     return const Center(
                       child: Padding(
                         padding: EdgeInsets.all(16.0),
-                        child: CircularProgressIndicator(),
+                        child: CupertinoActivityIndicator(),
                       ),
                     );
                   }
@@ -382,7 +383,7 @@ class _MessageScreenState extends State<MessageScreen> {
 
   Widget _buildChatBody(MessageController controller) {
     if (controller.isLoading) {
-      return const Center(child: CircularProgressIndicator());
+      return const Center(child: CupertinoActivityIndicator());
     }
 
     return Column(
@@ -409,7 +410,7 @@ class _MessageScreenState extends State<MessageScreen> {
                 return const Center(
                   child: Padding(
                     padding: EdgeInsets.all(16.0),
-                    child: CircularProgressIndicator(),
+                    child: CupertinoActivityIndicator(),
                   ),
                 );
               }

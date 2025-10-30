@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:watch_store/component/app_bar/common_app_bar.dart';
@@ -34,7 +35,7 @@ class BrandsCategoryScreen extends StatelessWidget {
         builder: (controller) {
           if (controller.status == Status.loading &&
               controller.categories.isEmpty) {
-            return const Center(child: CircularProgressIndicator());
+            return const Center(child: CupertinoActivityIndicator());
           }
           if (controller.status == Status.error) {
             return Center(

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:watch_store/component/app_bar/common_app_bar.dart';
 import 'package:get/get.dart';
@@ -57,7 +58,7 @@ class WishlistScreen extends StatelessWidget {
                 ),
                 if (controller.isLoading)
                   const Expanded(
-                    child: Center(child: CircularProgressIndicator()),
+                    child: Center(child: CupertinoActivityIndicator()),
                   ),
                 if (!controller.isLoading)
                   Expanded(
@@ -66,7 +67,7 @@ class WishlistScreen extends StatelessWidget {
                         if (controller.isLoading &&
                             controller.products.isEmpty) {
                           return const Center(
-                            child: CircularProgressIndicator(),
+                            child: CupertinoActivityIndicator(),
                           );
                         }
 

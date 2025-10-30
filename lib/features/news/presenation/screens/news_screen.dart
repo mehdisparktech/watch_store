@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:watch_store/component/app_bar/common_app_bar.dart';
 import 'package:watch_store/component/drawer/common_drawer.dart';
@@ -33,7 +34,7 @@ class NewsScreen extends StatelessWidget {
         builder: (controller) {
           if (controller.status == Status.loading &&
               controller.newsList.isEmpty) {
-            return const Center(child: CircularProgressIndicator());
+            return const Center(child: CupertinoActivityIndicator());
           } else if (controller.status == Status.error &&
               controller.newsList.isEmpty) {
             return Center(
@@ -69,7 +70,7 @@ class NewsScreen extends StatelessWidget {
                 itemBuilder: (context, index) {
                   if (index == controller.newsList.length) {
                     return controller.isLoading
-                        ? const Center(child: CircularProgressIndicator())
+                        ? const Center(child: CupertinoActivityIndicator())
                         : const SizedBox();
                   }
 

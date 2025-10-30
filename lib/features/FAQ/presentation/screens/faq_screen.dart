@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:watch_store/component/app_bar/common_app_bar.dart';
 import 'package:watch_store/component/drawer/common_drawer.dart';
@@ -56,15 +57,15 @@ class _FAQScreenState extends State<FAQScreen> {
                   maxLines: 2,
                 ),
                 SizedBox(height: 16),
-                CommonTextField(
-                  hintText: 'Search anything',
-                  prefixIcon: Icon(Icons.search, color: AppColors.white),
-                  borderColor: AppColors.hintText,
-                  borderRadius: 8,
-                  paddingVertical: 20,
-                  fillColor: AppColors.primaryColor,
-                ),
-                SizedBox(height: 16),
+                // CommonTextField(
+                //   hintText: 'Search anything',
+                //   prefixIcon: Icon(Icons.search, color: AppColors.white),
+                //   borderColor: AppColors.hintText,
+                //   borderRadius: 8,
+                //   paddingVertical: 20,
+                //   fillColor: AppColors.primaryColor,
+                // ),
+                // SizedBox(height: 16),
               ],
             ),
           ),
@@ -72,7 +73,7 @@ class _FAQScreenState extends State<FAQScreen> {
             child: GetBuilder<FAQController>(
               builder: (controller) {
                 if (controller.status == Status.loading) {
-                  return Center(child: CircularProgressIndicator());
+                  return Center(child: CupertinoActivityIndicator());
                 } else if (controller.status == Status.error) {
                   return Center(child: Text('Failed to load FAQs'));
                 } else if (controller.faqList.isEmpty) {

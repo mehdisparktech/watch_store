@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:watch_store/component/app_bar/common_app_bar.dart';
 import 'package:watch_store/component/button/common_button.dart';
@@ -58,7 +59,7 @@ class _WatchDetailScreenState extends State<WatchDetailScreen>
         init: ProductDetailController(widget.productId),
         builder: (controller) {
           if (controller.status == Status.loading) {
-            return const Center(child: CircularProgressIndicator());
+            return const Center(child: CupertinoActivityIndicator());
           }
           if (controller.status == Status.error || controller.product == null) {
             return const Center(child: Text('Failed to load product'));
@@ -249,7 +250,7 @@ class _WatchDetailScreenState extends State<WatchDetailScreen>
     return GetBuilder<ProductDetailController>(
       builder: (controller) {
         if (controller.reviewStatus == Status.loading) {
-          return const Center(child: CircularProgressIndicator());
+          return const Center(child: CupertinoActivityIndicator());
         }
 
         if (controller.reviewStatus == Status.error ||
