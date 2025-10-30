@@ -5,7 +5,6 @@ import 'package:get/get.dart';
 import '../../../utils/constants/app_images.dart';
 import '../../component/image/common_image.dart';
 import '../../../services/storage/storage_services.dart';
-import '../../../config/languages/language_controller.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -33,23 +32,12 @@ class _SplashScreenState extends State<SplashScreen> {
       final token = LocalStorage.token;
       final isLoggedIn = LocalStorage.isLogIn;
 
-      if (isLoggedIn && token.isNotEmpty) {
+      if (isLoggedIn || token.isNotEmpty) {
         Get.offAllNamed(AppRoutes.home);
       } else {
-        try {
-          final languageController = Get.find<LanguageController>();
-          if (languageController.isSpanish) {
-            Get.offAllNamed(AppRoutes.onboardingSpanish);
-          } else {
-            Get.offAllNamed(AppRoutes.onboardingSpanish);
-          }
-        } catch (e) {
-          // If language controller not found, default to English onboarding
-          Get.offAllNamed(AppRoutes.onboardingSpanish);
-        }
+        Get.offAllNamed(AppRoutes.onboardingSpanish);
       }
     } catch (e) {
-      // If any error occurs, go to language selection as fallback
       Get.offAllNamed(AppRoutes.onboardingSpanish);
     }
   }

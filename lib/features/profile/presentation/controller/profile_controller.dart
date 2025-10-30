@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:watch_store/config/route/app_routes.dart';
 import 'package:watch_store/services/storage/storage_services.dart';
 import 'package:watch_store/utils/helpers/other_helper.dart';
 
@@ -82,7 +83,7 @@ class ProfileController extends GetxController {
       image = null;
 
       Utils.successSnackBar("Successfully Profile Updated", response.message);
-      Get.back(); // Go back instead of navigating to edit profile again
+      Get.offAllNamed(AppRoutes.home);
     } else {
       Utils.errorSnackBar(response.statusCode, response.message);
     }
