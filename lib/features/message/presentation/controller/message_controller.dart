@@ -39,6 +39,14 @@ class MessageController extends GetxController {
 
   MessageModel messageModel = MessageModel.fromJson({});
 
+  /// Helper method to clean image URL by removing /uploads prefix
+  String _cleanImageUrl(String imageUrl) {
+    if (imageUrl.startsWith('/uploads')) {
+      return imageUrl.replaceFirst('/uploads', '');
+    }
+    return imageUrl;
+  }
+
   Future<void> getMessageRepo() async {
     try {
       if (page == 1) {
@@ -74,7 +82,9 @@ class MessageController extends GetxController {
           // Extract image URLs from message
           final List images = (item['images'] ?? []) as List;
           final String? messageImageUrl =
-              images.isNotEmpty ? (images[0] ?? '').toString() : null;
+              images.isNotEmpty
+                  ? _cleanImageUrl((images[0] ?? '').toString())
+                  : null;
 
           // Update sender info from API response
           if (senderEmail != LocalStorage.myEmail && senderName.isNotEmpty) {
@@ -230,7 +240,9 @@ class MessageController extends GetxController {
         // Extract image URLs from message
         final List images = (data['images'] ?? []) as List;
         final String? messageImageUrl =
-            images.isNotEmpty ? (images[0] ?? '').toString() : null;
+            images.isNotEmpty
+                ? _cleanImageUrl((images[0] ?? '').toString())
+                : null;
 
         // Only add message if it belongs to current chat
         final String messageChatId =
@@ -284,7 +296,9 @@ class MessageController extends GetxController {
         // Extract image URLs from message
         final List images = (data['images'] ?? []) as List;
         final String? messageImageUrl =
-            images.isNotEmpty ? (images[0] ?? '').toString() : null;
+            images.isNotEmpty
+                ? _cleanImageUrl((images[0] ?? '').toString())
+                : null;
 
         messages.insert(
           0,

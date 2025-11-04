@@ -77,7 +77,7 @@ class CommonAppBar extends StatelessWidget implements PreferredSizeWidget {
                   onTap:
                       onProfilePressed ??
                       () {
-                        Get.toNamed(AppRoutes.viewProfile);
+                        Get.toNamed(AppRoutes.editProfile);
                       },
                   child: ClipOval(
                     child: CommonImage(
